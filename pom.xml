@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.minimajack.v8</groupId>
 	<artifactId>com.minimajack.v8.format</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 	<packaging>pom</packaging>
 	<name>com.minimajack.v8.format</name>
 	<description>Utility libs for reading V8 binary files</description>
@@ -88,6 +88,7 @@
 				<artifactId>jgitflow-maven-plugin</artifactId>
 				<version>1.0-m5.1</version>
 				<configuration>
+					<pushReleases>true</pushReleases>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
