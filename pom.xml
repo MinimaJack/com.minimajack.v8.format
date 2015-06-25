@@ -37,7 +37,7 @@
 		<site>
 			<id>github-pages-site</id>
 			<name>GitHub's site</name>
-			<url>http://minimajack.github.io/com.minimajack.v8.format/${project.version}</url>
+			<url>${project.version}</url>
 		</site>
 	</distributionManagement>
 
@@ -88,14 +88,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-descriptor</id>
-						<goals>
-							<goal>attach-descriptor</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
 					<skipDeploy>true</skipDeploy>
 				</configuration>
@@ -103,7 +95,7 @@
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.12</version>
+				<version>0.10</version>
 				<configuration>
 					<repositoryName>com.minimajack.v8.format</repositoryName>
 					<repositoryOwner>MinimaJack</repositoryOwner>
@@ -137,7 +129,6 @@
 					<reportSet>
 						<id>default</id>
 						<reports>
-							<!-- no test-javadoc -->
 							<report>javadoc</report>
 						</reports>
 					</reportSet>
@@ -150,7 +141,7 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
-			<plugin>
+			<!-- plugin>
 				<artifactId>maven-jxr-plugin</artifactId>
 				<reportSets>
 					<reportSet>
@@ -161,7 +152,7 @@
 						</reports>
 					</reportSet>
 				</reportSets>
-			</plugin>
+			</plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>

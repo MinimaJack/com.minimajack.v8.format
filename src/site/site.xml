@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Maven">
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-fluido-skin</artifactId>
+		<version>1.4</version>
+	</skin>
+	<custom>
+		<fluidoSkin>
+			<sideBarEnabled>true</sideBarEnabled>
+			<skipGenerationDate>true</skipGenerationDate>
+			<gitHub>
+				<projectId>MinimaJack/com.minimajack.v8.format</projectId>
+				<ribbonOrientation>right</ribbonOrientation>
+				<ribbonColor>black</ribbonColor>
+			</gitHub>
+		</fluidoSkin>
+	</custom>
+	<body>
+		<menu name="Infostart links">
+			<item name="Infostart" href="http://forum.infostart.ru/forum24/topic132213/" />
+		</menu>
+		<menu ref="reports" />
+	</body>
+</project>
