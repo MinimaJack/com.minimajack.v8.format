@@ -37,7 +37,7 @@
 		<repository>
 			<id>Github</id>
 			<name>Github repository</name>
-			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.bs.format/mvn-repo/</url>
+			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.format/mvn-repo/</url>
 		</repository>
 		<site>
 			<id>github-pages-site</id>
@@ -54,7 +54,7 @@
 	</scm>
 
 	<issueManagement>
-		<url>https://github.com/MinimaJack/com.minimajack.v8.bs.format/issues</url>
+		<url>https://github.com/MinimaJack/com.minimajack.v8.format/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 
