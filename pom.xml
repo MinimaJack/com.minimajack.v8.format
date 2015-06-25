@@ -90,7 +90,6 @@
 				<configuration>
 					<pushReleases>true</pushReleases>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<useReleaseProfile>true</useReleaseProfile>
 				</configuration>
 			</plugin>
 			<plugin>
