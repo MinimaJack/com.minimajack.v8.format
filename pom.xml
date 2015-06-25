@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.minimajack.v8</groupId>
 	<artifactId>com.minimajack.v8.format</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.8</version>
 	<packaging>pom</packaging>
 	<name>com.minimajack.v8.format</name>
 	<description>Utility libs for reading V8 binary files</description>
@@ -95,9 +95,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -202,6 +199,12 @@
 	</reporting>
 	<profiles>
 		<profile>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
 			<id>DeployRepo</id>
 			<distributionManagement>
 				<repository>
