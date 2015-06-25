@@ -3,10 +3,12 @@ package com.minimajack.v8.transformers;
 import java.nio.ByteBuffer;
 
 import static org.junit.Assert.*;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.minimajack.v8.transformers.impl.IntegerTransformer;
+
 
 public class TestIntegerTransformet
 {
@@ -48,6 +50,13 @@ public class TestIntegerTransformet
         assertEquals( new Integer( -123 ), number );
     }
 
+    @Test
+    public void uintNumberTest()
+    {
+        Integer number = transformer.read( ByteBuffer.wrap( "4294967295".getBytes() ) );
+        assertEquals( new Integer( -1 ), number );
+    } 
+    
     @Test(expected = NumberFormatException.class)
     public void badNegaiveNumberWithTrailingChars()
     {
