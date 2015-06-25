@@ -18,6 +18,8 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<github.global.server>github</github.global.server>
+		<github.repo>com.minimajack.v8.format</github.repo>
+		<github.owner>MinimaJack</github.owner>
 	</properties>
 
 	<prerequisites>
@@ -37,7 +39,7 @@
 		<repository>
 			<id>Github</id>
 			<name>Github repository</name>
-			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.format/mvn-repo/</url>
+			<url>https://raw.github.com/${github.owner}/${github.repo}/mvn-repo/</url>
 		</repository>
 		<site>
 			<id>github-pages-site</id>
@@ -47,14 +49,14 @@
 	</distributionManagement>
 
 	<scm>
-		<url>https://github.com/MinimaJack/com.minimajack.v8.format</url>
-		<connection>scm:git:git://github.com/MinimaJack/com.minimajack.v8.format.git</connection>
-		<developerConnection>scm:git:git@github.com:MinimaJack/com.minimajack.v8.format.git</developerConnection>
+		<url>https://github.com/${github.owner}/${github.repo}</url>
+		<connection>scm:git:git://github.com/${github.owner}/${github.repo}.git</connection>
+		<developerConnection>scm:git:git@github.com:${github.owner}/${github.repo}.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
-		<url>https://github.com/MinimaJack/com.minimajack.v8.format/issues</url>
+		<url>https://github.com/${github.owner}/${github.repo}/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 
@@ -127,8 +129,8 @@
 				<artifactId>site-maven-plugin</artifactId>
 				<version>0.12</version>
 				<configuration>
-					<repositoryName>com.minimajack.v8.format</repositoryName>
-					<repositoryOwner>MinimaJack</repositoryOwner>
+					<repositoryName>${github.repo}</repositoryName>
+					<repositoryOwner>${github.owner}</repositoryOwner>
 					<message>Creating site for
 						${project.artifactId}, ${project.version}</message>
 					<path>${project.distributionManagement.site.url}</path>
@@ -244,8 +246,8 @@
 							<includes>
 								<include>**/*</include>
 							</includes>
-							<repositoryName>com.minimajack.v8.format</repositoryName>
-							<repositoryOwner>MinimaJack</repositoryOwner>
+							<repositoryName>${github.repo}</repositoryName>
+							<repositoryOwner>${github.owner}</repositoryOwner>
 						</configuration>
 						<executions>
 							<execution>
