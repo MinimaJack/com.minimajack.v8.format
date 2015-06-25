@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.minimajack.v8.format</groupId>
+	<artifactId>com.minimajack.v8.format.cf</artifactId>
+	<packaging>jar</packaging>
+
+	<name>com.minimajack.v8.format.cf</name>
+	<description>Java libs for reading cf files.</description>
+	<inceptionYear>2015</inceptionYear>
+	<url>http://minimajack.github.io/com.minimajack.v8.format.cf</url>
+
+	<parent>
+		<groupId>com.minimajack.v8</groupId>
+		<artifactId>com.minimajack.v8.format</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<scm>
+		<url>https://github.com/MinimaJack/com.minimajack.v8.format.cf</url>
+		<connection>scm:git:git://github.com/MinimaJack/com.minimajack.v8.format.cf.git</connection>
+		<developerConnection>scm:git:git@github.com:MinimaJack/com.minimajack.v8.format.cf.git</developerConnection>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/MinimaJack/com.minimajack.v8.format.cf/issues</url>
+	</issueManagement>
+
+	<repositories>
+		<repository>
+			<id>v8Unpack4j</id>
+			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.format.cf/mvn-repo/</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>Github</id>
+			<name>Github repository</name>
+			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.format.cf/mvn-repo/</url>
+		</repository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>

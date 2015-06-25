@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.minimajack.v8.format</groupId>
+	<artifactId>com.minimajack.v8.format.bs</artifactId>
+	<name>Libs for reading classes</name>
+
+
+	<parent>
+		<groupId>com.minimajack.v8</groupId>
+		<artifactId>com.minimajack.v8.format</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
+	<issueManagement>
+		<url>https://github.com/MinimaJack/com.minimajack.v8.bs.format/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<url>https://github.com/MinimaJack/com.minimajack.v8.bs.format</url>
+		<connection>scm:git:git://github.com/MinimaJack/com.minimajack.v8.bs.format.git</connection>
+		<developerConnection>scm:git:git@github.com:MinimaJack/com.minimajack.v8.bs.format.git</developerConnection>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>Github</id>
+			<name>Github repository</name>
+			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.bs.format/mvn-repo/</url>
+		</repository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>
