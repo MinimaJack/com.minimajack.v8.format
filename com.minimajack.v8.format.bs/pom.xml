@@ -3,33 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.minimajack.v8.format</groupId>
 	<artifactId>com.minimajack.v8.format.bs</artifactId>
-	<name>Libs for reading classes</name>
+	<packaging>jar</packaging>
 
+	<name>com.minimajack.v8.format.bs</name>
+	<description>Java libs for reading internal representation v8 classes.</description>
+	<inceptionYear>2015</inceptionYear>
 
 	<parent>
 		<groupId>com.minimajack.v8</groupId>
 		<artifactId>com.minimajack.v8.format</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
-	<issueManagement>
-		<url>https://github.com/MinimaJack/com.minimajack.v8.bs.format/issues</url>
-		<system>GitHub Issues</system>
-	</issueManagement>
-
-	<scm>
-		<url>https://github.com/MinimaJack/com.minimajack.v8.bs.format</url>
-		<connection>scm:git:git://github.com/MinimaJack/com.minimajack.v8.bs.format.git</connection>
-		<developerConnection>scm:git:git@github.com:MinimaJack/com.minimajack.v8.bs.format.git</developerConnection>
-	</scm>
-
-	<distributionManagement>
-		<repository>
-			<id>Github</id>
-			<name>Github repository</name>
-			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.bs.format/mvn-repo/</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>

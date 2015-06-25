@@ -34,12 +34,28 @@
 	</developers>
 
 	<distributionManagement>
+		<repository>
+			<id>Github</id>
+			<name>Github repository</name>
+			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.bs.format/mvn-repo/</url>
+		</repository>
 		<site>
 			<id>github-pages-site</id>
 			<name>GitHub's site</name>
 			<url>${project.version}</url>
 		</site>
 	</distributionManagement>
+
+	<scm>
+		<url>https://github.com/MinimaJack/com.minimajack.v8.format</url>
+		<connection>scm:git:git://github.com/MinimaJack/com.minimajack.v8.format.git</connection>
+		<developerConnection>scm:git:git@github.com:MinimaJack/com.minimajack.v8.format.git</developerConnection>
+	</scm>
+
+	<issueManagement>
+		<url>https://github.com/MinimaJack/com.minimajack.v8.bs.format/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
 
 	<build>
 		<pluginManagement>
@@ -141,18 +157,9 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
-			<!-- plugin>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<reportSets>
-					<reportSet>
-						<id>aggregate</id>
-						<inherited>false</inherited>
-						<reports>
-							<report>aggregate</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin -->
+			<!-- plugin> <artifactId>maven-jxr-plugin</artifactId> <reportSets> <reportSet> 
+				<id>aggregate</id> <inherited>false</inherited> <reports> <report>aggregate</report> 
+				</reports> </reportSet> </reportSets> </plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>

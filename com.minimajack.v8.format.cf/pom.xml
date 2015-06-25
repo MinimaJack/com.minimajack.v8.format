@@ -9,39 +9,12 @@
 	<name>com.minimajack.v8.format.cf</name>
 	<description>Java libs for reading cf files.</description>
 	<inceptionYear>2015</inceptionYear>
-	<url>http://minimajack.github.io/com.minimajack.v8.format.cf</url>
 
 	<parent>
 		<groupId>com.minimajack.v8</groupId>
 		<artifactId>com.minimajack.v8.format</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-
-	<scm>
-		<url>https://github.com/MinimaJack/com.minimajack.v8.format.cf</url>
-		<connection>scm:git:git://github.com/MinimaJack/com.minimajack.v8.format.cf.git</connection>
-		<developerConnection>scm:git:git@github.com:MinimaJack/com.minimajack.v8.format.cf.git</developerConnection>
-	</scm>
-
-	<issueManagement>
-		<system>GitHub Issues</system>
-		<url>https://github.com/MinimaJack/com.minimajack.v8.format.cf/issues</url>
-	</issueManagement>
-
-	<repositories>
-		<repository>
-			<id>v8Unpack4j</id>
-			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.format.cf/mvn-repo/</url>
-		</repository>
-	</repositories>
-
-	<distributionManagement>
-		<repository>
-			<id>Github</id>
-			<name>Github repository</name>
-			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.format.cf/mvn-repo/</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
