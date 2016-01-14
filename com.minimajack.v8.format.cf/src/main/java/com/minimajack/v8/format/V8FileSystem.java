@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.minimajack.v8.model.Visitable;
 import com.minimajack.v8.model.Visitor;
@@ -15,7 +16,7 @@ public class V8FileSystem
     implements Visitable<V8File>
 {
 
-    private List<V8File> v8FileList = new LinkedList<V8File>();
+    private LinkedList<V8File> v8FileList = new LinkedList<V8File>();
 
     private ByteBuffer shadeBuffer = null;
 
@@ -87,7 +88,7 @@ public class V8FileSystem
         return v8FileList;
     }
 
-    public void setV8FileList( List<V8File> v8FileList )
+    public void setV8FileList( LinkedList<V8File> v8FileList )
     {
         this.v8FileList = v8FileList;
     }
@@ -101,6 +102,10 @@ public class V8FileSystem
         }
     }
 
+    public Stream<V8File> getStream(){
+    	return v8FileList.stream();
+    }
+    
     public void addV8File( V8File v8file )
     {
         v8FileList.add( v8file );
