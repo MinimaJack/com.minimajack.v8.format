@@ -74,7 +74,17 @@ public class V8FileAttribute extends BlockHeader {
 	public Date getCreationDate() {
 		return DateUtils.fromv8Time(this.creationDate);
 	}
-
+	
+    public Date safeGetCreationDate() {
+        Date creationDate =getCreationDate();
+        if ( creationDate == null )
+        {
+            return getModifyDate();
+        }else{
+            return creationDate;
+        }
+    }
+    
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = DateUtils.tov8Time(creationDate);
 	}
