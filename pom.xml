@@ -232,7 +232,7 @@
 			    <site>
 			      <id>github</id>
 			      <name>GitHub's site</name>
-			      <url>/</url>
+			      <url>https://github.com/MinimaJack/com.minimajack.v8.format/tree/mvn-repo</url>
 			    </site>
 			</distributionManagement>
 			<build>
