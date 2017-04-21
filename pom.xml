@@ -232,7 +232,7 @@
 			    <site>
 			      <id>github</id>
 			      <name>GitHub's site</name>
-			      <url></url>
+			      <url />
 			    </site>
 			</distributionManagement>
 			<build>
