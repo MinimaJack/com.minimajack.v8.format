@@ -8,16 +8,16 @@ public class NotValidUUID
     extends RuntimeException
 {
 
-    /**
-     * @see RuntimeException#RuntimeException()
-     */
     public NotValidUUID()
     {
         super();
     }
 
     /**
-     * @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean)
+     * @param message
+     * @param cause
+     * @param enableSuppression
+     * @param writableStackTrace
      */
     public NotValidUUID( String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace )
     {
@@ -25,7 +25,8 @@ public class NotValidUUID
     }
 
     /**
-     * @see RuntimeException#RuntimeException(String, Throwable)
+     * @param message
+     * @param cause
      */
     public NotValidUUID( String message, Throwable cause )
     {
@@ -33,7 +34,7 @@ public class NotValidUUID
     }
 
     /**
-     * @see RuntimeException#RuntimeException(String)
+     * @param message
      */
     public NotValidUUID( String message )
     {
@@ -41,7 +42,7 @@ public class NotValidUUID
     }
 
     /**
-     * @see RuntimeException#RuntimeException(Throwable)
+     * @param cause
      */
     public NotValidUUID( Throwable cause )
     {
@@ -49,7 +50,8 @@ public class NotValidUUID
     }
 
     /**
-     * @see RuntimeException#RuntimeException(String, Exception)
+     * @param string
+     * @param e
      */
     public NotValidUUID( String string, Exception e )
     {

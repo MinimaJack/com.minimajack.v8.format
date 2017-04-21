@@ -11,8 +11,11 @@ public class DateUtils
         return MILLISEC_TO_UNIXTIME_X10 + date.getTime() * 10;
     }
 
-    public static Date fromv8Time( Long v8date )
+    public static Date fromv8Time( long v8date )
     {
+        if(v8date == 0){
+            return null;
+        }
         return new Date( ( v8date - MILLISEC_TO_UNIXTIME_X10 ) / 10 );
     }
 }

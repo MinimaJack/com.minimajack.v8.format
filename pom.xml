@@ -1,9 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.minimajack.v8</groupId>
 	<artifactId>com.minimajack.v8.format</artifactId>
-	<version>0.0.9</version>
+	<version>0.0.10</version>
 	<packaging>pom</packaging>
 	<name>com.minimajack.v8.format</name>
 	<description>Utility libs for reading V8 binary files</description>
@@ -15,9 +14,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<github.global.server>github</github.global.server>
+		<github.repo>com.minimajack.v8.format</github.repo>
+		<github.owner>MinimaJack</github.owner>
 	</properties>
 
 	<prerequisites>
@@ -37,7 +38,7 @@
 		<repository>
 			<id>Github</id>
 			<name>Github repository</name>
-			<url>https://raw.github.com/MinimaJack/com.minimajack.v8.bs.format/mvn-repo/</url>
+			<url>https://raw.github.com/${github.owner}/${github.repo}/mvn-repo/</url>
 		</repository>
 		<site>
 			<id>github-pages-site</id>
@@ -47,14 +48,14 @@
 	</distributionManagement>
 
 	<scm>
-		<url>https://github.com/MinimaJack/com.minimajack.v8.format</url>
-		<connection>scm:git:git://github.com/MinimaJack/com.minimajack.v8.format.git</connection>
-		<developerConnection>scm:git:git@github.com:MinimaJack/com.minimajack.v8.format.git</developerConnection>
+		<url>https://github.com/${github.owner}/${github.repo}</url>
+		<connection>scm:git:git://github.com/${github.owner}/${github.repo}.git</connection>
+		<developerConnection>scm:git:git@github.com:${github.owner}/${github.repo}.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
-		<url>https://github.com/MinimaJack/com.minimajack.v8.bs.format/issues</url>
+		<url>https://github.com/${github.owner}/${github.repo}/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
 
@@ -127,8 +128,8 @@
 				<artifactId>site-maven-plugin</artifactId>
 				<version>0.12</version>
 				<configuration>
-					<repositoryName>com.minimajack.v8.format</repositoryName>
-					<repositoryOwner>MinimaJack</repositoryOwner>
+					<repositoryName>${github.repo}</repositoryName>
+					<repositoryOwner>${github.owner}</repositoryOwner>
 					<message>Creating site for
 						${project.artifactId}, ${project.version}</message>
 					<path>${project.distributionManagement.site.url}</path>
@@ -244,8 +245,8 @@
 							<includes>
 								<include>**/*</include>
 							</includes>
-							<repositoryName>com.minimajack.v8.format</repositoryName>
-							<repositoryOwner>MinimaJack</repositoryOwner>
+							<repositoryName>${github.repo}</repositoryName>
+							<repositoryOwner>${github.owner}</repositoryOwner>
 						</configuration>
 						<executions>
 							<execution>
