@@ -40,11 +40,11 @@
 			<name>Github repository</name>
 			<url>https://raw.github.com/${github.owner}/${github.repo}/mvn-repo/</url>
 		</repository>
-		<site>
+		<!-- site>
 			<id>github-pages-site</id>
 			<name>GitHub's site</name>
 			<url>${project.version}</url>
-		</site>
+		</site -->
 	</distributionManagement>
 
 	<scm>
