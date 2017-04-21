@@ -1,8 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.minimajack.v8</groupId>
 	<artifactId>com.minimajack.v8.format</artifactId>
-	<version>0.0.14</version>
+	<version>0.0.15-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>com.minimajack.v8.format</name>
 	<description>Utility libs for reading V8 binary files</description>
@@ -87,6 +88,8 @@
 				<configuration>
 					<pushReleases>true</pushReleases>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<username>${git.user}</username>
+					<password>${git.password}</password>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -224,21 +227,21 @@
 					<name>Temporary Staging Repository</name>
 					<url>file://${project.build.directory}/mvn-repo</url>
 				</repository>
-			    <site>
-			      <id>github</id>
-			      <name>GitHub's site</name>
-			      <url />
-			    </site>
+				<site>
+					<id>github</id>
+					<name>GitHub's site</name>
+					<url />
+				</site>
 			</distributionManagement>
 			<build>
 				<plugins>
-				    <plugin>
-				        <artifactId>maven-deploy-plugin</artifactId>
-				        <version>2.8.2</version>
-				        <configuration>
-				               <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
-				        </configuration>
-				    </plugin>
+					<plugin>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<version>2.8.2</version>
+						<configuration>
+							<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+						</configuration>
+					</plugin>
 					<plugin>
 						<groupId>com.github.github</groupId>
 						<artifactId>site-maven-plugin</artifactId>
