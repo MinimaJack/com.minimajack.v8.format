@@ -40,11 +40,11 @@
 			<name>Github repository</name>
 			<url>https://raw.github.com/${github.owner}/${github.repo}/mvn-repo/</url>
 		</repository>
-		<!-- site>
+		<site>
 			<id>github-pages-site</id>
 			<name>GitHub's site</name>
 			<url>${project.version}</url>
-		</site -->
+		</site>
 	</distributionManagement>
 
 	<scm>
@@ -229,6 +229,11 @@
 					<name>Temporary Staging Repository</name>
 					<url>file://${project.build.directory}/mvn-repo</url>
 				</repository>
+			    <site>
+			      <id>github</id>
+			      <name>GitHub's site</name>
+			      <url></url>
+			    </site>
 			</distributionManagement>
 			<build>
 				<plugins>
