@@ -40,11 +40,6 @@
 			<name>Github repository</name>
 			<url>https://raw.github.com/${github.owner}/${github.repo}/mvn-repo/</url>
 		</repository>
-		<site>
-			<id>github-pages-site</id>
-			<name>GitHub's site</name>
-			<url>${project.version}</url>
-		</site>
 	</distributionManagement>
 
 	<scm>
@@ -229,11 +224,6 @@
 					<name>Temporary Staging Repository</name>
 					<url>file://${project.build.directory}/mvn-repo</url>
 				</repository>
-			    <site>
-			      <id>github</id>
-			      <name>GitHub's site</name>
-			      <url>https://github.com/MinimaJack/com.minimajack.v8.format/tree/mvn-repo</url>
-			    </site>
 			</distributionManagement>
 			<build>
 				<plugins>
