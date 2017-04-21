@@ -1,12 +1,5 @@
 com.minimajack.v8.annotation
 com.minimajack.v8.exeptions
-com.minimajack.v8.format
-com.minimajack.v8.io.metrix
-com.minimajack.v8.io.reader
-com.minimajack.v8.io.stream
-com.minimajack.v8.io.writer
-com.minimajack.v8.model
 com.minimajack.v8.transformers
 com.minimajack.v8.transformers.impl
 com.minimajack.v8.utility
-com.minimajack.v8.utils

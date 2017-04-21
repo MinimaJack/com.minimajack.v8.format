@@ -39,7 +39,7 @@
           <div id="banner">
         <div class="pull-left">
                                 <div id="bannerLeft">
-                <h2>com.minimajack.v8.format</h2>
+                <h2>com.minimajack.v8.format.bs</h2>
                 </div>
                       </div>
         <div class="pull-right">  </div>
@@ -107,13 +107,6 @@
                     
       <li>
   
-                          <a href="modules.html" title="Project Modules">
-          <span class="none"></span>
-        Project Modules</a>
-            </li>
-                    
-      <li>
-  
                           <a href="team-list.html" title="Project Team">
           <span class="none"></span>
         Project Team</a>
@@ -131,6 +124,13 @@
                           <a href="issue-tracking.html" title="Issue Tracking">
           <span class="none"></span>
         Issue Tracking</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="dependencies.html" title="Dependencies">
+          <span class="none"></span>
+        Dependencies</a>
             </li>
                     
       <li>
@@ -188,33 +188,32 @@
 <div class="section">
 <h3><a name="Apache_Maven"></a>Apache Maven</h3><a name="Apache_Maven"></a>
 <div class="source"><pre class="prettyprint">&lt;dependency&gt;
-  &lt;groupId&gt;com.minimajack.v8&lt;/groupId&gt;
-  &lt;artifactId&gt;com.minimajack.v8.format&lt;/artifactId&gt;
+  &lt;groupId&gt;com.minimajack.v8.format&lt;/groupId&gt;
+  &lt;artifactId&gt;com.minimajack.v8.format.bs&lt;/artifactId&gt;
   &lt;version&gt;0.0.14-SNAPSHOT&lt;/version&gt;
-  &lt;type&gt;pom&lt;/type&gt;
 &lt;/dependency&gt;</pre></div></div>
 <div class="section">
 <h3><a name="Apache_Buildr"></a>Apache Buildr</h3><a name="Apache_Buildr"></a>
-<div class="source"><pre class="prettyprint">'com.minimajack.v8:com.minimajack.v8.format:pom:0.0.14-SNAPSHOT'</pre></div></div>
+<div class="source"><pre class="prettyprint">'com.minimajack.v8.format:com.minimajack.v8.format.bs:jar:0.0.14-SNAPSHOT'</pre></div></div>
 <div class="section">
 <h3><a name="Apache_Ivy"></a>Apache Ivy</h3><a name="Apache_Ivy"></a>
-<div class="source"><pre class="prettyprint">&lt;dependency org=&quot;com.minimajack.v8&quot; name=&quot;com.minimajack.v8.format&quot; rev=&quot;0.0.14-SNAPSHOT&quot;&gt;
-  &lt;artifact name=&quot;com.minimajack.v8.format&quot; type=&quot;pom&quot; /&gt;
+<div class="source"><pre class="prettyprint">&lt;dependency org=&quot;com.minimajack.v8.format&quot; name=&quot;com.minimajack.v8.format.bs&quot; rev=&quot;0.0.14-SNAPSHOT&quot;&gt;
+  &lt;artifact name=&quot;com.minimajack.v8.format.bs&quot; type=&quot;jar&quot; /&gt;
 &lt;/dependency&gt;</pre></div></div>
 <div class="section">
 <h3><a name="Groovy_Grape"></a>Groovy Grape</h3><a name="Groovy_Grape"></a>
 <div class="source"><pre class="prettyprint">@Grapes(
-@Grab(group='com.minimajack.v8', module='com.minimajack.v8.format', version='0.0.14-SNAPSHOT')
+@Grab(group='com.minimajack.v8.format', module='com.minimajack.v8.format.bs', version='0.0.14-SNAPSHOT')
 )</pre></div></div>
 <div class="section">
 <h3><a name="Grails"></a>Grails</h3><a name="Grails"></a>
-<div class="source"><pre class="prettyprint">compile 'com.minimajack.v8:com.minimajack.v8.format:0.0.14-SNAPSHOT'</pre></div></div>
+<div class="source"><pre class="prettyprint">compile 'com.minimajack.v8.format:com.minimajack.v8.format.bs:0.0.14-SNAPSHOT'</pre></div></div>
 <div class="section">
 <h3><a name="Leiningen"></a>Leiningen</h3><a name="Leiningen"></a>
-<div class="source"><pre class="prettyprint">[com.minimajack.v8/com.minimajack.v8.format &quot;0.0.14-SNAPSHOT&quot;]</pre></div></div>
+<div class="source"><pre class="prettyprint">[com.minimajack.v8.format/com.minimajack.v8.format.bs &quot;0.0.14-SNAPSHOT&quot;]</pre></div></div>
 <div class="section">
 <h3><a name="SBT"></a>SBT</h3><a name="SBT"></a>
-<div class="source"><pre class="prettyprint">libraryDependencies += &quot;com.minimajack.v8&quot; % &quot;com.minimajack.v8.format&quot; % &quot;0.0.14-SNAPSHOT&quot;</pre></div></div></div>
+<div class="source"><pre class="prettyprint">libraryDependencies += &quot;com.minimajack.v8.format&quot; % &quot;com.minimajack.v8.format.bs&quot; % &quot;0.0.14-SNAPSHOT&quot;</pre></div></div></div>
                   </div>
             </div>
           </div>
@@ -224,7 +223,7 @@
     <footer>
             <div class="container-fluid">
                       <div class="row-fluid">
-                                      <p >Copyright &copy;                   2017.
+                                      <p >Copyright &copy;                   2015&#x2013;2017.
           All rights reserved.      
                     
       </p>
