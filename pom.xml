@@ -229,7 +229,6 @@
 				<site>
 					<id>github</id>
 					<name>GitHub's site</name>
-					<url />
 				</site>
 			</distributionManagement>
 			<build>
