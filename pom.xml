@@ -235,7 +235,7 @@
 					<plugin>
 						<groupId>com.github.github</groupId>
 						<artifactId>site-maven-plugin</artifactId>
-						<version>0.10</version>
+						<version>0.12</version>
 						<configuration>
 							<server>github</server>
 							<message>Maven artifacts for ${project.version}</message>
