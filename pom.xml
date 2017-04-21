@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.minimajack.v8</groupId>
 	<artifactId>com.minimajack.v8.format</artifactId>
-	<version>0.0.13</version>
+	<version>0.0.14</version>
 	<packaging>pom</packaging>
 	<name>com.minimajack.v8.format</name>
 	<description>Utility libs for reading V8 binary files</description>
@@ -40,11 +40,6 @@
 			<name>Github repository</name>
 			<url>https://raw.github.com/${github.owner}/${github.repo}/mvn-repo/</url>
 		</repository>
-		<!-- site>
-			<id>github-pages-site</id>
-			<name>GitHub's site</name>
-			<url>${project.version}</url>
-		</site -->
 	</distributionManagement>
 
 	<scm>
