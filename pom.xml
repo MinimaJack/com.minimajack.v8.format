@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.minimajack.v8</groupId>
 	<artifactId>com.minimajack.v8.format</artifactId>
@@ -53,7 +54,13 @@
 		<url>https://github.com/${github.owner}/${github.repo}/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
-
+	<licenses>
+		<license>
+			<name>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</name>
+			<url>http://creativecommons.org/licenses/by-nc-sa/4.0/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<build>
 		<pluginManagement>
 			<plugins>
