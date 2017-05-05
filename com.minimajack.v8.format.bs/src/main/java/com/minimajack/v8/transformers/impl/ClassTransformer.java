@@ -52,7 +52,7 @@ public class ClassTransformer
                 }
 
                 Required req = field.getAnnotation( Required.class );
-                if ( req == null || req.required() || buffer.get( buffer.position() ) != 0x7D )
+                if ( req == null || req.required() || buffer.get( buffer.position() ) != 0x7D && buffer.get( buffer.position() ) !=  0x0D)
                 {
                     if ( !first )
                     {
@@ -71,6 +71,7 @@ public class ClassTransformer
 
                 field.set( object, fieldValue );
                 first = false;
+
             }
         }
         catch ( IllegalArgumentException | IllegalAccessException e )

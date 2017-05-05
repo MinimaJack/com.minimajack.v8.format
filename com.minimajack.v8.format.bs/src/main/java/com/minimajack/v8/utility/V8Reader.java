@@ -103,7 +103,7 @@ public class V8Reader
             }
             else if ( value != SPACE && value != CR && value != LF )
             {
-                throw new RuntimeException( "Bad chars in buffer " + value + " [" + ch + "]" + " position: "
+                throw new RuntimeException( "Bad chars in buffer [" + String.valueOf(Character.toChars(value))  + "] must be: [" + ch + "]" + " position: "
                     + ( buffer.position() - 1 ) );
             }
         }
