@@ -82,7 +82,7 @@ public class ClassTransformer
                 {
                     if ( hasVersion )
                     {
-                        if ( version < since.version() )
+                        if ( version < since.version() || version >= since.removed() )
                         {
                             continue;
                         }
@@ -115,7 +115,6 @@ public class ClassTransformer
                     hasVersion = true;
                     version = (Integer) fieldValue;
                 }
-
                 field.set( object, fieldValue );
                 first = false;
 

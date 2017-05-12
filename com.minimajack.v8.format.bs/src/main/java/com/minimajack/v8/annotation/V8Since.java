@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface V8Since {
     int version();
+    int removed() default Integer.MAX_VALUE;
 }
