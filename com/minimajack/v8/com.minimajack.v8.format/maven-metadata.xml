@@ -3,10 +3,10 @@
   <groupId>com.minimajack.v8</groupId>
   <artifactId>com.minimajack.v8.format</artifactId>
   <versioning>
-    <release>0.0.18</release>
+    <release>0.0.19</release>
     <versions>
-      <version>0.0.18</version>
+      <version>0.0.19</version>
     </versions>
-    <lastUpdated>20170512133527</lastUpdated>
+    <lastUpdated>20170518085659</lastUpdated>
   </versioning>
 </metadata>
