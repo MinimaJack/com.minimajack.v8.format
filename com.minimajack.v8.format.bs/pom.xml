@@ -11,10 +11,15 @@
 	<parent>
 		<groupId>com.minimajack.v8</groupId>
 		<artifactId>com.minimajack.v8.format</artifactId>
-		<version>0.0.18</version>
+		<version>0.0.19</version>
 	</parent>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
