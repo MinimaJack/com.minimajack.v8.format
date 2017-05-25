@@ -4,6 +4,7 @@ import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
 import com.minimajack.v8.metadata.external.PatternDescription;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.unknown.CompactFlags;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
@@ -40,7 +41,7 @@ public class ChartsOfCharacteristicTypesDescriptionBlock {
   public UUID unk10;
   public UUID unk11;
   public UUID unk12;
-  public ChartsOfCharacteristicTypesDescriptionBlockInfo coct;
+  public MetaDataInfo coct;
   public Boolean useStandardCommands;
   public MetadataObjectPropertyValueCollection basedOn;
   public Boolean includeHelpInContents;

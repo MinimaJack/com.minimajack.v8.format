@@ -3,6 +3,7 @@ package com.minimajack.v8.metadata.documents;
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.unknown.CompactFlags;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
@@ -37,7 +38,7 @@ public class DocumentDescriptionBlock {
   public UUID unk6;
   public UUID unk7;
   public UUID unk8;
-  public DocumentMetaData dmd;
+  public MetaDataInfo dmd;
   public UUID numerator;
   public CodeType.Values codeType;
   public Integer codeLength;

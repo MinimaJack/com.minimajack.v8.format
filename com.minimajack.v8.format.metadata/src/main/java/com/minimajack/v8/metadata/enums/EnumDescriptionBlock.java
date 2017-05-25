@@ -3,6 +3,7 @@ package com.minimajack.v8.metadata.enums;
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.inner.enums.ChoiceHistoryOnInput;
 import com.minimajack.v8.metadata.inner.enums.ChoiceMode;
@@ -20,7 +21,7 @@ public class EnumDescriptionBlock {
   public UUID unk2;
   public UUID unk3;
   public UUID unk4;
-  public EnumMetaData v8mn;
+  public MetaDataInfo v8mn;
   public Boolean useStandardCommands;
   public UUID unk6;
   public UUID unk7;

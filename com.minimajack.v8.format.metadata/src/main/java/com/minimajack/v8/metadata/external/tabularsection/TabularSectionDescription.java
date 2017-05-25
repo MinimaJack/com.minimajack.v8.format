@@ -1,7 +1,7 @@
 package com.minimajack.v8.metadata.external.tabularsection;
 
 import com.minimajack.v8.annotation.V8Class;
-import com.minimajack.v8.metadata.external.common.V8MetaFullName;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.tabularsection.strange.StrangeObject;
 import com.minimajack.v8.metadata.inner.enums.FillChecking;
@@ -21,7 +21,7 @@ public class TabularSectionDescription {
 
   public UUID g4;
 
-  public V8MetaFullName name;
+  public MetaDataInfo name;
 
   /**
    * Проверка заполнения.

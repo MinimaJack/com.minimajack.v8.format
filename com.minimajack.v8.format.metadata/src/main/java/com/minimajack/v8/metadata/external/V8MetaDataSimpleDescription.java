@@ -1,7 +1,7 @@
 package com.minimajack.v8.metadata.external;
 
 import com.minimajack.v8.annotation.V8Class;
-import com.minimajack.v8.metadata.external.common.V8MetaFullName;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 
 import java.util.UUID;
 
@@ -14,7 +14,7 @@ public class V8MetaDataSimpleDescription {
 
   public UUID g2;
 
-  public V8MetaFullName name;
+  public MetaDataInfo name;
 
   public UUID defaultForm;
 

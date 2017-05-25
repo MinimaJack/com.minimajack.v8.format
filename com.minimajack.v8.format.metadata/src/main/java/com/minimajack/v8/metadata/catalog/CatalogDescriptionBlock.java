@@ -3,6 +3,7 @@ package com.minimajack.v8.metadata.catalog;
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.unknown.CompactFlags;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
@@ -38,7 +39,7 @@ public class CatalogDescriptionBlock {
   public UUID unk6;
   public UUID unk7;
   public UUID unk8;
-  public CatalogMetaData cmd;
+  public MetaDataInfo cmd;
   public Integer levelCount;
   public EditType.Values editType;
   public MetadataObjectPropertyValueCollection owners;

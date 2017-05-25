@@ -3,6 +3,7 @@ package com.minimajack.v8.metadata.chartsofaccounts;
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.unknown.CompactFlags;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
@@ -39,7 +40,7 @@ public class ChartsOfAccountsDescriptionBlock {
   public UUID unk12;
   public UUID unk13;
   public UUID unk14;
-  public ChartsOfAccountsDescriptionBlockInfo coamd;
+  public MetaDataInfo coamd;
   public Boolean useStandardCommands;
   public Boolean includeHelpInContents;
   public MetadataObjectPropertyValueCollection basedOn;
