@@ -10,6 +10,7 @@
 	<modules>
 		<module>com.minimajack.v8.format.bs</module>
 		<module>com.minimajack.v8.format.cf</module>
+		<module>com.minimajack.v8.format.metadata</module>
 	</modules>
 
 	<properties>
