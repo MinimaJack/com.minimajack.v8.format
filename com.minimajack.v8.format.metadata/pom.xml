@@ -12,7 +12,7 @@
   	<dependency>
   		<groupId>com.minimajack.v8.format</groupId>
   		<artifactId>com.minimajack.v8.format.bs</artifactId>
-  		<version>0.0.20-SNAPSHOT</version>
+  		<version>${version}</version>
   	</dependency>
   </dependencies>
 </project>
