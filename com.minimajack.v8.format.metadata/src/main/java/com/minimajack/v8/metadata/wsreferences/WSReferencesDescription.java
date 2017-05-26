@@ -10,7 +10,7 @@ public class WSReferencesDescription {
 
   public Integer version;
 
-  public WSReferencesDescriptionBlock v8mn;
+  public WSReferencesDescriptionBlock info;
 
   public List<V8ClassObject> sections;
 }
