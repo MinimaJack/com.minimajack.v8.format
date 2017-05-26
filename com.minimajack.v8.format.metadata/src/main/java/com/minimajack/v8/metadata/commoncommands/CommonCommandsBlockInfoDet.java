@@ -1,7 +1,7 @@
 package com.minimajack.v8.metadata.commoncommands;
 
 import com.minimajack.v8.annotation.V8Class;
-import com.minimajack.v8.metadata.commandgroups.CommandGroupInfo;
+import com.minimajack.v8.metadata.commandgroups.Picture;
 import com.minimajack.v8.metadata.commands.CommandGroup;
 import com.minimajack.v8.metadata.commands.Shortcut;
 import com.minimajack.v8.metadata.external.PatternDescription;
@@ -14,7 +14,7 @@ import com.minimajack.v8.metadata.inner.enums.Representation;
 public class CommonCommandsBlockInfoDet {
 
   public Integer version;
-  public CommandGroupInfo cgi;
+  public Picture picture;
   public Representation.Values representation;
   public V8Synonym tooltip;
   public Integer unk3;

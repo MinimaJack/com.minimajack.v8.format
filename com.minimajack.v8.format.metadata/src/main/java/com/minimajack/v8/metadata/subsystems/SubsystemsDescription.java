@@ -10,7 +10,7 @@ public class SubsystemsDescription {
 
   public Integer version;
 
-  public SubsystemsDescriptionBlock v8mn;
+  public SubsystemsDescriptionBlock info;
 
   public List<V8ClassObject> sections;
 }

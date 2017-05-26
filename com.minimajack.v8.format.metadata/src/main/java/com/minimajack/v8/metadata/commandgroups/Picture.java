@@ -6,7 +6,7 @@ import com.minimajack.v8.annotation.V8Version;
 import com.minimajack.v8.metadata.external.unknown.UnkObjectIntNotReqUuid;
 
 @V8Class
-public class CommandGroupInfo {
+public class Picture {
 
   @V8Version
   public Integer version;

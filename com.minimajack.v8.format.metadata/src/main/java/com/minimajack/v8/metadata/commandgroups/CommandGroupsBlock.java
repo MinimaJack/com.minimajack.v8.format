@@ -10,7 +10,7 @@ import com.minimajack.v8.metadata.inner.enums.Representation;
 public class CommandGroupsBlock {
 
   public Integer version;
-  public CommandGroupInfo gi;
+  public Picture picture;
   public CommandGroupCategory.Values category;
   public Representation.Values representation;
   public V8Synonym toolTip;

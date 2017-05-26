@@ -3,7 +3,14 @@ package com.minimajack.v8.metadata.external.type;
 import com.minimajack.v8.annotation.Transformer;
 
 @Transformer(transformer = TypesTransformer.class)
-public abstract class TypeValue {
+public abstract class TypeValue
+{
 
-  public abstract Object getValue();
+    public abstract Object getValue();
+
+    @SuppressWarnings("unchecked")
+    public <T> T cast( )
+    {
+        return (T) getValue();
+    }
 }
