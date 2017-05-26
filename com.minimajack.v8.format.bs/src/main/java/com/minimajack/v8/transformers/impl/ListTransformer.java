@@ -3,7 +3,7 @@ package com.minimajack.v8.transformers.impl;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.minimajack.v8.transformers.AbstractTransformer;
@@ -23,7 +23,7 @@ public class ListTransformer
 
     public List<?> read( Class<?> clazz, ByteBuffer buffer )
     {
-        List<Object> list = new LinkedList<>();
+        List<Object> list = new ArrayList<>();
         Integer count = V8Reader.read( Integer.class, buffer );
 
         for ( int i = 0; i < count; i++ )
