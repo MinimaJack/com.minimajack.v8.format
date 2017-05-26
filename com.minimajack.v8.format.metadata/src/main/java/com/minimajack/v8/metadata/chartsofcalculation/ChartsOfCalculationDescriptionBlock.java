@@ -11,7 +11,7 @@ import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCo
 import com.minimajack.v8.metadata.inner.enums.ChartOfCalculationTypesBaseUse;
 import com.minimajack.v8.metadata.inner.enums.ChoiceHistoryOnInput;
 import com.minimajack.v8.metadata.inner.enums.ChoiceMode;
-import com.minimajack.v8.metadata.inner.enums.CodeAllowedLength;
+import com.minimajack.v8.metadata.inner.enums.AllowedLength;
 import com.minimajack.v8.metadata.inner.enums.CodeType;
 import com.minimajack.v8.metadata.inner.enums.CreateOnInput;
 import com.minimajack.v8.metadata.inner.enums.DataLockControlMode;
@@ -82,7 +82,7 @@ public class ChartsOfCalculationDescriptionBlock {
   public V8Synonym listPresentation;
   public V8Synonym extendedListPresentation;
   public V8Synonym explanation;
-  public CodeAllowedLength.Values codeAllowedLength;
+  public AllowedLength.Values codeAllowedLength;
   public CharacteristicsDescriptions characteristics;
   @V8Since(version = 29)
   public CreateOnInput.Values createOnInput;

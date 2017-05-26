@@ -11,7 +11,7 @@ import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCo
 import com.minimajack.v8.metadata.inner.enums.CharacteristicKindCodesSeries;
 import com.minimajack.v8.metadata.inner.enums.ChoiceHistoryOnInput;
 import com.minimajack.v8.metadata.inner.enums.ChoiceMode;
-import com.minimajack.v8.metadata.inner.enums.CodeAllowedLength;
+import com.minimajack.v8.metadata.inner.enums.AllowedLength;
 import com.minimajack.v8.metadata.inner.enums.CreateOnInput;
 import com.minimajack.v8.metadata.inner.enums.DataLockControlMode;
 import com.minimajack.v8.metadata.inner.enums.DefaultPresentation;
@@ -77,7 +77,7 @@ public class ChartsOfCharacteristicTypesDescriptionBlock {
   public V8Synonym listPresentation;
   public V8Synonym extendedListPresentation;
   public V8Synonym explanation;
-  public CodeAllowedLength.Values codeAllowedLength;
+  public AllowedLength.Values codeAllowedLength;
   @V8Since(version = 27)
   public CharacteristicsDescriptions characteristics;
   @V8Since(version = 28)

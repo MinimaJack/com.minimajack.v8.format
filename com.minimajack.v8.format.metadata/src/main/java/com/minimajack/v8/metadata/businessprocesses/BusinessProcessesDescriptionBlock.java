@@ -9,7 +9,7 @@ import com.minimajack.v8.metadata.external.unknown.CompactFlags;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
 import com.minimajack.v8.metadata.inner.enums.BusinessProcessNumberPeriodicity;
 import com.minimajack.v8.metadata.inner.enums.ChoiceHistoryOnInput;
-import com.minimajack.v8.metadata.inner.enums.CodeAllowedLength;
+import com.minimajack.v8.metadata.inner.enums.AllowedLength;
 import com.minimajack.v8.metadata.inner.enums.CodeType;
 import com.minimajack.v8.metadata.inner.enums.CreateOnInput;
 import com.minimajack.v8.metadata.inner.enums.DataLockControlMode;
@@ -67,7 +67,7 @@ public class BusinessProcessesDescriptionBlock {
   public V8Synonym listPresentation;
   public V8Synonym extendedListPresentation;
   public V8Synonym explanation;
-  public CodeAllowedLength.Values codeAllowedLength;
+  public AllowedLength.Values codeAllowedLength;
   @V8Since(version = 25)
   public CharacteristicsDescriptions characteristics;
   @V8Since(version = 26)
