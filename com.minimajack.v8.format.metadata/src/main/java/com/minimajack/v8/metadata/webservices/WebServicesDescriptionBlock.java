@@ -11,11 +11,11 @@ public class WebServicesDescriptionBlock {
 
   @V8Version
   public Integer version;
-  public String url;
+  public String namespace;
   public MetadataMainInfo v8mn;
-  public MetadataObjectPropertyValueCollection unk1;
-  public String endPoint;
-  public WebServiceImportedPackets unk2;
+  public MetadataObjectPropertyValueCollection xdtoPackages;
+  public String descriptorFileName;
+  public WebServiceImportedPackets xdtoInnerPackages;
   @V8Since(version = 4)
   public Integer unk3;
   @V8Since(version = 4)
