@@ -1,7 +1,5 @@
 package com.minimajack.v8.metadata.catalog;
 
-import java.util.UUID;
-
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
@@ -9,22 +7,12 @@ import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.unknown.CompactFlags;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
-import com.minimajack.v8.metadata.inner.enums.AllowedLength;
-import com.minimajack.v8.metadata.inner.enums.ChoiceHistoryOnInput;
-import com.minimajack.v8.metadata.inner.enums.ChoiceMode;
-import com.minimajack.v8.metadata.inner.enums.CodeSeries;
-import com.minimajack.v8.metadata.inner.enums.CodeType;
-import com.minimajack.v8.metadata.inner.enums.CreateOnInput;
-import com.minimajack.v8.metadata.inner.enums.DataLockControlMode;
-import com.minimajack.v8.metadata.inner.enums.DefaultPresentation;
-import com.minimajack.v8.metadata.inner.enums.EditType;
-import com.minimajack.v8.metadata.inner.enums.FullTextSearch;
-import com.minimajack.v8.metadata.inner.enums.HierarchyType;
-import com.minimajack.v8.metadata.inner.enums.PredefinedDataUpdate;
-import com.minimajack.v8.metadata.inner.enums.SubordinationUse;
+import com.minimajack.v8.metadata.inner.enums.*;
 import com.minimajack.v8.metadata.persist.CharacteristicsDescriptions;
 import com.minimajack.v8.metadata.persist.FieldList;
 import com.minimajack.v8.metadata.persist.StandardAttributeDescriptions;
+
+import java.util.UUID;
 
 @V8Class
 public class CatalogDescriptionBlock {

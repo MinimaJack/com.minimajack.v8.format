@@ -9,11 +9,7 @@ import com.minimajack.v8.metadata.external.common.ChoiceParameters;
 import com.minimajack.v8.metadata.external.common.TypeLinks;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.type.TypeValue;
-import com.minimajack.v8.metadata.inner.enums.ChoiceHistoryOnInput;
-import com.minimajack.v8.metadata.inner.enums.CreateOnInput;
-import com.minimajack.v8.metadata.inner.enums.FillChecking;
-import com.minimajack.v8.metadata.inner.enums.FoldersAndItemsUse;
-import com.minimajack.v8.metadata.inner.enums.UseQuickChoice;
+import com.minimajack.v8.metadata.inner.enums.*;
 
 import java.util.UUID;
 

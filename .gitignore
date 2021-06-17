@@ -15,3 +15,9 @@ hs_err_pid*
 /.classpath
 /.settings/
 /unpacked/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr

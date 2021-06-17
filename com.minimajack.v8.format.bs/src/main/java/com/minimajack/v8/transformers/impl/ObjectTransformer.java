@@ -1,5 +1,13 @@
 package com.minimajack.v8.transformers.impl;
 
+import com.minimajack.v8.annotation.*;
+import com.minimajack.v8.transformers.AbstractClassTransformer;
+import com.minimajack.v8.transformers.impl.field.FieldInfo;
+import com.minimajack.v8.utility.SerializedOutputStream;
+import com.minimajack.v8.utility.V8Reader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,22 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.minimajack.v8.annotation.Required;
-import com.minimajack.v8.annotation.V8Class;
-import com.minimajack.v8.annotation.V8Since;
-import com.minimajack.v8.annotation.V8Transient;
-import com.minimajack.v8.annotation.V8Version;
-import com.minimajack.v8.transformers.AbstractClassTransformer;
-import com.minimajack.v8.transformers.impl.field.FieldInfo;
-import com.minimajack.v8.utility.V8Reader;
-
-public class ClassTransformer
+public class ObjectTransformer
     extends AbstractClassTransformer<Object>
 {
-    final Logger logger = LoggerFactory.getLogger( ClassTransformer.class );
+    final Logger logger = LoggerFactory.getLogger( ObjectTransformer.class );
 
     private static final Map<Class<?>, List<FieldInfo>> cacheFields = new HashMap<Class<?>, List<FieldInfo>>();
 
@@ -49,6 +45,87 @@ public class ClassTransformer
         }
 
         return object;
+    }
+
+    @Override
+    public void write(Object object, SerializedOutputStream buffer) {
+        Class clazz = object.getClass();
+        boolean isV8Class = clazz.getAnnotation( V8Class.class ) != null;
+        boolean isHasVersion = clazz.getAnnotation( V8Version.class ) != null;
+        if ( isV8Class )
+        {
+            writeV8Class( object, clazz, buffer, isHasVersion );
+        }
+        else
+        {
+            writeClass( object, clazz, buffer, isHasVersion );
+        }
+    }
+
+    private void writeClass(Object object, Class clazz, SerializedOutputStream buffer, boolean isHasVersion) {
+        {
+            List<FieldInfo> fields = cacheFields.get( clazz );
+            if ( fields == null )
+            {
+                fields = processClass( clazz );
+            }
+            boolean first = true;
+            boolean hasVersion = versionalClasses.contains( clazz );
+            Integer version = 0;
+            try
+            {
+                for ( FieldInfo field : fields )
+                {
+                    if ( hasVersion )
+                    {
+                        V8Since since = field.since;
+                        if ( since != null )
+                        {
+                            if ( version < since.version() || version >= since.removed() )
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                    if ( !field.required  )
+                    {
+                        if(field.field.get(object) == null)
+                        break;
+                    }
+                    if ( !first )
+                    {
+                        buffer.putComa();
+                    }
+                    Class<?> fieldType = field.fieldType;
+                    logger.debug( "Write field {} {}", field.name, fieldType );
+                    Type paramType = field.paramType;
+                    V8Reader.write( field.field.get(object), paramType, buffer );
+                    if ( field.isVersion )
+                    {
+                        hasVersion = true;
+                        version = (Integer) field.field.get(object);
+                    }
+
+                    first = false;
+
+                }
+            }
+            catch ( IllegalArgumentException | IllegalAccessException e )
+            {
+                throw new RuntimeException( e );
+            }
+
+        }
+    }
+
+    public void writeV8Class( Object object, Class<?> clazz, SerializedOutputStream buffer, boolean versional )
+    {
+        buffer.putOpenBracket();
+
+        writeClass( object, clazz, buffer, versional );
+
+        buffer.putCloseBracket();
+
     }
 
     public Object readV8Class( Class<?> clazz, ByteBuffer buffer )
@@ -130,9 +207,9 @@ public class ClassTransformer
         Object object;
         try
         {
-            object = clazz.newInstance();
+            object = clazz.getConstructor().newInstance();
         }
-        catch ( InstantiationException | IllegalAccessException e )
+        catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e )
         {
             throw new RuntimeException( "Cant instantinate class" + clazz );
         }
@@ -172,8 +249,8 @@ public class ClassTransformer
                 {
                     break;
                 }
-                logger.debug( "Read field {} ", field.name );
                 Class<?> fieldType = field.fieldType;
+                logger.debug( "Read field {} {}", field.name, fieldType );
                 Type paramType = field.paramType;
                 Object fieldValue = V8Reader.read( fieldType, paramType, buffer );
                 if ( field.isVersion )

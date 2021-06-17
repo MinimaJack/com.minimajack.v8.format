@@ -1,7 +1,5 @@
 package com.minimajack.v8.metadata.documents;
 
-import java.util.UUID;
-
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
@@ -9,21 +7,12 @@ import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.unknown.CompactFlags;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
-import com.minimajack.v8.metadata.inner.enums.AllowedLength;
-import com.minimajack.v8.metadata.inner.enums.ChoiceHistoryOnInput;
-import com.minimajack.v8.metadata.inner.enums.CodeType;
-import com.minimajack.v8.metadata.inner.enums.CreateOnInput;
-import com.minimajack.v8.metadata.inner.enums.DataLockControlMode;
-import com.minimajack.v8.metadata.inner.enums.DocumentNumberPeriodicity;
-import com.minimajack.v8.metadata.inner.enums.FullTextSearch;
-import com.minimajack.v8.metadata.inner.enums.Posting;
-import com.minimajack.v8.metadata.inner.enums.RealTimePosting;
-import com.minimajack.v8.metadata.inner.enums.RegisterRecordsDeletion;
-import com.minimajack.v8.metadata.inner.enums.RegisterRecordsWritingOnPost;
-import com.minimajack.v8.metadata.inner.enums.SequenceFilling;
+import com.minimajack.v8.metadata.inner.enums.*;
 import com.minimajack.v8.metadata.persist.CharacteristicsDescriptions;
 import com.minimajack.v8.metadata.persist.FieldList;
 import com.minimajack.v8.metadata.persist.StandardAttributeDescriptions;
+
+import java.util.UUID;
 
 @V8Class
 public class DocumentDescriptionBlock {

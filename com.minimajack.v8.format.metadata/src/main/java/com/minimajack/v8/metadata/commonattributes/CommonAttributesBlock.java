@@ -5,12 +5,7 @@ import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
 import com.minimajack.v8.metadata.attributes.Description;
 import com.minimajack.v8.metadata.external.common.MetaDataObjectLink;
-import com.minimajack.v8.metadata.inner.enums.CommonAttributeAuthenticationSeparation;
-import com.minimajack.v8.metadata.inner.enums.CommonAttributeAutoUse;
-import com.minimajack.v8.metadata.inner.enums.CommonAttributeSeparatedDataUse;
-import com.minimajack.v8.metadata.inner.enums.CommonAttributeUsersSeparation;
-import com.minimajack.v8.metadata.inner.enums.FullTextSearch;
-import com.minimajack.v8.metadata.inner.enums.Indexing;
+import com.minimajack.v8.metadata.inner.enums.*;
 
 @V8Class
 public class CommonAttributesBlock {

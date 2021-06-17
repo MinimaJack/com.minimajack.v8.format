@@ -7,12 +7,12 @@ import com.minimajack.v8.metadata.style.item.font.impl.AbsoluteFont;
 import com.minimajack.v8.metadata.style.item.font.impl.StyleItemFont;
 import com.minimajack.v8.metadata.style.item.font.impl.WindowsFont;
 import com.minimajack.v8.transformers.AbstractTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
 import com.minimajack.v8.utility.V8Reader;
 
-import java.lang.reflect.ParameterizedType;
 import java.nio.ByteBuffer;
 
-public class FontTransformer extends AbstractTransformer<FontDescription> {
+public class FontTransformer implements AbstractTransformer<FontDescription> {
 
   private static final int FONT_WEIGHT = 1 << 5;
   private static final int FONT_UNK1 = 1 << 4;
@@ -22,7 +22,7 @@ public class FontTransformer extends AbstractTransformer<FontDescription> {
   private static final int FONT_UNK5 = 1;
 
   @Override
-  public FontDescription read(final ParameterizedType type, final ByteBuffer buffer) {
+  public FontDescription read(final ByteBuffer buffer) {
     FontDescription innerFont = null;
     final Values typeFont = V8Reader.read(FontType.Values.class, buffer);
     switch (typeFont) {
@@ -94,6 +94,11 @@ public class FontTransformer extends AbstractTransformer<FontDescription> {
         throw new RuntimeException("Unknown font type: " + typeFont);
     }
     return innerFont;
+  }
+
+  @Override
+  public void write(Object object, SerializedOutputStream buffer) {
+    throw new UnsupportedOperationException("Not implemented");
   }
 
 }

@@ -1,12 +1,12 @@
 package com.minimajack.v8.transformers.impl;
 
-import java.lang.reflect.ParameterizedType;
+import com.minimajack.v8.exeptions.NotValidUUID;
+import com.minimajack.v8.transformers.AbstractTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-
-import com.minimajack.v8.exeptions.NotValidUUID;
-import com.minimajack.v8.transformers.AbstractTransformer;
 
 /**
  * Read UUID
@@ -14,7 +14,7 @@ import com.minimajack.v8.transformers.AbstractTransformer;
  *
  */
 public class UUIDTransformer
-    extends AbstractTransformer<UUID>
+    implements AbstractTransformer<UUID>
 {
 
     /**
@@ -23,7 +23,7 @@ public class UUIDTransformer
     private static final int UUID_SIZE_IN_STRING = 36;
 
     @Override
-    public UUID read( ParameterizedType type, ByteBuffer buffer )
+    public UUID read( ByteBuffer buffer )
     {
         byte[] guid = new byte[UUID_SIZE_IN_STRING];
         buffer.get( guid );
@@ -36,6 +36,11 @@ public class UUIDTransformer
         {
             throw new NotValidUUID( e );
         }
+    }
+
+    @Override
+    public void write(Object object, SerializedOutputStream buffer) {
+        buffer.writeBytes(object.toString().getBytes(StandardCharsets.UTF_8));
     }
 
 }

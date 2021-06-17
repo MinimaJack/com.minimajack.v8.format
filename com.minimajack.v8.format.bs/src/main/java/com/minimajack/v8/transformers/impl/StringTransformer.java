@@ -1,18 +1,18 @@
 package com.minimajack.v8.transformers.impl;
 
+import com.minimajack.v8.transformers.AbstractTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
+
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.ParameterizedType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import com.minimajack.v8.transformers.AbstractTransformer;
-
 public class StringTransformer
-    extends AbstractTransformer<String>
+    implements AbstractTransformer<String>
 {
 
     @Override
-    public String read( ParameterizedType type, ByteBuffer buffer )
+    public String read(ByteBuffer buffer )
     {
         int value;
         int state = 0;
@@ -32,7 +32,7 @@ public class StringTransformer
                 {
                     state = 2;
                 }
-                else if ( state == 2 )
+                else
                 {
                     state = 1;
                 }
@@ -49,6 +49,13 @@ public class StringTransformer
         }
 
         return new String( baos.toByteArray(), StandardCharsets.UTF_8 );
+    }
+
+    @Override
+    public void write(Object object, SerializedOutputStream buffer){
+        buffer.write((byte) 0x22);
+        buffer.writeBytes(((String)object).replace("\"", "\"\"").getBytes(StandardCharsets.UTF_8));
+        buffer.write((byte) 0x22);
     }
 
 }

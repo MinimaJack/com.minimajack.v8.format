@@ -1,31 +1,20 @@
 package com.minimajack.v8.utility;
 
+import com.minimajack.v8.transformers.AbstractClassTransformer;
+import com.minimajack.v8.transformers.AbstractParametrizedTransformer;
+import com.minimajack.v8.transformers.AbstractTransformer;
+import com.minimajack.v8.transformers.impl.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-import com.minimajack.v8.transformers.AbstractArraysTransformer;
-import com.minimajack.v8.transformers.AbstractClassTransformer;
-import com.minimajack.v8.transformers.AbstractEnumTransformer;
-import com.minimajack.v8.transformers.AbstractTransformer;
-import com.minimajack.v8.transformers.impl.AnyDataTransformer;
-import com.minimajack.v8.transformers.impl.ArraysTransformer;
-import com.minimajack.v8.transformers.impl.BooleanTransformer;
-import com.minimajack.v8.transformers.impl.ClassTransformer;
-import com.minimajack.v8.transformers.impl.EnumsTransformer;
-import com.minimajack.v8.transformers.impl.IntegerTransformer;
-import com.minimajack.v8.transformers.impl.ListTransformer;
-import com.minimajack.v8.transformers.impl.MapTransformer;
-import com.minimajack.v8.transformers.impl.StringTransformer;
-import com.minimajack.v8.transformers.impl.UUIDTransformer;
+public class V8Reader {
 
-public class V8Reader
-{
+    final static Logger logger = LoggerFactory.getLogger( V8Reader.class );
 
     private static final byte SPACE = 0x20;
 
@@ -35,76 +24,99 @@ public class V8Reader
 
     private static final Map<Class<?>, AbstractTransformer<?>> TRANSFORMERS = new HashMap<>();
 
-    private static final Map<Class<?>, AbstractEnumTransformer<?>> ENUM_TRANSFORMERS = new HashMap<>();
-
-    private static final Map<Class<?>, AbstractArraysTransformer<?>> ARRAYS_TRANSFORMERS = new HashMap<>();
+    private static final Map<Class<?>, AbstractParametrizedTransformer<?>> PARAMETERIZED_TRANSFORMERS = new HashMap<>();
 
     private static final Map<Class<?>, AbstractClassTransformer<?>> CLASS_TRANSFORMERS = new HashMap<>();
 
-    public static <T> T read( Class<? extends T> clazz, ByteBuffer buffer )
-    {
-        return read( clazz, null, buffer );
+    public static <T> T read(Class<? extends T> clazz, ByteBuffer buffer) {
+        return read(clazz, null, buffer);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T read( Class<T> clazz, Type type, ByteBuffer buffer )
-    {
-        if ( TRANSFORMERS.containsKey( clazz ) )
-        {
-            if ( type instanceof ParameterizedType )
-            {
-                return (T) TRANSFORMERS.get( clazz ).read( (ParameterizedType) type, buffer );
+    public static <T> T read(Class<T> clazz, Type type, ByteBuffer buffer) {
+        logger.debug("Read class {}", clazz.getName());
+        T res = null;
+        if (TRANSFORMERS.containsKey(clazz)) {
+            if (type instanceof ParameterizedType) {
+               throw new RuntimeException("Must not be here");
+            } else {
+                res = (T) TRANSFORMERS.get(clazz).read(buffer);
             }
-            else
-            {
-                return (T) TRANSFORMERS.get( clazz ).read( null, buffer );
+        } else if(PARAMETERIZED_TRANSFORMERS.containsKey(clazz)){
+            if (PARAMETERIZED_TRANSFORMERS.containsKey(clazz)) {
+                if (type instanceof ParameterizedType) {
+                    res = (T) PARAMETERIZED_TRANSFORMERS.get(clazz).read((ParameterizedType) type, buffer);
+                } else {
+                    throw new RuntimeException("Must not be here");
+                }
             }
         }
-        if ( clazz.isEnum() )
-        {
-            return (T) ENUM_TRANSFORMERS.get( Enum.class ).read( clazz, buffer );
+        else if (clazz.isEnum()) {
+            res = (T) CLASS_TRANSFORMERS.get(Enum.class).read(clazz, buffer);
+        } else if (clazz.isArray()) {
+            res = (T) CLASS_TRANSFORMERS.get(Arrays.class).read(clazz, buffer);
+        } else {
+            res = (T) CLASS_TRANSFORMERS.get(Object.class).read(clazz, buffer);
         }
-        if ( clazz.isArray() )
-        {
-            return (T) ARRAYS_TRANSFORMERS.get( Arrays.class ).read( clazz, buffer );
+        logger.debug("End read class {}", clazz.getName());
+        return res;
+
+    }
+
+
+    public static void write(Object object, SerializedOutputStream buffer) {
+       write(object, null, buffer);
+    }
+    public static void write(Object object, Type type, SerializedOutputStream buffer) {
+        Class<?> clazz = object.getClass();
+        if (TRANSFORMERS.containsKey(clazz)) {
+            TRANSFORMERS.get(clazz).write(object, buffer);
+        }  else if(PARAMETERIZED_TRANSFORMERS.containsKey(clazz)){
+             PARAMETERIZED_TRANSFORMERS.get(clazz).write(object, buffer);
+        }else if (clazz.isEnum()) {
+            CLASS_TRANSFORMERS.get(Enum.class).write(object, buffer);
+        } else if (clazz.isArray()) {
+            CLASS_TRANSFORMERS.get(Arrays.class).write(object, buffer);
+        } else {
+            CLASS_TRANSFORMERS.get(Object.class).write(object, buffer);
         }
-        return (T) CLASS_TRANSFORMERS.get( Object.class ).read( clazz, buffer );
     }
 
-    public static final void init()
-    {
-        TRANSFORMERS.put( String.class, new StringTransformer() );
-        TRANSFORMERS.put( Integer.class, new IntegerTransformer() );
-        TRANSFORMERS.put( List.class, new ListTransformer() );
-        TRANSFORMERS.put( Map.class, new MapTransformer() );
-        TRANSFORMERS.put( UUID.class, new UUIDTransformer() );
-        TRANSFORMERS.put( Boolean.class, new BooleanTransformer() );
-        TRANSFORMERS.put( AnyData.class, new AnyDataTransformer() );
+    public static void init() {
+        TRANSFORMERS.put(String.class, new StringTransformer());
+        TRANSFORMERS.put(Integer.class, new IntegerTransformer());
+        TRANSFORMERS.put(UUID.class, new UUIDTransformer());
+        TRANSFORMERS.put(Boolean.class, new BooleanTransformer());
+        TRANSFORMERS.put(AnyData.class, new AnyDataTransformer());
 
-        CLASS_TRANSFORMERS.put( Object.class, new ClassTransformer() );
-        ENUM_TRANSFORMERS.put( Enum.class, new EnumsTransformer() );
-        ARRAYS_TRANSFORMERS.put( Arrays.class, new ArraysTransformer() );
+        PARAMETERIZED_TRANSFORMERS.put(List.class, new ListTransformer());
+        PARAMETERIZED_TRANSFORMERS.put(LinkedList.class, new ListTransformer());
+
+        PARAMETERIZED_TRANSFORMERS.put(Map.class, new MapTransformer());
+        PARAMETERIZED_TRANSFORMERS.put(LinkedHashMap.class, new MapTransformer());
+
+        CLASS_TRANSFORMERS.put(Object.class, new ObjectTransformer());
+        CLASS_TRANSFORMERS.put(Enum.class, new EnumsTransformer());
+        CLASS_TRANSFORMERS.put(Arrays.class, new ArraysTransformer());
     }
 
-    public static void registerTransformer( Class<?> clazz, AbstractTransformer<?> transformer )
-    {
-        TRANSFORMERS.put( clazz, transformer );
+    public static void registerTransformer(Class<?> clazz, AbstractTransformer<?> transformer) {
+        TRANSFORMERS.put(clazz, transformer);
     }
 
-    public static void readChar( ByteBuffer buffer, char ch )
-    {
-        while ( buffer.hasRemaining() )
-        {
+    public static void registerParametrizedTransformer(Class<?> clazz, AbstractParametrizedTransformer<?> transformer) {
+        PARAMETERIZED_TRANSFORMERS.put(clazz, transformer);
+    }
+
+    public static void readChar(ByteBuffer buffer, char ch) {
+        while (buffer.hasRemaining()) {
             int value = buffer.get() & 0xFF;
 
-            if ( (char) value == ch )
-            {
+            if ((char) value == ch) {
                 break;
-            }
-            else if ( value != SPACE && value != CR && value != LF )
-            {
-                throw new RuntimeException( "Bad chars in buffer [" + String.valueOf(Character.toChars(value))  + "] must be: [" + ch + "]" + " position: "
-                    + ( buffer.position() - 1 ) );
+            } else if (value != SPACE && value != CR && value != LF) {
+                throw new RuntimeException("Bad chars in buffer [" + String.valueOf(Character.toChars(value)) + "] must be: [" + ch + "]" + " position: "
+                        + (buffer.position() - 1));
             }
         }
     }

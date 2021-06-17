@@ -1,9 +1,9 @@
 package com.minimajack.v8.transformers.impl.field;
 
+import com.minimajack.v8.annotation.V8Since;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-
-import com.minimajack.v8.annotation.V8Since;
 
 public class FieldInfo
 {
