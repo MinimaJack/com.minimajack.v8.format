@@ -23,25 +23,24 @@ public class ObjectTransformer
 {
     final Logger logger = LoggerFactory.getLogger( ObjectTransformer.class );
 
-    private static final Map<Class<?>, List<FieldInfo>> cacheFields = new HashMap<Class<?>, List<FieldInfo>>();
+    private static final Map<Class<?>, List<FieldInfo>> cacheFields = new HashMap<>();
 
-    private static final Map<Class<?>, Method> afterUnmarshalMethods = new HashMap<Class<?>, Method>();
+    private static final Map<Class<?>, Method> afterUnmarshalMethods = new HashMap<>();
 
-    private static final List<Class<?>> versionalClasses = new ArrayList<Class<?>>();
+    private static final List<Class<?>> versionalClasses = new ArrayList<>();
 
     @Override
     public Object read( Class<?> clazz, ByteBuffer buffer )
     {
         boolean isV8Class = clazz.getAnnotation( V8Class.class ) != null;
-        boolean isHasVersion = clazz.getAnnotation( V8Version.class ) != null;
         Object object;
         if ( isV8Class )
         {
-            return readV8Class( clazz, buffer, isHasVersion );
+            return readV8Class( clazz, buffer);
         }
         else
         {
-            object = readClass( clazz, buffer, isHasVersion );
+            object = readClass( clazz, buffer);
         }
 
         return object;
@@ -51,18 +50,17 @@ public class ObjectTransformer
     public void write(Object object, SerializedOutputStream buffer) {
         Class clazz = object.getClass();
         boolean isV8Class = clazz.getAnnotation( V8Class.class ) != null;
-        boolean isHasVersion = clazz.getAnnotation( V8Version.class ) != null;
         if ( isV8Class )
         {
-            writeV8Class( object, clazz, buffer, isHasVersion );
+            writeV8Class( object, clazz, buffer );
         }
         else
         {
-            writeClass( object, clazz, buffer, isHasVersion );
+            writeClass( object, clazz, buffer);
         }
     }
 
-    private void writeClass(Object object, Class clazz, SerializedOutputStream buffer, boolean isHasVersion) {
+    private void writeClass(Object object, Class clazz, SerializedOutputStream buffer) {
         {
             List<FieldInfo> fields = cacheFields.get( clazz );
             if ( fields == null )
@@ -118,22 +116,17 @@ public class ObjectTransformer
         }
     }
 
-    public void writeV8Class( Object object, Class<?> clazz, SerializedOutputStream buffer, boolean versional )
+    public void writeV8Class( Object object, Class<?> clazz, SerializedOutputStream buffer)
     {
         buffer.putOpenBracket();
 
-        writeClass( object, clazz, buffer, versional );
+        writeClass( object, clazz, buffer );
 
         buffer.putCloseBracket();
 
     }
 
-    public Object readV8Class( Class<?> clazz, ByteBuffer buffer )
-    {
-        return readV8Class( clazz, buffer, false );
-    }
-
-    public Object readV8Class( Class<?> clazz, ByteBuffer buffer, boolean versional )
+    public Object readV8Class( Class<?> clazz, ByteBuffer buffer)
     {
         readBracket( buffer );
 
@@ -144,11 +137,6 @@ public class ObjectTransformer
         runAfterUnmarshal( clazz, object );
 
         return object;
-    }
-
-    public Object readClass( Class<?> clazz, ByteBuffer buffer )
-    {
-        return readClass( clazz, buffer, false );
     }
 
     public List<FieldInfo> processClass( Class<?> clazz )
@@ -163,7 +151,7 @@ public class ObjectTransformer
                 throw new RuntimeException( "bad version: " + clazz.getName() );
             }
         }
-        List<FieldInfo> lfi = new ArrayList<FieldInfo>();
+        List<FieldInfo> lfi = new ArrayList<>();
         for ( Field field : fields )
         {
             if ( field.getAnnotation( V8Transient.class ) != null )
@@ -202,7 +190,7 @@ public class ObjectTransformer
         return lfi;
     }
 
-    public Object readClass( Class<?> clazz, ByteBuffer buffer, boolean versional )
+    public Object readClass( Class<?> clazz, ByteBuffer buffer )
     {
         Object object;
         try
@@ -237,8 +225,9 @@ public class ObjectTransformer
                         }
                     }
                 }
-                if ( field.required || buffer.get( buffer.position() ) != 0x7D
-                    && buffer.get( buffer.position() ) != 0x0D )
+                byte nextSymbol = buffer.get(buffer.position());
+                if ( field.required || nextSymbol != 0x7D
+                    && nextSymbol != 0x0D )
                 {
                     if ( !first )
                     {
@@ -253,9 +242,8 @@ public class ObjectTransformer
                 logger.debug( "Read field {} {}", field.name, fieldType );
                 Type paramType = field.paramType;
                 Object fieldValue = V8Reader.read( fieldType, paramType, buffer );
-                if ( field.isVersion )
+                if ( hasVersion && field.isVersion )
                 {
-                    hasVersion = true;
                     version = (Integer) fieldValue;
                 }
                 logger.debug( "VALUE: {} ", fieldValue );

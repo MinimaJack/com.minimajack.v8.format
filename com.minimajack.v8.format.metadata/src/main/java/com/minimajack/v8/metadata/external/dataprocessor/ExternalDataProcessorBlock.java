@@ -1,4 +1,4 @@
-package com.minimajack.v8.metadata.external;
+package com.minimajack.v8.metadata.external.dataprocessor;
 
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.metadata.inner.classes.V8ClassObject;
@@ -10,7 +10,7 @@ public class ExternalDataProcessorBlock {
 
   public Integer version;
 
-  public V8MetaDataSimpleDescription sd;
+  public ExternalDataProcessorDescription sd;
 
   public List<V8ClassObject> sections;
 

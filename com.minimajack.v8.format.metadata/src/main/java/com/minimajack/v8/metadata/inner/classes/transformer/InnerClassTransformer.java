@@ -42,6 +42,7 @@ import com.minimajack.v8.metadata.inner.classes.documentjournal.ColumnList;
 import com.minimajack.v8.metadata.inner.classes.enums.EnumList;
 import com.minimajack.v8.metadata.inner.classes.enums.StandartPeriod;
 import com.minimajack.v8.metadata.inner.classes.externaldataprocessor.ExternalDataProcessorMetaData;
+import com.minimajack.v8.metadata.inner.classes.externalreport.ExternalReportMetaData;
 import com.minimajack.v8.metadata.inner.classes.forms.FormList;
 import com.minimajack.v8.metadata.inner.classes.httpservice.HttpMethods;
 import com.minimajack.v8.metadata.inner.classes.httpservice.UrlTemplates;
@@ -229,6 +230,9 @@ public class InnerClassTransformer implements AbstractTransformer<V8InnerClass> 
 
     public static final UUID EXTERNAL_DATA_PROCESSOR = UUID
             .fromString("c3831ec8-d8d5-4f93-8a22-f9bfae07327f");
+
+    public static final UUID EXTERNAL_REPORT = UUID
+            .fromString("e41aff26-25cf-4bb6-b6c1-3f478a75f374");
 
     public static final UUID COMMON_CONFIGURATION_BLOCK = UUID
             .fromString("9cd510cd-abfc-11d4-9434-004095e12fc7");
@@ -587,6 +591,7 @@ public class InnerClassTransformer implements AbstractTransformer<V8InnerClass> 
         classbyUUID.put(BUSINESS_PROCESSES_SECTION, BusinessProcesses.class);
         classbyUUID.put(EXTERNAL_DATA_SOURCES_SECTION, ExternalDataSources.class);
         classbyUUID.put(EXTERNAL_DATA_PROCESSOR, ExternalDataProcessorMetaData.class);
+        classbyUUID.put(EXTERNAL_REPORT, ExternalReportMetaData.class);
         classbyUUID.put(COMMON_CONFIGURATION_BLOCK, CommonConfiguraionMetaData.class);
         classbyUUID.put(MAIN_CONFIGURATION_BLOCK, MainConfiguraionMetaData.class);
         classbyUUID.put(ACCOUNTING_CONFIGURATION_BLOCK, AccountingConfiguraionMetaData.class);

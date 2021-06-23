@@ -28,7 +28,7 @@ public class MetadataMainInfo {
   @V8Since(version = 1)
   public List<UnkUuidInt> und2;
 
-  @V8Since(version = 3)
+  @V8Since(version = 2)
   public UUID und3;
 
   @V8Since(version = 3)
