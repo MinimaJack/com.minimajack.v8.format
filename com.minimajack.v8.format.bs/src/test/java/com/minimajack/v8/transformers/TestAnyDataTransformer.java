@@ -1,14 +1,15 @@
 package com.minimajack.v8.transformers;
 
-import java.nio.ByteBuffer;
-
+import com.minimajack.v8.transformers.impl.AnyDataTransformer;
+import com.minimajack.v8.utility.AnyData;
+import com.minimajack.v8.utility.SerializedOutputStream;
+import com.minimajack.v8.utility.V8Reader;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.nio.ByteBuffer;
 
-import com.minimajack.v8.transformers.impl.AnyDataTransformer;
-import com.minimajack.v8.utility.AnyData;
+import static org.junit.Assert.assertEquals;
 
 public class TestAnyDataTransformer
 {
@@ -18,6 +19,7 @@ public class TestAnyDataTransformer
     public static void init()
     {
         transformer = new AnyDataTransformer();
+        V8Reader.init();
     }
 
     @Test
@@ -28,6 +30,16 @@ public class TestAnyDataTransformer
         data = transformer.read( ByteBuffer.wrap( "1234,56".getBytes() ) );
         assertEquals( new AnyData( "1234" ), data );
     }
+
+    @Test
+    public void simpleDataWrite()
+    {
+        AnyData data = new AnyData("123456");
+        SerializedOutputStream baos = new SerializedOutputStream();
+        transformer.write( data,  baos);
+        assertEquals("123456", baos.toString());
+    }
+
 
     @Test
     public void simpleDataMultiLine()
@@ -49,5 +61,14 @@ public class TestAnyDataTransformer
     {
         AnyData data = transformer.read( ByteBuffer.wrap( "{".getBytes() ) );
         assertEquals( new AnyData( "" ), data );
+    }
+
+    @Test
+    public void zeroDataWrite()
+    {
+        AnyData data = new AnyData("");
+        SerializedOutputStream baos = new SerializedOutputStream();
+        transformer.write( data,  baos);
+        assertEquals("", baos.toString());
     }
 }

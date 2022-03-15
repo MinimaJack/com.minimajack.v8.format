@@ -3,21 +3,11 @@ package com.minimajack.v8.metadata.documents;
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.unknown.CompactFlags;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
-import com.minimajack.v8.metadata.inner.enums.ChoiceHistoryOnInput;
-import com.minimajack.v8.metadata.inner.enums.CodeAllowedLength;
-import com.minimajack.v8.metadata.inner.enums.CodeType;
-import com.minimajack.v8.metadata.inner.enums.CreateOnInput;
-import com.minimajack.v8.metadata.inner.enums.DataLockControlMode;
-import com.minimajack.v8.metadata.inner.enums.DocumentNumberPeriodicity;
-import com.minimajack.v8.metadata.inner.enums.FullTextSearch;
-import com.minimajack.v8.metadata.inner.enums.Posting;
-import com.minimajack.v8.metadata.inner.enums.RealTimePosting;
-import com.minimajack.v8.metadata.inner.enums.RegisterRecordsDeletion;
-import com.minimajack.v8.metadata.inner.enums.RegisterRecordsWritingOnPost;
-import com.minimajack.v8.metadata.inner.enums.SequenceFilling;
+import com.minimajack.v8.metadata.inner.enums.*;
 import com.minimajack.v8.metadata.persist.CharacteristicsDescriptions;
 import com.minimajack.v8.metadata.persist.FieldList;
 import com.minimajack.v8.metadata.persist.StandardAttributeDescriptions;
@@ -37,7 +27,7 @@ public class DocumentDescriptionBlock {
   public UUID unk6;
   public UUID unk7;
   public UUID unk8;
-  public DocumentMetaData dmd;
+  public MetaDataInfo dmd;
   public UUID numerator;
   public CodeType.Values codeType;
   public Integer codeLength;
@@ -72,7 +62,7 @@ public class DocumentDescriptionBlock {
   public V8Synonym extendedListPresentation;
   public V8Synonym explanation;
   public RegisterRecordsWritingOnPost.Values registerRecordsWritingOnPost;
-  public CodeAllowedLength.Values codeAllowedLength;
+  public AllowedLength.Values codeAllowedLength;
   @V8Since(version = 34)
   public CharacteristicsDescriptions characteristics;
   @V8Since(version = 35)

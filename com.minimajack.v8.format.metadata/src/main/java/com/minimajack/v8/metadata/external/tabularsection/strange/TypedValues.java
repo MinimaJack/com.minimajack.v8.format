@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class TypedValues {
 
-  public UUID unk1;
+  public UUID TypedValues_unk1;
 
   public TypeValue type;
 }

@@ -1,14 +1,15 @@
 package com.minimajack.v8.transformers;
 
-import java.nio.ByteBuffer;
-
+import com.minimajack.v8.transformers.impl.ArraysTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
+import com.minimajack.v8.utility.V8Reader;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.nio.ByteBuffer;
 
-import com.minimajack.v8.transformers.impl.ArraysTransformer;
-import com.minimajack.v8.utility.V8Reader;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class TestArraysTransformer
 {
@@ -40,4 +41,25 @@ public class TestArraysTransformer
         assertArrayEquals( valid, data );
     }
 
+    @Test
+    public void simpleStringArrayWrite()
+    {
+        String[] valid = { "zero", "one", "two" };
+        SerializedOutputStream baos = new SerializedOutputStream();
+
+        transformer.write(valid, baos );
+
+        assertEquals( "\"zero\",\"one\",\"two\"", baos.toString() );
+
+    }
+    @Test
+    public void simpleStringArrayWriteReader()
+    {
+        String[] valid = { "zero", "one", "two" };
+        SerializedOutputStream baos = new SerializedOutputStream();
+
+        baos = new SerializedOutputStream();
+        V8Reader.write(valid, baos);
+        assertEquals( "\"zero\",\"one\",\"two\"", baos.toString() );
+    }
 }

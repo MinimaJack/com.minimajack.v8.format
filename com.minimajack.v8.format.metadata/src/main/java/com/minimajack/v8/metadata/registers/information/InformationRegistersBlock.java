@@ -4,11 +4,7 @@ import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Since;
 import com.minimajack.v8.annotation.V8Version;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
-import com.minimajack.v8.metadata.inner.enums.DataLockControlMode;
-import com.minimajack.v8.metadata.inner.enums.EditType;
-import com.minimajack.v8.metadata.inner.enums.FullTextSearch;
-import com.minimajack.v8.metadata.inner.enums.InformationRegisterPeriodicity;
-import com.minimajack.v8.metadata.inner.enums.RegisterWriteMode;
+import com.minimajack.v8.metadata.inner.enums.*;
 import com.minimajack.v8.metadata.persist.StandardAttributeDescriptions;
 
 import java.util.UUID;

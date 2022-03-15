@@ -1,15 +1,16 @@
 package com.minimajack.v8.transformers;
 
-import java.nio.ByteBuffer;
-import java.util.Map;
-
+import com.minimajack.v8.transformers.impl.MapTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
+import com.minimajack.v8.utility.V8Reader;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.nio.ByteBuffer;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import com.minimajack.v8.transformers.impl.MapTransformer;
-import com.minimajack.v8.utility.V8Reader;
+import static org.junit.Assert.assertEquals;
 
 public class TestMapTransformer
 {
@@ -32,4 +33,16 @@ public class TestMapTransformer
 
     }
 
+    @Test
+    public void simpleIntegerMapWrite()
+            throws SecurityException {
+        Map<Integer,Integer> map = new LinkedHashMap<>();
+        map.put(1,2);
+        map.put(3,1);
+        SerializedOutputStream baos = new SerializedOutputStream();
+        transformer.write(map, baos );
+
+        assertEquals("2,1,2,3,1", baos.toString());
+
+    }
 }

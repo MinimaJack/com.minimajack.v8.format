@@ -1,5 +1,6 @@
 package com.minimajack.v8.metadata.root;
 
+import com.minimajack.v8.annotation.Required;
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.utility.AnyData;
 
@@ -12,6 +13,7 @@ public class V8Root {
 
   public UUID guid;
 
+  @Required(required = false)
   public AnyData hash;
 
 }

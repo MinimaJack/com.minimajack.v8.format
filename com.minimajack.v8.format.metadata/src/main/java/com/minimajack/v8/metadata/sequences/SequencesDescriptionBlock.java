@@ -1,6 +1,7 @@
 package com.minimajack.v8.metadata.sequences;
 
 import com.minimajack.v8.annotation.V8Class;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
 
 import java.util.UUID;
@@ -15,7 +16,7 @@ public class SequencesDescriptionBlock {
   public UUID unk4;
   public UUID unk5;
   public UUID unk6;
-  public SequencesDescriptionBlockInfo sdbi;
+  public MetaDataInfo sdbi;
   public MetadataObjectPropertyValueCollection unk7;
   public MetadataObjectPropertyValueCollection unk8;
   public Integer unk9;

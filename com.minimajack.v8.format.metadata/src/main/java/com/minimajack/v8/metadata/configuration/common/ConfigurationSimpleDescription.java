@@ -2,7 +2,7 @@ package com.minimajack.v8.metadata.configuration.common;
 
 import com.minimajack.v8.annotation.Required;
 import com.minimajack.v8.annotation.V8Class;
-import com.minimajack.v8.metadata.external.common.V8MetaFullName;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.type.ListArrayTypes;
 import com.minimajack.v8.metadata.external.type.ListTypes;
@@ -16,7 +16,7 @@ public class ConfigurationSimpleDescription {
 
   public Integer type;
 
-  public V8MetaFullName name;
+  public MetaDataInfo name;
 
   public String unk1;
 

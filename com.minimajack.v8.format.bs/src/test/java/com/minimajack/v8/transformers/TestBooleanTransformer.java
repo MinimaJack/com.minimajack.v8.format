@@ -1,14 +1,14 @@
 package com.minimajack.v8.transformers;
 
-import java.nio.ByteBuffer;
-
+import com.minimajack.v8.transformers.impl.BooleanTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
+import com.minimajack.v8.utility.V8Reader;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.nio.ByteBuffer;
 
-import com.minimajack.v8.transformers.impl.BooleanTransformer;
-import com.minimajack.v8.utility.V8Reader;
+import static org.junit.Assert.assertEquals;
 
 public class TestBooleanTransformer
 {
@@ -28,6 +28,34 @@ public class TestBooleanTransformer
         Boolean data = transformer.read( ByteBuffer.wrap( "1".getBytes() ) );
 
         assertEquals( Boolean.TRUE, data );
+    }
+
+    @Test
+    public void simpleTrueWrite()
+    {
+
+        Boolean data = Boolean.TRUE;
+        SerializedOutputStream baos = new SerializedOutputStream();
+        transformer.write( data,  baos);
+        assertEquals("1", baos.toString());
+
+        baos = new SerializedOutputStream();
+        V8Reader.write( data,  baos);
+        assertEquals("1", baos.toString());
+
+    }
+    @Test
+    public void simpleFalseWrite()
+    {
+
+        Boolean data = Boolean.FALSE;
+        SerializedOutputStream baos = new SerializedOutputStream();
+        transformer.write( data,  baos);
+        assertEquals("0", baos.toString());
+
+        baos = new SerializedOutputStream();
+        V8Reader.write( data,  baos);
+        assertEquals("0", baos.toString());
     }
 
     @Test

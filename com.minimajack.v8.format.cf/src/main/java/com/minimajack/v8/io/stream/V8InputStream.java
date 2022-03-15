@@ -13,7 +13,7 @@ public class V8InputStream
 
     private BlockHeader currentHeader;
 
-    int fullSize = 0;
+    int fullSize;
 
     int position = 0;
 
@@ -34,9 +34,9 @@ public class V8InputStream
         this.fullSize = iph.getDocSize();
         this.docAvailable = this.fullSize;
         this.currentHeader = iph;
-        if ( this.fullSize == 0 )
+        if ( this.fullSize < 0 )
         {
-            throw new RuntimeException( "Zero size" );
+            throw new RuntimeException( "Negate size for document" );
         }
         updateBuffer();
     }
@@ -49,6 +49,9 @@ public class V8InputStream
             this.currentHeader.readHeader();
             this.blockAvailable = this.currentHeader.getBlockSize();
             this.tempBuffer = this.currentHeader.getRawData();
+            if(blockAvailable < 0 ){
+                throw new RuntimeException("Negate size for block ");
+            }
         }
         catch ( IOException e )
         {
@@ -58,7 +61,6 @@ public class V8InputStream
 
     @Override
     public synchronized void reset()
-        throws IOException
     {
         this.currentHeader.setPosition( this.rootPosition );
         updateBuffer();
@@ -124,17 +126,20 @@ public class V8InputStream
             }
         }
         int readed = Math.min( this.blockAvailable, len );
-        int maxAvailable = Math.min( this.docAvailable, readed );
+        int length = Math.min( this.docAvailable, readed );
+
         if ( readExact )
         {
-            readed = maxAvailable;
+            readed = length;
         }
-        System.arraycopy( tempBuffer, this.position, b, off, Math.min( this.docAvailable, readed ) );
+
+        System.arraycopy( tempBuffer, this.position, b, off, length );
+
         this.position += readed;
         this.docAvailable -= readed;
         this.blockAvailable -= readed;
-        if ( readExact && this.docAvailable == 0 )
-        {
+
+        if(this.docAvailable <= 0) {
             EOF = true;
         }
         return readed;
@@ -142,7 +147,6 @@ public class V8InputStream
 
     @Override
     public int available()
-        throws IOException
     {
         return this.docAvailable;
     }

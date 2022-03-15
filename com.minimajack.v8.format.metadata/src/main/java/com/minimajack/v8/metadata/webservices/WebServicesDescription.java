@@ -10,7 +10,7 @@ public class WebServicesDescription {
 
   public Integer version;
 
-  public WebServicesDescriptionBlock v8mn;
+  public WebServicesDescriptionBlock info;
 
   public List<V8ClassObject> sections;
 }

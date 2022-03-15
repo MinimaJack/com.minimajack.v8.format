@@ -2,6 +2,7 @@ package com.minimajack.v8.metadata.documentjournals;
 
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Version;
+import com.minimajack.v8.metadata.external.common.MetaDataInfo;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
 import com.minimajack.v8.metadata.external.unknown.MetadataObjectPropertyValueCollection;
 import com.minimajack.v8.metadata.persist.StandardAttributeDescriptions;
@@ -15,7 +16,7 @@ public class DocumentJournalsDescriptionBlock {
   public Integer version;
   public UUID unk1;
   public UUID unk2;
-  public DocumentJournalsMetaData dmd;
+  public MetaDataInfo dmd;
   public UUID defaultForm;
   public Boolean useStandardCommands;
   public MetadataObjectPropertyValueCollection registeredDocuments;

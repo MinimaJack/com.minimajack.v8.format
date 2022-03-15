@@ -10,7 +10,7 @@ public class XDTOPackagesDescription {
 
   public Integer version;
 
-  public XDTOPackagesDescriptionBlock v8mn;
+  public XDTOPackagesDescriptionBlock info;
 
   public List<V8ClassObject> sections;
 }

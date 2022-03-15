@@ -10,7 +10,7 @@ public class TaskDescription {
 
   public Integer version;
 
-  public TaskDescriptionBlock v8mn;
+  public TaskDescriptionBlock info;
 
   public List<V8ClassObject> sections;
 }

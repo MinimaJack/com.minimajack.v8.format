@@ -1,15 +1,17 @@
 package com.minimajack.v8.transformers.impl;
 
-import java.lang.reflect.ParameterizedType;
-import java.nio.ByteBuffer;
 import com.minimajack.v8.transformers.AbstractTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public class IntegerTransformer
-    extends AbstractTransformer<Integer>
+    implements AbstractTransformer<Integer>
 {
 
     @Override
-    public Integer read( ParameterizedType type, ByteBuffer buffer )
+    public Integer read( ByteBuffer buffer )
     {
 
         StringBuilder sb = new StringBuilder();
@@ -34,6 +36,12 @@ public class IntegerTransformer
         }
 
         return Long.valueOf( sb.toString() ).intValue();
+    }
+
+    @Override
+    public void write(Object object, SerializedOutputStream buffer) {
+
+        buffer.writeBytes(String.valueOf(object).getBytes(StandardCharsets.UTF_8));
     }
 
 }

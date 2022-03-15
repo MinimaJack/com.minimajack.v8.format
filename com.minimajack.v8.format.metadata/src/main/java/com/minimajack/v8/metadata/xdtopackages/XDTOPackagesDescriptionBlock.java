@@ -10,5 +10,5 @@ public class XDTOPackagesDescriptionBlock {
   @V8Version
   public Integer version;
   public MetadataMainInfo v8mn;
-  public String uriNameSpace;
+  public String namespace;
 }

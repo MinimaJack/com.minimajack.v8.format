@@ -1,16 +1,17 @@
 package com.minimajack.v8.transformers.impl;
 
+import com.minimajack.v8.transformers.AbstractParametrizedTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
+import com.minimajack.v8.utility.V8Reader;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.minimajack.v8.transformers.AbstractTransformer;
-import com.minimajack.v8.utility.V8Reader;
-
 public class ListTransformer
-    extends AbstractTransformer<List<?>>
+    implements AbstractParametrizedTransformer<List<?>>
 {
 
     @Override
@@ -19,6 +20,18 @@ public class ListTransformer
         Type[] types = type.getActualTypeArguments();
         Class<?> firstClass = (Class<?>) types[0];
         return this.read( firstClass, buffer );
+    }
+
+    @Override
+    public void write(Object object, SerializedOutputStream buffer) {
+        List<Object> list = (List<Object>)object;
+        Integer count = list.size();
+        V8Reader.write(count, buffer);
+        for( Object element : list ){
+            buffer.putComa( );
+            V8Reader.write( element, buffer );
+        }
+
     }
 
     public List<?> read( Class<?> clazz, ByteBuffer buffer )

@@ -1,26 +1,25 @@
 package com.minimajack.v8.transformers.impl;
 
-import java.nio.ByteBuffer;
-import com.minimajack.v8.annotation.Enumerated;
-import com.minimajack.v8.transformers.AbstractEnumTransformer;
+import com.minimajack.v8.transformers.AbstractClassTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
 import com.minimajack.v8.utility.V8Reader;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
 public class EnumsTransformer
-    extends AbstractEnumTransformer<Enum<?>>
+    extends AbstractClassTransformer<Enum<?>>
 {
 
     @Override
     public Enum<?> read( Class<?> clazz, ByteBuffer buffer )
     {
-        Enumerated enums = clazz.getAnnotation( Enumerated.class );
-        if ( enums != null && !enums.ordinal() )
-        {
-            return readEnumByName( clazz, buffer );
-        }
-        else
-        {
-            return (Enum<?>) readEnumOrdinal( clazz, buffer );
-        }
+        return (Enum<?>) readEnumOrdinal( clazz, buffer );
+    }
+
+    @Override
+    public void write(Object object, SerializedOutputStream buffer) {
+        this.write((Enum<?>) object, buffer);
     }
 
     public static <T> T readEnumOrdinal( Class<T> clazz, ByteBuffer buffer )
@@ -29,14 +28,10 @@ public class EnumsTransformer
         return clazz.getEnumConstants()[value];
     }
 
-    @SuppressWarnings( { "unchecked", "rawtypes" } )
-    public static <T> T readEnumByName( Class clazz, ByteBuffer buffer )
-    {
-        String value = V8Reader.read( String.class, buffer );
-        if ( value.equals( "#" ) )
-        {
-            value = "L";
-        }
-        return (T) Enum.valueOf( clazz, value.trim().toUpperCase() );
+    public void write(Enum<?> object, SerializedOutputStream buffer ){
+
+        buffer.writeBytes(String.valueOf(object.ordinal()).getBytes(StandardCharsets.UTF_8));
+
     }
+
 }

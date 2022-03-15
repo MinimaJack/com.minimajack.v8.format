@@ -1,14 +1,12 @@
 package com.minimajack.v8.transformers;
 
-import java.lang.reflect.ParameterizedType;
+import com.minimajack.v8.utility.SerializedOutputStream;
+
 import java.nio.ByteBuffer;
 
-public abstract class AbstractTransformer<T>
+public interface AbstractTransformer<T>
 {
-    public abstract T read( ParameterizedType type, ByteBuffer buffer );
+    T read( ByteBuffer buffer );
 
-    public T read( ByteBuffer buffer )
-    {
-        return this.read( null, buffer );
-    }
+    void write(Object object, SerializedOutputStream buffer );
 }

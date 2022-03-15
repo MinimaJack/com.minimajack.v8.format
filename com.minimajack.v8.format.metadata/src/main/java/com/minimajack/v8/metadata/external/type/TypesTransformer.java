@@ -1,64 +1,92 @@
 package com.minimajack.v8.metadata.external.type;
 
-import com.minimajack.v8.metadata.external.type.impl.BooleanType;
-import com.minimajack.v8.metadata.external.type.impl.DateType;
-import com.minimajack.v8.metadata.external.type.impl.InnerClassTypeValue;
-import com.minimajack.v8.metadata.external.type.impl.NumberType;
-import com.minimajack.v8.metadata.external.type.impl.StringType;
-import com.minimajack.v8.metadata.external.type.impl.UndefinedType;
+import com.minimajack.v8.metadata.external.type.impl.*;
 import com.minimajack.v8.metadata.inner.classes.V8InnerClass;
-import com.minimajack.v8.metadata.inner.enums.V8Type;
 import com.minimajack.v8.transformers.AbstractTransformer;
-import com.minimajack.v8.transformers.impl.ClassTransformer;
+import com.minimajack.v8.transformers.impl.ObjectTransformer;
+import com.minimajack.v8.utility.SerializedOutputStream;
 import com.minimajack.v8.utility.V8Reader;
 
-import java.lang.reflect.ParameterizedType;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
-public class TypesTransformer extends AbstractTransformer<TypeValue> {
+public class TypesTransformer implements AbstractTransformer<TypeValue> {
 
   @Override
-  public TypeValue read(final ParameterizedType type, final ByteBuffer buffer) {
-    TypeValue readedType = null;
-    ClassTransformer.readBracket(buffer);
-    final V8Type enums = V8Reader.read(V8Type.class, buffer);
+  public TypeValue read(final ByteBuffer buffer) {
+    TypeValue readedType = new TypeValue();
+    ObjectTransformer.readBracket(buffer);
+    final String enums = V8Reader.read(String.class, buffer);
     switch (enums) {
-      case S: {
+      case "S": {
         V8Reader.readChar(buffer, ',');
-        readedType = V8Reader.read(StringType.class, buffer);
+        readedType.setValue( V8Reader.read(StringType.class, buffer));
         break;
       }
-      case L: {
+      case "#": {
         V8Reader.readChar(buffer, ',');
         final InnerClassTypeValue classValue = new InnerClassTypeValue();
-        classValue.value = V8Reader.read(V8InnerClass.class, buffer);
-        readedType = classValue;
+        classValue.setValue(V8Reader.read(V8InnerClass.class, buffer));
+        readedType.setValue(classValue);
         break;
       }
-      case B: {
+      case "B": {
         V8Reader.readChar(buffer, ',');
-        readedType = V8Reader.read(BooleanType.class, buffer);
+        readedType.setValue(V8Reader.read(BooleanType.class, buffer));
         break;
       }
-      case U: {
-        readedType = V8Reader.read(UndefinedType.class, buffer);
+      case "U": {
+        readedType.setValue(V8Reader.read(UndefinedType.class, buffer));
         break;
       }
-      case D: {
+      case "D": {
         V8Reader.readChar(buffer, ',');
-        readedType = V8Reader.read(DateType.class, buffer);
+        readedType.setValue(V8Reader.read(DateType.class, buffer));
         break;
       }
-      case N: {
+      case "N": {
         V8Reader.readChar(buffer, ',');
-        readedType = V8Reader.read(NumberType.class, buffer);
+        readedType.setValue(V8Reader.read(NumberType.class, buffer));
         break;
       }
-      default:
-        throw new RuntimeException("Unknown type: " + enums);
+      case "T":
+        throw new RuntimeException("Unsupported type: " + enums);
     }
-    ClassTransformer.readCloseBracket(buffer);
+    ObjectTransformer.readCloseBracket(buffer);
     return readedType;
+  }
+
+  @Override
+  public void write(Object object, SerializedOutputStream buffer) {
+    buffer.putOpenBracket();
+    var innerValue = ((TypeValue)object).getValue();
+    Class<?> clazz = innerValue.getClass();
+    if (innerValue instanceof StringType){
+      buffer.writeBytes("\"S\"".getBytes(StandardCharsets.UTF_8));
+    } else if(innerValue instanceof InnerClassTypeValue){
+      buffer.writeBytes("\"#\"".getBytes(StandardCharsets.UTF_8));
+    } else if(innerValue instanceof BooleanType){
+      buffer.writeBytes("\"B\"".getBytes(StandardCharsets.UTF_8));
+    } else if(innerValue instanceof UndefinedType){
+      buffer.writeBytes("\"U\"".getBytes(StandardCharsets.UTF_8));
+    } else if(innerValue instanceof DateType){
+      buffer.writeBytes("\"D\"".getBytes(StandardCharsets.UTF_8));
+    } else if(innerValue instanceof NumberType){
+      buffer.writeBytes("\"N\"".getBytes(StandardCharsets.UTF_8));
+    } else{
+      throw new RuntimeException("Unsupported type: " + innerValue.getClass());
+    }
+
+    if(!(innerValue instanceof UndefinedType)){
+      buffer.putComa();
+      if(innerValue instanceof  InnerClassTypeValue){
+        var rawInnerValue = ((InnerClassTypeValue)innerValue).getValue();
+        V8Reader.write(rawInnerValue, buffer);
+      }else {
+        V8Reader.write(innerValue, buffer);
+      }
+    }
+    buffer.putCloseBracket();
   }
 
 }

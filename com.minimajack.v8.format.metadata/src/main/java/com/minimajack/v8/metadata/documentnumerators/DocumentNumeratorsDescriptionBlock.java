@@ -3,7 +3,7 @@ package com.minimajack.v8.metadata.documentnumerators;
 import com.minimajack.v8.annotation.V8Class;
 import com.minimajack.v8.annotation.V8Version;
 import com.minimajack.v8.metadata.external.common.MetadataMainInfo;
-import com.minimajack.v8.metadata.inner.enums.CodeAllowedLength;
+import com.minimajack.v8.metadata.inner.enums.AllowedLength;
 import com.minimajack.v8.metadata.inner.enums.CodeType;
 import com.minimajack.v8.metadata.inner.enums.DocumentNumberPeriodicity;
 
@@ -17,5 +17,5 @@ public class DocumentNumeratorsDescriptionBlock {
   public Integer codeLength;
   public DocumentNumberPeriodicity.Values numberPeriodicity;
   public Boolean checkUnique;
-  public CodeAllowedLength.Values codeAllowedLength;
+  public AllowedLength.Values codeAllowedLength;
 }

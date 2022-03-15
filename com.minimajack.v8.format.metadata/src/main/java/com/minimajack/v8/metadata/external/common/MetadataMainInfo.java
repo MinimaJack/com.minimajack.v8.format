@@ -6,6 +6,7 @@ import com.minimajack.v8.annotation.V8Version;
 import com.minimajack.v8.metadata.external.unknown.UnkUuidInt;
 
 import java.util.List;
+import java.util.UUID;
 
 @V8Class
 public class MetadataMainInfo {
@@ -26,5 +27,11 @@ public class MetadataMainInfo {
 
   @V8Since(version = 1)
   public List<UnkUuidInt> und2;
+
+  @V8Since(version = 2)
+  public UUID und3;
+
+  @V8Since(version = 3)
+  public Integer und4;
 
 }

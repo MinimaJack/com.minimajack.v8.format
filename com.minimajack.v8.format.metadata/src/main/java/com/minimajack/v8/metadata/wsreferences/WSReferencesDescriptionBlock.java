@@ -11,7 +11,7 @@ public class WSReferencesDescriptionBlock {
 
   @V8Version
   public Integer version;
-  public WSUrl wsurl;
+  public LocationURL locationURL;
   public MetadataMainInfo v8mn;
   public UUID unk1;
   public UUID unk2;

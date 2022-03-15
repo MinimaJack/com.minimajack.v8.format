@@ -14,7 +14,7 @@ public class StrObj2 {
 
   public TypeLink unk3;
 
-  public UUID unk4;
+  public UUID StrObj2_unk4;
 
   public StrObj3 unk5;
 }
