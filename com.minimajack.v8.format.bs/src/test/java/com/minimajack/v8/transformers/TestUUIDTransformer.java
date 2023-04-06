@@ -31,6 +31,17 @@ public class TestUUIDTransformer
         assertEquals( UUID.fromString( "2bcef0d1-0981-11d6-b9b8-0050bae0a95d" ), data );
     }
 
+    @Test
+    public void sameZeroData()
+    {
+        UUID data = transformer.read( ByteBuffer.wrap( "00000000-0000-0000-0000-000000000000".getBytes() ) );
+        UUID data2 = transformer.read( ByteBuffer.wrap( "00000000-0000-0000-0000-000000000000".getBytes() ) );
+        assertEquals(data,data2);
+        assertEquals(UUIDTransformer.ZERO_UUID, data);
+        assertEquals(UUIDTransformer.ZERO_UUID, data2);
+    }
+
+
     @Test(expected = NotValidUUID.class)
     public void badData()
     {

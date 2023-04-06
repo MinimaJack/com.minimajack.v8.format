@@ -1,9 +1,9 @@
 package com.minimajack.v8.io.stream;
 
+import com.minimajack.v8.format.BlockHeader;
+
 import java.io.IOException;
 import java.io.InputStream;
-
-import com.minimajack.v8.format.BlockHeader;
 
 public class V8InputStream
     extends InputStream

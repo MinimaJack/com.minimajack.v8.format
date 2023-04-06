@@ -1,10 +1,10 @@
 package com.minimajack.v8.format;
 
+import com.minimajack.v8.model.BufferedObject;
+
 import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-
-import com.minimajack.v8.model.BufferedObject;
 
 public class V8File
     extends BufferedObject

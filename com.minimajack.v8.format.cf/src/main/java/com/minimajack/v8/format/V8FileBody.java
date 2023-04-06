@@ -1,14 +1,14 @@
 package com.minimajack.v8.format;
 
+import com.minimajack.v8.io.stream.V8InputStream;
+import com.minimajack.v8.utils.V8StreamUtils;
+
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
-
-import com.minimajack.v8.io.stream.V8InputStream;
-import com.minimajack.v8.utils.V8StreamUtils;
 
 public class V8FileBody
     extends BlockHeader

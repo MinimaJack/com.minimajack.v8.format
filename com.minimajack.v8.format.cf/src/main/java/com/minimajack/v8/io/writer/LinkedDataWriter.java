@@ -1,10 +1,10 @@
 package com.minimajack.v8.io.writer;
 
+import com.minimajack.v8.model.BufferedObject;
+
 import java.io.IOException;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
-
-import com.minimajack.v8.model.BufferedObject;
 
 public abstract class LinkedDataWriter
     extends ChunkWriter

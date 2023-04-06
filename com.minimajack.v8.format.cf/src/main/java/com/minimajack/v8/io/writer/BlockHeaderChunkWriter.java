@@ -1,9 +1,9 @@
 package com.minimajack.v8.io.writer;
 
-import java.io.IOException;
-
 import com.minimajack.v8.format.BlockHeader;
 import com.minimajack.v8.io.metrix.ChunkSizeResolver;
+
+import java.io.IOException;
 
 public class BlockHeaderChunkWriter
     extends ChunkWriter
