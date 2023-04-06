@@ -1,0 +1,802 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package com.minimajack.v8.metadata.inner.classes.transformer;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import com.minimajack.v8.metadata.catalog.CharacteristicsDescription;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import com.minimajack.v8.metadata.external.PatternDescription;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import com.minimajack.v8.metadata.external.common.ChoiceParameterLinks;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import com.minimajack.v8.metadata.external.common.ChoiceParameters;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import com.minimajack.v8.metadata.external.common.MetaDataObjectLink;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import com.minimajack.v8.metadata.external.common.V8Synonym;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import com.minimajack.v8.metadata.external.unknown.LinkByType;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import com.minimajack.v8.metadata.external.unknown.UnkObjectIntNotReqUuid;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import com.minimajack.v8.metadata.external.unknown.UnkObjectIntUuidUuid;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import com.minimajack.v8.metadata.external.unknown.UnkObjectUuidInt;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import com.minimajack.v8.metadata.functionaloption.FunctionalOptionContentItem;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import com.minimajack.v8.metadata.inner.classes.V8InnerClass;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import com.minimajack.v8.metadata.inner.classes.attributes.*;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import com.minimajack.v8.metadata.inner.classes.attributes.accounting.AccountingResourceList;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import com.minimajack.v8.metadata.inner.classes.attributes.calculation.CalculationAttributesList;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import com.minimajack.v8.metadata.inner.classes.attributes.calculation.CalculationDimensionList;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import com.minimajack.v8.metadata.inner.classes.attributes.calculation.CalculationResourceList;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import com.minimajack.v8.metadata.inner.classes.attributes.charts.accounting.extdimention.ExtDimensionAccountingFlags;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import com.minimajack.v8.metadata.inner.classes.attributes.charts.accounting.flag.AccountingFlags;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import com.minimajack.v8.metadata.inner.classes.attributes.charts.characteristics.ChartsOfCharacteristicTypesAttributesList;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import com.minimajack.v8.metadata.inner.classes.attributes.information.InformationDimensionList;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import com.minimajack.v8.metadata.inner.classes.attributes.information.InformationResourceList;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import com.minimajack.v8.metadata.inner.classes.collection.FixedArray;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import com.minimajack.v8.metadata.inner.classes.commands.CommandList;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import com.minimajack.v8.metadata.inner.classes.commands.CommandListMetaDataObject;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import com.minimajack.v8.metadata.inner.classes.configuration.accounting.AccountingConfiguraionMetaData;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import com.minimajack.v8.metadata.inner.classes.configuration.accounting.AccountingRegisters;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import com.minimajack.v8.metadata.inner.classes.configuration.accounting.ChartsOfAccounts;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import com.minimajack.v8.metadata.inner.classes.configuration.businessprocesses.BusinessProcesses;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import com.minimajack.v8.metadata.inner.classes.configuration.businessprocesses.BusinessProcessesConfiguraionMetaData;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import com.minimajack.v8.metadata.inner.classes.configuration.businessprocesses.Tasks;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import com.minimajack.v8.metadata.inner.classes.configuration.calculation.CalculationConfiguraionMetaData;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import com.minimajack.v8.metadata.inner.classes.configuration.calculation.CalculationRegisters;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import com.minimajack.v8.metadata.inner.classes.configuration.calculation.ChartsOfCalculation;</a>
+<span class="sourceLineNo">037</span><a id="line.37">import com.minimajack.v8.metadata.inner.classes.configuration.common.*;</a>
+<span class="sourceLineNo">038</span><a id="line.38">import com.minimajack.v8.metadata.inner.classes.configuration.externaldatasources.ExternalDataSources;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import com.minimajack.v8.metadata.inner.classes.configuration.externaldatasources.ExternalDataSourcesConfiguraionMetaData;</a>
+<span class="sourceLineNo">040</span><a id="line.40">import com.minimajack.v8.metadata.inner.classes.configuration.main.*;</a>
+<span class="sourceLineNo">041</span><a id="line.41">import com.minimajack.v8.metadata.inner.classes.documentjournal.ColumnList;</a>
+<span class="sourceLineNo">042</span><a id="line.42">import com.minimajack.v8.metadata.inner.classes.enums.EnumList;</a>
+<span class="sourceLineNo">043</span><a id="line.43">import com.minimajack.v8.metadata.inner.classes.enums.StandartPeriod;</a>
+<span class="sourceLineNo">044</span><a id="line.44">import com.minimajack.v8.metadata.inner.classes.externaldataprocessor.ExternalDataProcessorMetaData;</a>
+<span class="sourceLineNo">045</span><a id="line.45">import com.minimajack.v8.metadata.inner.classes.externalreport.ExternalReportMetaData;</a>
+<span class="sourceLineNo">046</span><a id="line.46">import com.minimajack.v8.metadata.inner.classes.forms.FormList;</a>
+<span class="sourceLineNo">047</span><a id="line.47">import com.minimajack.v8.metadata.inner.classes.httpservice.HttpMethods;</a>
+<span class="sourceLineNo">048</span><a id="line.48">import com.minimajack.v8.metadata.inner.classes.httpservice.UrlTemplates;</a>
+<span class="sourceLineNo">049</span><a id="line.49">import com.minimajack.v8.metadata.inner.classes.sequences.SequencesDataList;</a>
+<span class="sourceLineNo">050</span><a id="line.50">import com.minimajack.v8.metadata.inner.classes.style.border.Border;</a>
+<span class="sourceLineNo">051</span><a id="line.51">import com.minimajack.v8.metadata.inner.classes.style.color.Color;</a>
+<span class="sourceLineNo">052</span><a id="line.52">import com.minimajack.v8.metadata.inner.classes.style.font.Font;</a>
+<span class="sourceLineNo">053</span><a id="line.53">import com.minimajack.v8.metadata.inner.classes.tabular.TabularList;</a>
+<span class="sourceLineNo">054</span><a id="line.54">import com.minimajack.v8.metadata.inner.classes.template.TemplateList;</a>
+<span class="sourceLineNo">055</span><a id="line.55">import com.minimajack.v8.metadata.inner.classes.webservices.OperationParams;</a>
+<span class="sourceLineNo">056</span><a id="line.56">import com.minimajack.v8.metadata.inner.classes.webservices.WebServiceList;</a>
+<span class="sourceLineNo">057</span><a id="line.57">import com.minimajack.v8.metadata.inner.enums.*;</a>
+<span class="sourceLineNo">058</span><a id="line.58">import com.minimajack.v8.transformers.AbstractTransformer;</a>
+<span class="sourceLineNo">059</span><a id="line.59">import com.minimajack.v8.utility.SerializedOutputStream;</a>
+<span class="sourceLineNo">060</span><a id="line.60">import com.minimajack.v8.utility.V8Reader;</a>
+<span class="sourceLineNo">061</span><a id="line.61"></a>
+<span class="sourceLineNo">062</span><a id="line.62">import java.nio.ByteBuffer;</a>
+<span class="sourceLineNo">063</span><a id="line.63">import java.util.HashMap;</a>
+<span class="sourceLineNo">064</span><a id="line.64">import java.util.Map;</a>
+<span class="sourceLineNo">065</span><a id="line.65">import java.util.UUID;</a>
+<span class="sourceLineNo">066</span><a id="line.66"></a>
+<span class="sourceLineNo">067</span><a id="line.67">public class InnerClassTransformer implements AbstractTransformer&lt;V8InnerClass&gt; {</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">    public static final UUID FORMS_SECTION = UUID</a>
+<span class="sourceLineNo">070</span><a id="line.70">            .fromString("d5b0e5ed-256d-401c-9c36-f630cafd8a62");</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">    public static final UUID FORMS = UUID.fromString("fdf816d2-1ead-11d5-b975-0050bae0a95d");</a>
+<span class="sourceLineNo">073</span><a id="line.73"></a>
+<span class="sourceLineNo">074</span><a id="line.74">    public static final UUID TEMPLATE_SECTION = UUID</a>
+<span class="sourceLineNo">075</span><a id="line.75">            .fromString("3daea016-69b7-4ed4-9453-127911372fe6");</a>
+<span class="sourceLineNo">076</span><a id="line.76"></a>
+<span class="sourceLineNo">077</span><a id="line.77">    public static final UUID ATTRIBUTES_SECTION = UUID</a>
+<span class="sourceLineNo">078</span><a id="line.78">            .fromString("ec6bb5e5-b7a8-4d75-bec9-658107a699cf");</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">    public static final UUID TABULAR_ATTRIBUTES_SECTION = UUID</a>
+<span class="sourceLineNo">081</span><a id="line.81">            .fromString("888744e1-b616-11d4-9436-004095e12fc7");</a>
+<span class="sourceLineNo">082</span><a id="line.82"></a>
+<span class="sourceLineNo">083</span><a id="line.83">    public static final UUID DATAPROCESSOR_TABULAR_ATTRIBUTES_SECTION = UUID</a>
+<span class="sourceLineNo">084</span><a id="line.84">            .fromString("5d24a9d1-098e-11d6-b9b8-0050bae0a95d");</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">    public static final UUID REPORT_TABULAR_ATTRIBUTES_SECTION = UUID</a>
+<span class="sourceLineNo">087</span><a id="line.87">            .fromString("c339c860-29e2-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">    public static final UUID ATTRIBUTES = UUID.fromString("cf4abea7-37b2-11d4-940f-008048da11f9");</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">    public static final UUID TABULAR_SECTION = UUID</a>
+<span class="sourceLineNo">092</span><a id="line.92">            .fromString("2bcef0d1-0981-11d6-b9b8-0050bae0a95d");</a>
+<span class="sourceLineNo">093</span><a id="line.93"></a>
+<span class="sourceLineNo">094</span><a id="line.94">    public static final UUID TABULARS = UUID.fromString("932159f9-95b2-4e76-a8dd-8849fe5c5ded");</a>
+<span class="sourceLineNo">095</span><a id="line.95"></a>
+<span class="sourceLineNo">096</span><a id="line.96">    public static final UUID ROLE_SECTION = UUID</a>
+<span class="sourceLineNo">097</span><a id="line.97">            .fromString("09736b02-9cac-4e3f-b4f7-d3e9576ab948");</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">    public static final UUID COMMON_TEMPLATES_SECTION = UUID</a>
+<span class="sourceLineNo">100</span><a id="line.100">            .fromString("0c89c792-16c3-11d5-b96b-0050bae0a95d");</a>
+<span class="sourceLineNo">101</span><a id="line.101"></a>
+<span class="sourceLineNo">102</span><a id="line.102">    public static final UUID COMMON_MODULES_SECTION = UUID</a>
+<span class="sourceLineNo">103</span><a id="line.103">            .fromString("0fe48980-252d-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">104</span><a id="line.104"></a>
+<span class="sourceLineNo">105</span><a id="line.105">    public static final UUID SCHEDULED_JOBS_SECTION = UUID</a>
+<span class="sourceLineNo">106</span><a id="line.106">            .fromString("11bdaf85-d5ad-4d91-bb24-aa0eee139052");</a>
+<span class="sourceLineNo">107</span><a id="line.107"></a>
+<span class="sourceLineNo">108</span><a id="line.108">    public static final UUID COMMON_ATTRIBUTES_SECTION = UUID</a>
+<span class="sourceLineNo">109</span><a id="line.109">            .fromString("15794563-ccec-41f6-a83c-ec5f7b9a5bc1");</a>
+<span class="sourceLineNo">110</span><a id="line.110"></a>
+<span class="sourceLineNo">111</span><a id="line.111">    public static final UUID SESSION_PARAMS_SECTION = UUID</a>
+<span class="sourceLineNo">112</span><a id="line.112">            .fromString("24c43748-c938-45d0-8d14-01424a72b11e");</a>
+<span class="sourceLineNo">113</span><a id="line.113"></a>
+<span class="sourceLineNo">114</span><a id="line.114">    public static final UUID FUNC_OPTIONS_PARAMS_SECTION = UUID</a>
+<span class="sourceLineNo">115</span><a id="line.115">            .fromString("30d554db-541e-4f62-8970-a1c6dcfeb2bc");</a>
+<span class="sourceLineNo">116</span><a id="line.116"></a>
+<span class="sourceLineNo">117</span><a id="line.117">    public static final UUID HTTP_SERVICES_SECTION = UUID</a>
+<span class="sourceLineNo">118</span><a id="line.118">            .fromString("0fffc09c-8f4c-47cc-b41c-8d5c5a221d79");</a>
+<span class="sourceLineNo">119</span><a id="line.119"></a>
+<span class="sourceLineNo">120</span><a id="line.120">    public static final UUID SUBSYSTEMS_SECTION = UUID</a>
+<span class="sourceLineNo">121</span><a id="line.121">            .fromString("37f2fa9a-b276-11d4-9435-004095e12fc7");</a>
+<span class="sourceLineNo">122</span><a id="line.122"></a>
+<span class="sourceLineNo">123</span><a id="line.123">    public static final UUID INTERFACES_SECTION = UUID</a>
+<span class="sourceLineNo">124</span><a id="line.124">            .fromString("39bddf6a-0c3c-452b-921c-d99cfa1c2f1b");</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">    public static final UUID STYLES_SECTION = UUID</a>
+<span class="sourceLineNo">127</span><a id="line.127">            .fromString("3e5404af-6ef8-4c73-ad11-91bd2dfac4c8");</a>
+<span class="sourceLineNo">128</span><a id="line.128"></a>
+<span class="sourceLineNo">129</span><a id="line.129">    public static final UUID FILTER_CRITERIA_SECTION = UUID</a>
+<span class="sourceLineNo">130</span><a id="line.130">            .fromString("3e7bfcc0-067d-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">    public static final UUID SETTINGS_STORAGES_SECTION = UUID</a>
+<span class="sourceLineNo">133</span><a id="line.133">            .fromString("46b4cd97-fd13-4eaa-aba2-3bddd7699218");</a>
+<span class="sourceLineNo">134</span><a id="line.134"></a>
+<span class="sourceLineNo">135</span><a id="line.135">    public static final UUID EVENT_SUBSCRIPTIONS_SECTION = UUID</a>
+<span class="sourceLineNo">136</span><a id="line.136">            .fromString("4e828da6-0f44-4b5b-b1c0-a2b3cfe7bdcc");</a>
+<span class="sourceLineNo">137</span><a id="line.137"></a>
+<span class="sourceLineNo">138</span><a id="line.138">    public static final UUID STYLE_ITEMS_SECTION = UUID</a>
+<span class="sourceLineNo">139</span><a id="line.139">            .fromString("58848766-36ea-4076-8800-e91eb49590d7");</a>
+<span class="sourceLineNo">140</span><a id="line.140"></a>
+<span class="sourceLineNo">141</span><a id="line.141">    public static final UUID COMMON_PICTURES_SECTION = UUID</a>
+<span class="sourceLineNo">142</span><a id="line.142">            .fromString("7dcd43d9-aca5-4926-b549-1842e6a4e8cf");</a>
+<span class="sourceLineNo">143</span><a id="line.143"></a>
+<span class="sourceLineNo">144</span><a id="line.144">    public static final UUID EXCHANGE_PLANS_SECTION = UUID</a>
+<span class="sourceLineNo">145</span><a id="line.145">            .fromString("857c4a91-e5f4-4fac-86ec-787626f1c108");</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">    public static final UUID WEB_SERVICES_SECTION = UUID</a>
+<span class="sourceLineNo">148</span><a id="line.148">            .fromString("8657032e-7740-4e1d-a3ba-5dd6e8afb78f");</a>
+<span class="sourceLineNo">149</span><a id="line.149"></a>
+<span class="sourceLineNo">150</span><a id="line.150">    public static final UUID LANGUAGES_SECTION = UUID</a>
+<span class="sourceLineNo">151</span><a id="line.151">            .fromString("9cd510ce-abfc-11d4-9434-004095e12fc7");</a>
+<span class="sourceLineNo">152</span><a id="line.152"></a>
+<span class="sourceLineNo">153</span><a id="line.153">    public static final UUID FUNCTIONAL_OPTIONS_SECTION = UUID</a>
+<span class="sourceLineNo">154</span><a id="line.154">            .fromString("af547940-3268-434f-a3e7-e47d6d2638c3");</a>
+<span class="sourceLineNo">155</span><a id="line.155"></a>
+<span class="sourceLineNo">156</span><a id="line.156">    public static final UUID DEFINED_TYPES_SECTION = UUID</a>
+<span class="sourceLineNo">157</span><a id="line.157">            .fromString("c045099e-13b9-4fb6-9d50-fca00202971e");</a>
+<span class="sourceLineNo">158</span><a id="line.158"></a>
+<span class="sourceLineNo">159</span><a id="line.159">    public static final UUID XDTO_PACKAGES_SECTION = UUID</a>
+<span class="sourceLineNo">160</span><a id="line.160">            .fromString("cc9df798-7c94-4616-97d2-7aa0b7bc515e");</a>
+<span class="sourceLineNo">161</span><a id="line.161"></a>
+<span class="sourceLineNo">162</span><a id="line.162">    public static final UUID WS_REFERENCES_SECTION = UUID</a>
+<span class="sourceLineNo">163</span><a id="line.163">            .fromString("d26096fb-7a5d-4df9-af63-47d04771fa9b");</a>
+<span class="sourceLineNo">164</span><a id="line.164"></a>
+<span class="sourceLineNo">165</span><a id="line.165">    public static final UUID CONSTANTS_SECTION = UUID</a>
+<span class="sourceLineNo">166</span><a id="line.166">            .fromString("0195e80c-b157-11d4-9435-004095e12fc7");</a>
+<span class="sourceLineNo">167</span><a id="line.167"></a>
+<span class="sourceLineNo">168</span><a id="line.168">    public static final UUID DOCUMENTS_SECTION = UUID</a>
+<span class="sourceLineNo">169</span><a id="line.169">            .fromString("061d872a-5787-460e-95ac-ed74ea3a3e84");</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">    public static final UUID COMMON_FORMS_SECTION = UUID</a>
+<span class="sourceLineNo">172</span><a id="line.172">            .fromString("07ee8426-87f1-11d5-b99c-0050bae0a95d");</a>
+<span class="sourceLineNo">173</span><a id="line.173"></a>
+<span class="sourceLineNo">174</span><a id="line.174">    public static final UUID INFORMATION_REGISTERS_SECTION = UUID</a>
+<span class="sourceLineNo">175</span><a id="line.175">            .fromString("13134201-f60b-11d5-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">176</span><a id="line.176"></a>
+<span class="sourceLineNo">177</span><a id="line.177">    public static final UUID COMMAND_GROUPS_SECTION = UUID</a>
+<span class="sourceLineNo">178</span><a id="line.178">            .fromString("1c57eabe-7349-44b3-b1de-ebfeab67b47d");</a>
+<span class="sourceLineNo">179</span><a id="line.179"></a>
+<span class="sourceLineNo">180</span><a id="line.180">    public static final UUID COMMON_COMMANDS_SECTION = UUID</a>
+<span class="sourceLineNo">181</span><a id="line.181">            .fromString("2f1a5187-fb0e-4b05-9489-dc5dd6412348");</a>
+<span class="sourceLineNo">182</span><a id="line.182"></a>
+<span class="sourceLineNo">183</span><a id="line.183">    public static final UUID DOCUMENT_NUMERATORS_SECTION = UUID</a>
+<span class="sourceLineNo">184</span><a id="line.184">            .fromString("36a8e346-9aaa-4af9-bdbd-83be3c177977");</a>
+<span class="sourceLineNo">185</span><a id="line.185"></a>
+<span class="sourceLineNo">186</span><a id="line.186">    public static final UUID DOCUMENT_JOURNALS_SECTION = UUID</a>
+<span class="sourceLineNo">187</span><a id="line.187">            .fromString("4612bd75-71b7-4a5c-8cc5-2b0b65f9fa0d");</a>
+<span class="sourceLineNo">188</span><a id="line.188"></a>
+<span class="sourceLineNo">189</span><a id="line.189">    public static final UUID REPORTS_SECTION = UUID</a>
+<span class="sourceLineNo">190</span><a id="line.190">            .fromString("631b75a0-29e2-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">191</span><a id="line.191"></a>
+<span class="sourceLineNo">192</span><a id="line.192">    public static final UUID CHARTS_OF_CHARACTERISTIC_TYPES_SECTION = UUID</a>
+<span class="sourceLineNo">193</span><a id="line.193">            .fromString("82a1b659-b220-4d94-a9bd-14d757b95a48");</a>
+<span class="sourceLineNo">194</span><a id="line.194"></a>
+<span class="sourceLineNo">195</span><a id="line.195">    public static final UUID ACCUMULATION_REGISTERS_SECTION = UUID</a>
+<span class="sourceLineNo">196</span><a id="line.196">            .fromString("b64d9a40-1642-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">197</span><a id="line.197"></a>
+<span class="sourceLineNo">198</span><a id="line.198">    public static final UUID SEQUENCES_SECTION = UUID</a>
+<span class="sourceLineNo">199</span><a id="line.199">            .fromString("bc587f20-35d9-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">200</span><a id="line.200"></a>
+<span class="sourceLineNo">201</span><a id="line.201">    public static final UUID DATA_PROCESSORS_SECTION = UUID</a>
+<span class="sourceLineNo">202</span><a id="line.202">            .fromString("bf845118-327b-4682-b5c6-285d2a0eb296");</a>
+<span class="sourceLineNo">203</span><a id="line.203"></a>
+<span class="sourceLineNo">204</span><a id="line.204">    public static final UUID CATALOGS_SECTION = UUID</a>
+<span class="sourceLineNo">205</span><a id="line.205">            .fromString("cf4abea6-37b2-11d4-940f-008048da11f9");</a>
+<span class="sourceLineNo">206</span><a id="line.206"></a>
+<span class="sourceLineNo">207</span><a id="line.207">    public static final UUID ENUMS_SECTION = UUID</a>
+<span class="sourceLineNo">208</span><a id="line.208">            .fromString("f6a80749-5ad7-400b-8519-39dc5dff2542");</a>
+<span class="sourceLineNo">209</span><a id="line.209"></a>
+<span class="sourceLineNo">210</span><a id="line.210">    public static final UUID CHARTS_OF_ACCOUNTS_SECTION = UUID</a>
+<span class="sourceLineNo">211</span><a id="line.211">            .fromString("238e7e88-3c5f-48b2-8a3b-81ebbecb20ed");</a>
+<span class="sourceLineNo">212</span><a id="line.212"></a>
+<span class="sourceLineNo">213</span><a id="line.213">    public static final UUID ACCOUNTING_REGISTERS_SECTION = UUID</a>
+<span class="sourceLineNo">214</span><a id="line.214">            .fromString("2deed9b8-0056-4ffe-a473-c20a6c32a0bc");</a>
+<span class="sourceLineNo">215</span><a id="line.215"></a>
+<span class="sourceLineNo">216</span><a id="line.216">    public static final UUID CHARTS_OF_CALCULATION_TYPES_SECTION = UUID</a>
+<span class="sourceLineNo">217</span><a id="line.217">            .fromString("30b100d6-b29f-47ac-aec7-cb8ca8a54767");</a>
+<span class="sourceLineNo">218</span><a id="line.218"></a>
+<span class="sourceLineNo">219</span><a id="line.219">    public static final UUID CALCULATION_REGISTERS_SECTION = UUID</a>
+<span class="sourceLineNo">220</span><a id="line.220">            .fromString("f2de87a8-64e5-45eb-a22d-b3aedab050e7");</a>
+<span class="sourceLineNo">221</span><a id="line.221"></a>
+<span class="sourceLineNo">222</span><a id="line.222">    public static final UUID TASKS_SECTION = UUID</a>
+<span class="sourceLineNo">223</span><a id="line.223">            .fromString("3e63355c-1378-4953-be9b-1deb5fb6bec5");</a>
+<span class="sourceLineNo">224</span><a id="line.224"></a>
+<span class="sourceLineNo">225</span><a id="line.225">    public static final UUID BUSINESS_PROCESSES_SECTION = UUID</a>
+<span class="sourceLineNo">226</span><a id="line.226">            .fromString("fcd3404e-1523-48ce-9bc0-ecdb822684a1");</a>
+<span class="sourceLineNo">227</span><a id="line.227"></a>
+<span class="sourceLineNo">228</span><a id="line.228">    public static final UUID EXTERNAL_DATA_SOURCES_SECTION = UUID</a>
+<span class="sourceLineNo">229</span><a id="line.229">            .fromString("5274d9fc-9c3a-4a71-8f5e-a0db8ab23de5");</a>
+<span class="sourceLineNo">230</span><a id="line.230"></a>
+<span class="sourceLineNo">231</span><a id="line.231">    public static final UUID EXTERNAL_DATA_PROCESSOR = UUID</a>
+<span class="sourceLineNo">232</span><a id="line.232">            .fromString("c3831ec8-d8d5-4f93-8a22-f9bfae07327f");</a>
+<span class="sourceLineNo">233</span><a id="line.233"></a>
+<span class="sourceLineNo">234</span><a id="line.234">    public static final UUID EXTERNAL_REPORT = UUID</a>
+<span class="sourceLineNo">235</span><a id="line.235">            .fromString("e41aff26-25cf-4bb6-b6c1-3f478a75f374");</a>
+<span class="sourceLineNo">236</span><a id="line.236"></a>
+<span class="sourceLineNo">237</span><a id="line.237">    public static final UUID COMMON_CONFIGURATION_BLOCK = UUID</a>
+<span class="sourceLineNo">238</span><a id="line.238">            .fromString("9cd510cd-abfc-11d4-9434-004095e12fc7");</a>
+<span class="sourceLineNo">239</span><a id="line.239"></a>
+<span class="sourceLineNo">240</span><a id="line.240">    public static final UUID MAIN_CONFIGURATION_BLOCK = UUID</a>
+<span class="sourceLineNo">241</span><a id="line.241">            .fromString("9fcd25a0-4822-11d4-9414-008048da11f9");</a>
+<span class="sourceLineNo">242</span><a id="line.242"></a>
+<span class="sourceLineNo">243</span><a id="line.243">    public static final UUID ACCOUNTING_CONFIGURATION_BLOCK = UUID</a>
+<span class="sourceLineNo">244</span><a id="line.244">            .fromString("e3687481-0a87-462c-a166-9f34594f9bba");</a>
+<span class="sourceLineNo">245</span><a id="line.245"></a>
+<span class="sourceLineNo">246</span><a id="line.246">    public static final UUID CALCULATION_CONFIGURATION_BLOCK = UUID</a>
+<span class="sourceLineNo">247</span><a id="line.247">            .fromString("9de14907-ec23-4a07-96f0-85521cb6b53b");</a>
+<span class="sourceLineNo">248</span><a id="line.248"></a>
+<span class="sourceLineNo">249</span><a id="line.249">    public static final UUID BUSINESS_PROCESSES_CONFIGURATION_BLOCK = UUID</a>
+<span class="sourceLineNo">250</span><a id="line.250">            .fromString("51f2d5d8-ea4d-4064-8892-82951750031e");</a>
+<span class="sourceLineNo">251</span><a id="line.251"></a>
+<span class="sourceLineNo">252</span><a id="line.252">    public static final UUID EXTERNAL_DATA_SOURCES_CONFIGURATION_BLOCK = UUID</a>
+<span class="sourceLineNo">253</span><a id="line.253">            .fromString("e68182ea-4237-4383-967f-90c1e3370bc7");</a>
+<span class="sourceLineNo">254</span><a id="line.254"></a>
+<span class="sourceLineNo">255</span><a id="line.255">    public static final UUID COMMAND_LIST = UUID</a>
+<span class="sourceLineNo">256</span><a id="line.256">            .fromString("4fe87c89-9ad4-43f6-9fdb-9dc83b3879c6");</a>
+<span class="sourceLineNo">257</span><a id="line.257"></a>
+<span class="sourceLineNo">258</span><a id="line.258">    public static final UUID TABULAR_DOCUMENTS = UUID</a>
+<span class="sourceLineNo">259</span><a id="line.259">            .fromString("21c53e09-8950-4b5e-a6a0-1054f1bbc274");</a>
+<span class="sourceLineNo">260</span><a id="line.260"></a>
+<span class="sourceLineNo">261</span><a id="line.261">    public static final UUID ATTRIBUTES_DOCUMENTS = UUID</a>
+<span class="sourceLineNo">262</span><a id="line.262">            .fromString("45e46cbc-3e24-4165-8b7b-cc98a6f80211");</a>
+<span class="sourceLineNo">263</span><a id="line.263"></a>
+<span class="sourceLineNo">264</span><a id="line.264">    public static final UUID COMMAND_LIST_DOCUMENTS = UUID</a>
+<span class="sourceLineNo">265</span><a id="line.265">            .fromString("b544fc6a-2ba3-4885-8fb2-cb289fb6d65e");</a>
+<span class="sourceLineNo">266</span><a id="line.266"></a>
+<span class="sourceLineNo">267</span><a id="line.267">    public static final UUID TEMPLATES_SECTION_DOCUMENTS = UUID</a>
+<span class="sourceLineNo">268</span><a id="line.268">            .fromString("fb880e93-47d7-4127-9357-a20e69c17545");</a>
+<span class="sourceLineNo">269</span><a id="line.269"></a>
+<span class="sourceLineNo">270</span><a id="line.270">    public static final UUID UNK_REGISTERS = UUID</a>
+<span class="sourceLineNo">271</span><a id="line.271">            .fromString("99f328af-a77f-4572-a2d8-80ed20c81890");</a>
+<span class="sourceLineNo">272</span><a id="line.272"></a>
+<span class="sourceLineNo">273</span><a id="line.273">    public static final UUID RESOURCE_REGISTERS = UUID</a>
+<span class="sourceLineNo">274</span><a id="line.274">            .fromString("b64d9a41-1642-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">275</span><a id="line.275"></a>
+<span class="sourceLineNo">276</span><a id="line.276">    public static final UUID DIMENSION_REGISTERS = UUID</a>
+<span class="sourceLineNo">277</span><a id="line.277">            .fromString("b64d9a42-1642-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">278</span><a id="line.278"></a>
+<span class="sourceLineNo">279</span><a id="line.279">    public static final UUID ATTRIBUTES_REGISTERS = UUID</a>
+<span class="sourceLineNo">280</span><a id="line.280">            .fromString("b64d9a43-1642-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">281</span><a id="line.281"></a>
+<span class="sourceLineNo">282</span><a id="line.282">    public static final UUID FORMS_REGISTERS = UUID</a>
+<span class="sourceLineNo">283</span><a id="line.283">            .fromString("b64d9a44-1642-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">284</span><a id="line.284"></a>
+<span class="sourceLineNo">285</span><a id="line.285">    public static final UUID RESOURCE_INFORMATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">286</span><a id="line.286">            .fromString("13134202-f60b-11d5-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">287</span><a id="line.287"></a>
+<span class="sourceLineNo">288</span><a id="line.288">    public static final UUID DIMENSION_INFORMATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">289</span><a id="line.289">            .fromString("13134203-f60b-11d5-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">290</span><a id="line.290"></a>
+<span class="sourceLineNo">291</span><a id="line.291">    public static final UUID FORMS_INFORMATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">292</span><a id="line.292">            .fromString("13134204-f60b-11d5-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">293</span><a id="line.293"></a>
+<span class="sourceLineNo">294</span><a id="line.294">    public static final UUID ATTRIBUTES_INFORMATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">295</span><a id="line.295">            .fromString("a2207540-1400-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">296</span><a id="line.296"></a>
+<span class="sourceLineNo">297</span><a id="line.297">    public static final UUID COMMANDS_INFORMATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">298</span><a id="line.298">            .fromString("b44ba719-945c-445c-8aab-1088fa4df16e");</a>
+<span class="sourceLineNo">299</span><a id="line.299"></a>
+<span class="sourceLineNo">300</span><a id="line.300">    public static final UUID ATTRIBUTES_REPORTS = UUID</a>
+<span class="sourceLineNo">301</span><a id="line.301">            .fromString("7e7123e0-29e2-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">302</span><a id="line.302"></a>
+<span class="sourceLineNo">303</span><a id="line.303">    public static final UUID FORM_REPORTS = UUID</a>
+<span class="sourceLineNo">304</span><a id="line.304">            .fromString("a3b368c0-29e2-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">305</span><a id="line.305"></a>
+<span class="sourceLineNo">306</span><a id="line.306">    public static final UUID TABULARS_REPORTS = UUID</a>
+<span class="sourceLineNo">307</span><a id="line.307">            .fromString("b077d780-29e2-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">308</span><a id="line.308"></a>
+<span class="sourceLineNo">309</span><a id="line.309">    public static final UUID COMMANDS_REPORTS = UUID</a>
+<span class="sourceLineNo">310</span><a id="line.310">            .fromString("e7ff38c0-ec3c-47a0-ae90-20c73ca72246");</a>
+<span class="sourceLineNo">311</span><a id="line.311"></a>
+<span class="sourceLineNo">312</span><a id="line.312">    public static final UUID COMMANDS_DATA_PROCESSORS = UUID</a>
+<span class="sourceLineNo">313</span><a id="line.313">            .fromString("45556acb-826a-4f73-898a-6025fc9536e1");</a>
+<span class="sourceLineNo">314</span><a id="line.314"></a>
+<span class="sourceLineNo">315</span><a id="line.315">    public static final UUID UNK1_ENUM = UUID.fromString("33f2e54b-37ce-4a7a-a569-b648d7aa4634");</a>
+<span class="sourceLineNo">316</span><a id="line.316"></a>
+<span class="sourceLineNo">317</span><a id="line.317">    public static final UUID UNK2_ENUM = UUID.fromString("6d8d73a7-ba29-401d-9032-3872ec2d6433");</a>
+<span class="sourceLineNo">318</span><a id="line.318"></a>
+<span class="sourceLineNo">319</span><a id="line.319">    public static final UUID VALUES_ENUM = UUID.fromString("bee0a08c-07eb-40c0-8544-5c364c171465");</a>
+<span class="sourceLineNo">320</span><a id="line.320"></a>
+<span class="sourceLineNo">321</span><a id="line.321">    public static final UUID ATTRIBUTES_EXCHANGE_PLANS = UUID</a>
+<span class="sourceLineNo">322</span><a id="line.322">            .fromString("1a1b4fea-e093-470d-94ff-1d2f16cda2ab");</a>
+<span class="sourceLineNo">323</span><a id="line.323"></a>
+<span class="sourceLineNo">324</span><a id="line.324">    public static final UUID TABULARS_EXCHANGE_PLANS = UUID</a>
+<span class="sourceLineNo">325</span><a id="line.325">            .fromString("52293f4b-f98c-43ea-a80f-41047ae7ab58");</a>
+<span class="sourceLineNo">326</span><a id="line.326"></a>
+<span class="sourceLineNo">327</span><a id="line.327">    public static final UUID FORMS_EXCHANGE_PLANS = UUID</a>
+<span class="sourceLineNo">328</span><a id="line.328">            .fromString("87c509ab-3d38-4d67-b379-aca796298578");</a>
+<span class="sourceLineNo">329</span><a id="line.329"></a>
+<span class="sourceLineNo">330</span><a id="line.330">    public static final UUID COMMANDS_EXCHANGE_PLANS = UUID</a>
+<span class="sourceLineNo">331</span><a id="line.331">            .fromString("d5207c64-11d5-4d46-bba2-55b7b07ff4eb");</a>
+<span class="sourceLineNo">332</span><a id="line.332"></a>
+<span class="sourceLineNo">333</span><a id="line.333">    public static final UUID FORMS_FILTER_CRITERIA = UUID</a>
+<span class="sourceLineNo">334</span><a id="line.334">            .fromString("00867c40-06b1-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">335</span><a id="line.335"></a>
+<span class="sourceLineNo">336</span><a id="line.336">    public static final UUID COMMANDS_FILTER_CRITERIA = UUID</a>
+<span class="sourceLineNo">337</span><a id="line.337">            .fromString("23fa3b84-220a-40e9-8331-e588bed87f7d");</a>
+<span class="sourceLineNo">338</span><a id="line.338"></a>
+<span class="sourceLineNo">339</span><a id="line.339">    public static final UUID DATA_SEQUENCES = UUID</a>
+<span class="sourceLineNo">340</span><a id="line.340">            .fromString("437488c0-35e2-11d6-a3c7-0050bae0a776");</a>
+<span class="sourceLineNo">341</span><a id="line.341"></a>
+<span class="sourceLineNo">342</span><a id="line.342">    public static final UUID FORMS_SETTING_STORAGES = UUID</a>
+<span class="sourceLineNo">343</span><a id="line.343">            .fromString("b8533c0c-2342-4db3-91a2-c2b08cbf6b23");</a>
+<span class="sourceLineNo">344</span><a id="line.344"></a>
+<span class="sourceLineNo">345</span><a id="line.345">    public static final UUID FORMS_TASKS = UUID.fromString("3f58cbfb-4172-4e54-be49-561a579bb38b");</a>
+<span class="sourceLineNo">346</span><a id="line.346"></a>
+<span class="sourceLineNo">347</span><a id="line.347">    public static final UUID ATTRIBUTES_TASKS = UUID</a>
+<span class="sourceLineNo">348</span><a id="line.348">            .fromString("8ddfb495-c5fc-46b9-bdc5-bcf58341bff0");</a>
+<span class="sourceLineNo">349</span><a id="line.349"></a>
+<span class="sourceLineNo">350</span><a id="line.350">    public static final UUID ATTRIBUTES_ADDRESS_TASKS = UUID</a>
+<span class="sourceLineNo">351</span><a id="line.351">            .fromString("e97c0570-251c-4566-b0f1-10686820f143");</a>
+<span class="sourceLineNo">352</span><a id="line.352"></a>
+<span class="sourceLineNo">353</span><a id="line.353">    public static final UUID TABULARS_TASKS = UUID</a>
+<span class="sourceLineNo">354</span><a id="line.354">            .fromString("ee865d4b-a458-48a0-b38f-5a26898feeb0");</a>
+<span class="sourceLineNo">355</span><a id="line.355"></a>
+<span class="sourceLineNo">356</span><a id="line.356">    public static final UUID COMMANDS_TASKS = UUID</a>
+<span class="sourceLineNo">357</span><a id="line.357">            .fromString("f27c2152-a2c9-4c30-adb1-130f5eb2590f");</a>
+<span class="sourceLineNo">358</span><a id="line.358"></a>
+<span class="sourceLineNo">359</span><a id="line.359">    public static final UUID OPERATION_WEB_SERVICE = UUID</a>
+<span class="sourceLineNo">360</span><a id="line.360">            .fromString("36186084-c23a-43bd-876c-a3a8ba1a9622");</a>
+<span class="sourceLineNo">361</span><a id="line.361"></a>
+<span class="sourceLineNo">362</span><a id="line.362">    public static final UUID OPERATION_PARAMS_WEB_SERVICE = UUID</a>
+<span class="sourceLineNo">363</span><a id="line.363">            .fromString("b78a00b2-2260-4ef5-a70c-17889cfee695");</a>
+<span class="sourceLineNo">364</span><a id="line.364"></a>
+<span class="sourceLineNo">365</span><a id="line.365">    public static final UUID ATTRIBUTES_ACCOUNTING = UUID</a>
+<span class="sourceLineNo">366</span><a id="line.366">            .fromString("35b63b9d-0adf-4625-a047-10ae874c19a3");</a>
+<span class="sourceLineNo">367</span><a id="line.367"></a>
+<span class="sourceLineNo">368</span><a id="line.368">    public static final UUID RESOURCE_ACCOUNTING = UUID</a>
+<span class="sourceLineNo">369</span><a id="line.369">            .fromString("63405499-7491-4ce3-ac72-43433cbe4112");</a>
+<span class="sourceLineNo">370</span><a id="line.370"></a>
+<span class="sourceLineNo">371</span><a id="line.371">    public static final UUID COMMANDS_ACCOUNTING = UUID</a>
+<span class="sourceLineNo">372</span><a id="line.372">            .fromString("7162da60-f7fe-4d78-ad5d-e31700f9af18");</a>
+<span class="sourceLineNo">373</span><a id="line.373"></a>
+<span class="sourceLineNo">374</span><a id="line.374">    public static final UUID DIMENSION_ACCOUNTING_REGISTERS = UUID</a>
+<span class="sourceLineNo">375</span><a id="line.375">            .fromString("9d28ee33-9c7e-4a1b-8f13-50aa9b36607b");</a>
+<span class="sourceLineNo">376</span><a id="line.376"></a>
+<span class="sourceLineNo">377</span><a id="line.377">    public static final UUID FORMS_ACCOUNTING_REGISTERS = UUID</a>
+<span class="sourceLineNo">378</span><a id="line.378">            .fromString("d3b5d6eb-4ea2-4610-a3e2-624d4e815934");</a>
+<span class="sourceLineNo">379</span><a id="line.379"></a>
+<span class="sourceLineNo">380</span><a id="line.380">    public static final UUID DIMENSION_CALCULATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">381</span><a id="line.381">            .fromString("1b304502-2216-440b-960f-60decd04bb5d");</a>
+<span class="sourceLineNo">382</span><a id="line.382"></a>
+<span class="sourceLineNo">383</span><a id="line.383">    public static final UUID UNK1_CALCULATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">384</span><a id="line.384">            .fromString("274bf899-db0e-4df6-8ab5-67bf6371ec0b");</a>
+<span class="sourceLineNo">385</span><a id="line.385"></a>
+<span class="sourceLineNo">386</span><a id="line.386">    public static final UUID RESOURCE_CALCULATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">387</span><a id="line.387">            .fromString("702b33ad-843e-41aa-8064-112cd38cc92c");</a>
+<span class="sourceLineNo">388</span><a id="line.388"></a>
+<span class="sourceLineNo">389</span><a id="line.389">    public static final UUID UNK2_CALCULATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">390</span><a id="line.390">            .fromString("a2cb086c-db98-43e4-a1a9-0760ab048f8d");</a>
+<span class="sourceLineNo">391</span><a id="line.391"></a>
+<span class="sourceLineNo">392</span><a id="line.392">    public static final UUID UNK3_CALCULATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">393</span><a id="line.393">            .fromString("acdf0f11-2d59-4e37-9945-c6721871a8fe");</a>
+<span class="sourceLineNo">394</span><a id="line.394"></a>
+<span class="sourceLineNo">395</span><a id="line.395">    public static final UUID ATTRIBUTES_CALCULATION_REGISTERS = UUID</a>
+<span class="sourceLineNo">396</span><a id="line.396">            .fromString("b12fc850-8210-43c8-ae05-89567e698fbb");</a>
+<span class="sourceLineNo">397</span><a id="line.397"></a>
+<span class="sourceLineNo">398</span><a id="line.398">    public static final UUID COMMANDS_CHART_ACCOUNT = UUID</a>
+<span class="sourceLineNo">399</span><a id="line.399">            .fromString("0df30176-6865-4787-9fc8-609eb144174f");</a>
+<span class="sourceLineNo">400</span><a id="line.400"></a>
+<span class="sourceLineNo">401</span><a id="line.401">    public static final UUID TABULAR_CHART_ACCOUNT = UUID</a>
+<span class="sourceLineNo">402</span><a id="line.402">            .fromString("4c7fec95-d1bd-4508-8a01-f1db090d9af8");</a>
+<span class="sourceLineNo">403</span><a id="line.403"></a>
+<span class="sourceLineNo">404</span><a id="line.404">    public static final UUID FORMS_CHART_ACCOUNT = UUID</a>
+<span class="sourceLineNo">405</span><a id="line.405">            .fromString("5372e285-03db-4f8c-8565-fe56f1aea40e");</a>
+<span class="sourceLineNo">406</span><a id="line.406"></a>
+<span class="sourceLineNo">407</span><a id="line.407">    public static final UUID ATTRIBUTES_CHART_ACCOUNT = UUID</a>
+<span class="sourceLineNo">408</span><a id="line.408">            .fromString("6e65cbf5-daa8-4d8d-bef8-59723f4e5777");</a>
+<span class="sourceLineNo">409</span><a id="line.409"></a>
+<span class="sourceLineNo">410</span><a id="line.410">    public static final UUID FLAGS_CHART_ACCOUNT = UUID // признаки учета</a>
+<span class="sourceLineNo">411</span><a id="line.411">            .fromString("78bd1243-c4df-46c3-8138-e147465cb9a4");</a>
+<span class="sourceLineNo">412</span><a id="line.412"></a>
+<span class="sourceLineNo">413</span><a id="line.413">    public static final UUID EXT_DIMENTION_FLAGS_CHART_ACCOUNT = UUID // признаки учета</a>
+<span class="sourceLineNo">414</span><a id="line.414">            .fromString("c70ca527-5042-4cad-a315-dcb4007e32a3");</a>
+<span class="sourceLineNo">415</span><a id="line.415"></a>
+<span class="sourceLineNo">416</span><a id="line.416">    public static final UUID TABULAR_CHART_CALCULATION = UUID</a>
+<span class="sourceLineNo">417</span><a id="line.417">            .fromString("054aa8cf-faa6-4634-aef4-1087ca0d88fc");</a>
+<span class="sourceLineNo">418</span><a id="line.418"></a>
+<span class="sourceLineNo">419</span><a id="line.419">    public static final UUID ATTRIBUTES_CHART_CALCULATION = UUID</a>
+<span class="sourceLineNo">420</span><a id="line.420">            .fromString("0dc22ad2-476a-4794-afae-cfa7ed251752");</a>
+<span class="sourceLineNo">421</span><a id="line.421"></a>
+<span class="sourceLineNo">422</span><a id="line.422">    public static final UUID COMMANDS_CHART_CALCULATION = UUID</a>
+<span class="sourceLineNo">423</span><a id="line.423">            .fromString("2e90c75b-2f0c-4899-a7d4-5426eaefc96e");</a>
+<span class="sourceLineNo">424</span><a id="line.424"></a>
+<span class="sourceLineNo">425</span><a id="line.425">    public static final UUID FORMS_CHART_CALCULATION = UUID</a>
+<span class="sourceLineNo">426</span><a id="line.426">            .fromString("a7f8f92a-7a4b-484b-937e-42d242e64144");</a>
+<span class="sourceLineNo">427</span><a id="line.427"></a>
+<span class="sourceLineNo">428</span><a id="line.428">    public static final UUID ATTRIBUTES_CHART_CHARACTERISTICS = UUID</a>
+<span class="sourceLineNo">429</span><a id="line.429">            .fromString("31182525-9346-4595-81f8-6f91a72ebe06");</a>
+<span class="sourceLineNo">430</span><a id="line.430"></a>
+<span class="sourceLineNo">431</span><a id="line.431">    public static final UUID TABULAR_CHART_CHARACTERISTICS = UUID</a>
+<span class="sourceLineNo">432</span><a id="line.432">            .fromString("54e36536-7863-42fd-bea3-c5edd3122fdc");</a>
+<span class="sourceLineNo">433</span><a id="line.433"></a>
+<span class="sourceLineNo">434</span><a id="line.434">    public static final UUID COMMANDS_CHART_CHARACTERISTICS = UUID</a>
+<span class="sourceLineNo">435</span><a id="line.435">            .fromString("95b5e1d4-abfa-4a16-818d-a5b07b7d3f73");</a>
+<span class="sourceLineNo">436</span><a id="line.436"></a>
+<span class="sourceLineNo">437</span><a id="line.437">    public static final UUID FORMS_CHART_CHARACTERISTICS = UUID</a>
+<span class="sourceLineNo">438</span><a id="line.438">            .fromString("eb2b78a8-40a6-4b7e-b1b3-6ca9966cbc94");</a>
+<span class="sourceLineNo">439</span><a id="line.439"></a>
+<span class="sourceLineNo">440</span><a id="line.440">    public static final UUID COLUMNS_DOCUMENT_JOURNAL = UUID</a>
+<span class="sourceLineNo">441</span><a id="line.441">            .fromString("5aee69df-0513-4c6c-9815-103102471712");</a>
+<span class="sourceLineNo">442</span><a id="line.442"></a>
+<span class="sourceLineNo">443</span><a id="line.443">    public static final UUID COMMANDS_DOCUMENT_JOURNAL = UUID</a>
+<span class="sourceLineNo">444</span><a id="line.444">            .fromString("a49a35ce-120a-4c80-8eea-b0618479cd70");</a>
+<span class="sourceLineNo">445</span><a id="line.445"></a>
+<span class="sourceLineNo">446</span><a id="line.446">    public static final UUID FORMS_DOCUMENT_JOURNAL = UUID</a>
+<span class="sourceLineNo">447</span><a id="line.447">            .fromString("ec81ad10-ca07-11d5-b9a5-0050bae0a95d");</a>
+<span class="sourceLineNo">448</span><a id="line.448"></a>
+<span class="sourceLineNo">449</span><a id="line.449">    public static final UUID FORMS_BUSINESS_PROCESS = UUID</a>
+<span class="sourceLineNo">450</span><a id="line.450">            .fromString("3f7a8120-b71a-4265-98bf-4d9bc09b7719");</a>
+<span class="sourceLineNo">451</span><a id="line.451"></a>
+<span class="sourceLineNo">452</span><a id="line.452">    public static final UUID COMMANDS_BUSINESS_PROCESS = UUID</a>
+<span class="sourceLineNo">453</span><a id="line.453">            .fromString("7a3e533c-f232-40d5-a932-6a311d2480bf");</a>
+<span class="sourceLineNo">454</span><a id="line.454"></a>
+<span class="sourceLineNo">455</span><a id="line.455">    public static final UUID ATTRIBUTES_BUSINESS_PROCESS = UUID</a>
+<span class="sourceLineNo">456</span><a id="line.456">            .fromString("87c988de-ecbf-413b-87b0-b9516df05e28");</a>
+<span class="sourceLineNo">457</span><a id="line.457"></a>
+<span class="sourceLineNo">458</span><a id="line.458">    public static final UUID TABULARS_BUSINESS_PROCESS = UUID</a>
+<span class="sourceLineNo">459</span><a id="line.459">            .fromString("a3fe6537-d787-40f7-8a06-419d2f0c1cfd");</a>
+<span class="sourceLineNo">460</span><a id="line.460"></a>
+<span class="sourceLineNo">461</span><a id="line.461">    public static final UUID URL_TEMPLATES_HTTP_SERVICE = UUID</a>
+<span class="sourceLineNo">462</span><a id="line.462">            .fromString("ec6896c2-9b28-42d8-9140-48491146b8ea");</a>
+<span class="sourceLineNo">463</span><a id="line.463"></a>
+<span class="sourceLineNo">464</span><a id="line.464">    public static final UUID METHODS_HTTP_SERVICE = UUID</a>
+<span class="sourceLineNo">465</span><a id="line.465">            .fromString("21c96ea8-c8fc-424a-a0b4-e1ffb2fa1a73");</a>
+<span class="sourceLineNo">466</span><a id="line.466"></a>
+<span class="sourceLineNo">467</span><a id="line.467">    private static final UUID ENUM_FILL_CHEKING = UUID</a>
+<span class="sourceLineNo">468</span><a id="line.468">            .fromString("98ea8e5a-b586-442b-b944-6e3447734aa7");</a>
+<span class="sourceLineNo">469</span><a id="line.469"></a>
+<span class="sourceLineNo">470</span><a id="line.470">    private static final UUID LINK_BY_TYPE = UUID</a>
+<span class="sourceLineNo">471</span><a id="line.471">            .fromString("9ad557b1-249e-48dc-824b-3e149ecf10a6");</a>
+<span class="sourceLineNo">472</span><a id="line.472"></a>
+<span class="sourceLineNo">473</span><a id="line.473">    private static final UUID CREATE_ON_INPUT = UUID</a>
+<span class="sourceLineNo">474</span><a id="line.474">            .fromString("ad3615c5-aae6-4725-89be-91827523abd9");</a>
+<span class="sourceLineNo">475</span><a id="line.475"></a>
+<span class="sourceLineNo">476</span><a id="line.476">    private static final UUID MULTILANGUAGE_STRING = UUID</a>
+<span class="sourceLineNo">477</span><a id="line.477">            .fromString("87024738-fc2a-4436-ada1-df79d395c424");</a>
+<span class="sourceLineNo">478</span><a id="line.478"></a>
+<span class="sourceLineNo">479</span><a id="line.479">    private static final UUID METADATA_OBJECT = UUID</a>
+<span class="sourceLineNo">480</span><a id="line.480">            .fromString("157fa490-4ce9-11d4-9415-008048da11f9");</a>
+<span class="sourceLineNo">481</span><a id="line.481"></a>
+<span class="sourceLineNo">482</span><a id="line.482">    private static final UUID FUNCTIONAL_OPTION_VALUE = UUID</a>
+<span class="sourceLineNo">483</span><a id="line.483">            .fromString("3ea29ea5-66f6-4e3b-8595-d8940db766a2");</a>
+<span class="sourceLineNo">484</span><a id="line.484"></a>
+<span class="sourceLineNo">485</span><a id="line.485">    private static final UUID ENUM_USE_QUICK_CHOICE = UUID</a>
+<span class="sourceLineNo">486</span><a id="line.486">            .fromString("ace3fd07-11b2-477e-ab7f-36f0ea37c8dd");</a>
+<span class="sourceLineNo">487</span><a id="line.487"></a>
+<span class="sourceLineNo">488</span><a id="line.488">    private static final UUID ENUM_CHOICE_HISTORY_ON_INPUT = UUID</a>
+<span class="sourceLineNo">489</span><a id="line.489">            .fromString("12ca4003-ac70-450e-b897-37faf86bd313");</a>
+<span class="sourceLineNo">490</span><a id="line.490"></a>
+<span class="sourceLineNo">491</span><a id="line.491">    private static final UUID ENUM_FULL_TEXT_SEARCH = UUID</a>
+<span class="sourceLineNo">492</span><a id="line.492">            .fromString("3b8e6bdd-d648-49d5-af2f-d46d84f87dd5");</a>
+<span class="sourceLineNo">493</span><a id="line.493"></a>
+<span class="sourceLineNo">494</span><a id="line.494">    private static final UUID CHOICE_PARAMETER_LINKS = UUID</a>
+<span class="sourceLineNo">495</span><a id="line.495">            .fromString("b76a58b9-2a56-4e46-bb31-8e04ad9f31ae");</a>
+<span class="sourceLineNo">496</span><a id="line.496"></a>
+<span class="sourceLineNo">497</span><a id="line.497">    private static final UUID CHOICE_PARAMETERS = UUID</a>
+<span class="sourceLineNo">498</span><a id="line.498">            .fromString("f2eaae14-91a7-47b9-9d69-097877f41580");</a>
+<span class="sourceLineNo">499</span><a id="line.499"></a>
+<span class="sourceLineNo">500</span><a id="line.500">    private static final UUID PREDEFINED_TYPE_11 = UUID</a>
+<span class="sourceLineNo">501</span><a id="line.501">            .fromString("5c14e26f-099b-4d37-84a6-b433d87400da");</a>
+<span class="sourceLineNo">502</span><a id="line.502"></a>
+<span class="sourceLineNo">503</span><a id="line.503">    private static final UUID FIXED_ARRAY = UUID</a>
+<span class="sourceLineNo">504</span><a id="line.504">            .fromString("4500381b-db30-4a10-9db4-990038032acf");</a>
+<span class="sourceLineNo">505</span><a id="line.505"></a>
+<span class="sourceLineNo">506</span><a id="line.506">    private static final UUID ENUM_APPLICATION_USE_PURPOSE = UUID</a>
+<span class="sourceLineNo">507</span><a id="line.507">            .fromString("1708fdaa-cbce-4289-b373-07a5a74bee91");</a>
+<span class="sourceLineNo">508</span><a id="line.508"></a>
+<span class="sourceLineNo">509</span><a id="line.509">    private static final UUID REQUIRED_MOBILE_APPLICATION_PERMISSIONS = UUID</a>
+<span class="sourceLineNo">510</span><a id="line.510">            .fromString("e4c53f94-e5f7-4a34-8c10-218bd811cae1");</a>
+<span class="sourceLineNo">511</span><a id="line.511"></a>
+<span class="sourceLineNo">512</span><a id="line.512">    private static final UUID COMPOSITE_ID = UUID</a>
+<span class="sourceLineNo">513</span><a id="line.513">            .fromString("60ea359f-3a6e-48bb-8e71-d2a457572918");</a>
+<span class="sourceLineNo">514</span><a id="line.514"></a>
+<span class="sourceLineNo">515</span><a id="line.515">    private static final UUID CHARACTERISTICS_DESCRIPTION = UUID</a>
+<span class="sourceLineNo">516</span><a id="line.516">            .fromString("fe839d42-d094-40ba-b903-75bccc21ba30");</a>
+<span class="sourceLineNo">517</span><a id="line.517"></a>
+<span class="sourceLineNo">518</span><a id="line.518">    private static final UUID STANDART_PERIOD = UUID</a>
+<span class="sourceLineNo">519</span><a id="line.519">            .fromString("2fdc88ec-7c9b-43cd-8ba5-873f043bdd88");</a>
+<span class="sourceLineNo">520</span><a id="line.520"></a>
+<span class="sourceLineNo">521</span><a id="line.521">    private static final UUID COLOR = UUID.fromString("9cd510c7-abfc-11d4-9434-004095e12fc7");</a>
+<span class="sourceLineNo">522</span><a id="line.522"></a>
+<span class="sourceLineNo">523</span><a id="line.523">    private static final UUID FONT = UUID.fromString("9cd510c8-abfc-11d4-9434-004095e12fc7");</a>
+<span class="sourceLineNo">524</span><a id="line.524"></a>
+<span class="sourceLineNo">525</span><a id="line.525">    private static final UUID BORDER = UUID.fromString("4d10ca00-111a-4d43-9c96-92cd773716de");</a>
+<span class="sourceLineNo">526</span><a id="line.526"></a>
+<span class="sourceLineNo">527</span><a id="line.527">    private static final UUID ACCOUNT_TYPE = UUID</a>
+<span class="sourceLineNo">528</span><a id="line.528">            .fromString("872f7198-7083-4e3e-b57e-a2a9802c769e");</a>
+<span class="sourceLineNo">529</span><a id="line.529"></a>
+<span class="sourceLineNo">530</span><a id="line.530">    private static final UUID TYPE_DESCRIPTION = UUID</a>
+<span class="sourceLineNo">531</span><a id="line.531">            .fromString("f5c65050-3bbb-11d5-b988-0050bae0a95d");</a>
+<span class="sourceLineNo">532</span><a id="line.532"></a>
+<span class="sourceLineNo">533</span><a id="line.533">    private static final UUID ENUM_DATA_HISTORY_USE = UUID</a>
+<span class="sourceLineNo">534</span><a id="line.534">            .fromString("d46ea122-3201-4e5e-bed4-e669c6e463c8");</a>
+<span class="sourceLineNo">535</span><a id="line.535"></a>
+<span class="sourceLineNo">536</span><a id="line.536">    private static final Map&lt;UUID, Class&lt;? extends V8InnerClass&gt;&gt; classbyUUID =</a>
+<span class="sourceLineNo">537</span><a id="line.537">            new HashMap&lt;&gt;();</a>
+<span class="sourceLineNo">538</span><a id="line.538"></a>
+<span class="sourceLineNo">539</span><a id="line.539">    static {</a>
+<span class="sourceLineNo">540</span><a id="line.540">        classbyUUID.put(FORMS_SECTION, FormList.class);</a>
+<span class="sourceLineNo">541</span><a id="line.541">        classbyUUID.put(TEMPLATE_SECTION, TemplateList.class);</a>
+<span class="sourceLineNo">542</span><a id="line.542">        classbyUUID.put(TABULAR_ATTRIBUTES_SECTION, AttributesList.class);</a>
+<span class="sourceLineNo">543</span><a id="line.543">        classbyUUID.put(DATAPROCESSOR_TABULAR_ATTRIBUTES_SECTION, AttributesList.class);</a>
+<span class="sourceLineNo">544</span><a id="line.544">        classbyUUID.put(REPORT_TABULAR_ATTRIBUTES_SECTION, AttributesList.class);</a>
+<span class="sourceLineNo">545</span><a id="line.545">        classbyUUID.put(ATTRIBUTES_SECTION, AttributesList.class);</a>
+<span class="sourceLineNo">546</span><a id="line.546">        classbyUUID.put(TABULAR_SECTION, TabularList.class);</a>
+<span class="sourceLineNo">547</span><a id="line.547">        classbyUUID.put(ROLE_SECTION, Roles.class);</a>
+<span class="sourceLineNo">548</span><a id="line.548">        classbyUUID.put(COMMON_TEMPLATES_SECTION, CommonTemplates.class);</a>
+<span class="sourceLineNo">549</span><a id="line.549">        classbyUUID.put(COMMON_MODULES_SECTION, CommonModules.class);</a>
+<span class="sourceLineNo">550</span><a id="line.550">        classbyUUID.put(SCHEDULED_JOBS_SECTION, ScheduledJobs.class);</a>
+<span class="sourceLineNo">551</span><a id="line.551">        classbyUUID.put(COMMON_ATTRIBUTES_SECTION, CommonAttributes.class);</a>
+<span class="sourceLineNo">552</span><a id="line.552">        classbyUUID.put(SESSION_PARAMS_SECTION, SessionParams.class);</a>
+<span class="sourceLineNo">553</span><a id="line.553">        classbyUUID.put(FUNC_OPTIONS_PARAMS_SECTION, FunctionalOptionParams.class);</a>
+<span class="sourceLineNo">554</span><a id="line.554">        classbyUUID.put(HTTP_SERVICES_SECTION, HttpServices.class);</a>
+<span class="sourceLineNo">555</span><a id="line.555">        classbyUUID.put(SUBSYSTEMS_SECTION, Subsystems.class);</a>
+<span class="sourceLineNo">556</span><a id="line.556">        classbyUUID.put(INTERFACES_SECTION, Interfaces.class);</a>
+<span class="sourceLineNo">557</span><a id="line.557">        classbyUUID.put(STYLES_SECTION, Styles.class);</a>
+<span class="sourceLineNo">558</span><a id="line.558">        classbyUUID.put(FILTER_CRITERIA_SECTION, FilterCriteria.class);</a>
+<span class="sourceLineNo">559</span><a id="line.559">        classbyUUID.put(SETTINGS_STORAGES_SECTION, SettingsStorages.class);</a>
+<span class="sourceLineNo">560</span><a id="line.560">        classbyUUID.put(EVENT_SUBSCRIPTIONS_SECTION, EventSubscriptions.class);</a>
+<span class="sourceLineNo">561</span><a id="line.561">        classbyUUID.put(STYLE_ITEMS_SECTION, StyleItems.class);</a>
+<span class="sourceLineNo">562</span><a id="line.562">        classbyUUID.put(COMMON_PICTURES_SECTION, CommonPictures.class);</a>
+<span class="sourceLineNo">563</span><a id="line.563">        classbyUUID.put(EXCHANGE_PLANS_SECTION, ExchangePlans.class);</a>
+<span class="sourceLineNo">564</span><a id="line.564">        classbyUUID.put(WEB_SERVICES_SECTION, WebServices.class);</a>
+<span class="sourceLineNo">565</span><a id="line.565">        classbyUUID.put(LANGUAGES_SECTION, Languages.class);</a>
+<span class="sourceLineNo">566</span><a id="line.566">        classbyUUID.put(FUNCTIONAL_OPTIONS_SECTION, FunctionalOptions.class);</a>
+<span class="sourceLineNo">567</span><a id="line.567">        classbyUUID.put(DEFINED_TYPES_SECTION, DefinedTypes.class);</a>
+<span class="sourceLineNo">568</span><a id="line.568">        classbyUUID.put(XDTO_PACKAGES_SECTION, XdtoPackages.class);</a>
+<span class="sourceLineNo">569</span><a id="line.569">        classbyUUID.put(WS_REFERENCES_SECTION, WsReferences.class);</a>
+<span class="sourceLineNo">570</span><a id="line.570">        classbyUUID.put(CONSTANTS_SECTION, Constants.class);</a>
+<span class="sourceLineNo">571</span><a id="line.571">        classbyUUID.put(DOCUMENTS_SECTION, Documents.class);</a>
+<span class="sourceLineNo">572</span><a id="line.572">        classbyUUID.put(COMMON_FORMS_SECTION, CommonForms.class);</a>
+<span class="sourceLineNo">573</span><a id="line.573">        classbyUUID.put(INFORMATION_REGISTERS_SECTION, InformationRegisters.class);</a>
+<span class="sourceLineNo">574</span><a id="line.574">        classbyUUID.put(COMMAND_GROUPS_SECTION, CommandGroups.class);</a>
+<span class="sourceLineNo">575</span><a id="line.575">        classbyUUID.put(COMMON_COMMANDS_SECTION, CommonCommands.class);</a>
+<span class="sourceLineNo">576</span><a id="line.576">        classbyUUID.put(DOCUMENT_NUMERATORS_SECTION, DocumentNumerators.class);</a>
+<span class="sourceLineNo">577</span><a id="line.577">        classbyUUID.put(DOCUMENT_JOURNALS_SECTION, DocumentJournals.class);</a>
+<span class="sourceLineNo">578</span><a id="line.578">        classbyUUID.put(REPORTS_SECTION, Reports.class);</a>
+<span class="sourceLineNo">579</span><a id="line.579">        classbyUUID</a>
+<span class="sourceLineNo">580</span><a id="line.580">                .put(CHARTS_OF_CHARACTERISTIC_TYPES_SECTION, ChartsOfCharacteristicTypes.class);</a>
+<span class="sourceLineNo">581</span><a id="line.581">        classbyUUID.put(ACCUMULATION_REGISTERS_SECTION, AccumulationRegisters.class);</a>
+<span class="sourceLineNo">582</span><a id="line.582">        classbyUUID.put(SEQUENCES_SECTION, Sequences.class);</a>
+<span class="sourceLineNo">583</span><a id="line.583">        classbyUUID.put(DATA_PROCESSORS_SECTION, DataProcessors.class);</a>
+<span class="sourceLineNo">584</span><a id="line.584">        classbyUUID.put(CATALOGS_SECTION, Catalogs.class);</a>
+<span class="sourceLineNo">585</span><a id="line.585">        classbyUUID.put(ENUMS_SECTION, Enums.class);</a>
+<span class="sourceLineNo">586</span><a id="line.586">        classbyUUID.put(CHARTS_OF_ACCOUNTS_SECTION, ChartsOfAccounts.class);</a>
+<span class="sourceLineNo">587</span><a id="line.587">        classbyUUID.put(ACCOUNTING_REGISTERS_SECTION, AccountingRegisters.class);</a>
+<span class="sourceLineNo">588</span><a id="line.588">        classbyUUID.put(CHARTS_OF_CALCULATION_TYPES_SECTION, ChartsOfCalculation.class);</a>
+<span class="sourceLineNo">589</span><a id="line.589">        classbyUUID.put(CALCULATION_REGISTERS_SECTION, CalculationRegisters.class);</a>
+<span class="sourceLineNo">590</span><a id="line.590">        classbyUUID.put(TASKS_SECTION, Tasks.class);</a>
+<span class="sourceLineNo">591</span><a id="line.591">        classbyUUID.put(BUSINESS_PROCESSES_SECTION, BusinessProcesses.class);</a>
+<span class="sourceLineNo">592</span><a id="line.592">        classbyUUID.put(EXTERNAL_DATA_SOURCES_SECTION, ExternalDataSources.class);</a>
+<span class="sourceLineNo">593</span><a id="line.593">        classbyUUID.put(EXTERNAL_DATA_PROCESSOR, ExternalDataProcessorMetaData.class);</a>
+<span class="sourceLineNo">594</span><a id="line.594">        classbyUUID.put(EXTERNAL_REPORT, ExternalReportMetaData.class);</a>
+<span class="sourceLineNo">595</span><a id="line.595">        classbyUUID.put(COMMON_CONFIGURATION_BLOCK, CommonConfiguraionMetaData.class);</a>
+<span class="sourceLineNo">596</span><a id="line.596">        classbyUUID.put(MAIN_CONFIGURATION_BLOCK, MainConfiguraionMetaData.class);</a>
+<span class="sourceLineNo">597</span><a id="line.597">        classbyUUID.put(ACCOUNTING_CONFIGURATION_BLOCK, AccountingConfiguraionMetaData.class);</a>
+<span class="sourceLineNo">598</span><a id="line.598">        classbyUUID.put(CALCULATION_CONFIGURATION_BLOCK, CalculationConfiguraionMetaData.class);</a>
+<span class="sourceLineNo">599</span><a id="line.599">        classbyUUID</a>
+<span class="sourceLineNo">600</span><a id="line.600">                .put(BUSINESS_PROCESSES_CONFIGURATION_BLOCK, BusinessProcessesConfiguraionMetaData.class);</a>
+<span class="sourceLineNo">601</span><a id="line.601">        classbyUUID</a>
+<span class="sourceLineNo">602</span><a id="line.602">                .put(EXTERNAL_DATA_SOURCES_CONFIGURATION_BLOCK, ExternalDataSourcesConfiguraionMetaData.class);</a>
+<span class="sourceLineNo">603</span><a id="line.603">        classbyUUID.put(COMMAND_LIST, CommandList.class);</a>
+<span class="sourceLineNo">604</span><a id="line.604">        classbyUUID.put(TABULARS, TabularList.class);</a>
+<span class="sourceLineNo">605</span><a id="line.605">        classbyUUID.put(ATTRIBUTES, AttributesList.class);</a>
+<span class="sourceLineNo">606</span><a id="line.606">        classbyUUID.put(FORMS, FormList.class);</a>
+<span class="sourceLineNo">607</span><a id="line.607">        classbyUUID.put(TABULAR_DOCUMENTS, TabularList.class);</a>
+<span class="sourceLineNo">608</span><a id="line.608">        classbyUUID.put(ATTRIBUTES_DOCUMENTS, AttributesDocumentList.class);</a>
+<span class="sourceLineNo">609</span><a id="line.609">        classbyUUID.put(COMMAND_LIST_DOCUMENTS, CommandList.class);</a>
+<span class="sourceLineNo">610</span><a id="line.610">        classbyUUID.put(TEMPLATES_SECTION_DOCUMENTS, TemplateList.class);</a>
+<span class="sourceLineNo">611</span><a id="line.611">        classbyUUID.put(UNK_REGISTERS, FormList.class);</a>
+<span class="sourceLineNo">612</span><a id="line.612">        classbyUUID.put(RESOURCE_REGISTERS, ResourceList.class);</a>
+<span class="sourceLineNo">613</span><a id="line.613">        classbyUUID.put(DIMENSION_REGISTERS, DimensionList.class);</a>
+<span class="sourceLineNo">614</span><a id="line.614">        classbyUUID.put(ATTRIBUTES_REGISTERS, AttributesRegistersList.class);</a>
+<span class="sourceLineNo">615</span><a id="line.615">        classbyUUID.put(FORMS_REGISTERS, FormList.class);</a>
+<span class="sourceLineNo">616</span><a id="line.616">        classbyUUID.put(RESOURCE_INFORMATION_REGISTERS, InformationResourceList.class);</a>
+<span class="sourceLineNo">617</span><a id="line.617">        classbyUUID.put(DIMENSION_INFORMATION_REGISTERS, InformationDimensionList.class);</a>
+<span class="sourceLineNo">618</span><a id="line.618">        classbyUUID.put(FORMS_INFORMATION_REGISTERS, FormList.class);</a>
+<span class="sourceLineNo">619</span><a id="line.619">        classbyUUID.put(ATTRIBUTES_INFORMATION_REGISTERS, AttributesRegistersList.class);</a>
+<span class="sourceLineNo">620</span><a id="line.620">        classbyUUID.put(COMMANDS_INFORMATION_REGISTERS, CommandListMetaDataObject.class);</a>
+<span class="sourceLineNo">621</span><a id="line.621">        classbyUUID.put(ATTRIBUTES_REPORTS, AttributesList.class);</a>
+<span class="sourceLineNo">622</span><a id="line.622">        classbyUUID.put(FORM_REPORTS, FormList.class);</a>
+<span class="sourceLineNo">623</span><a id="line.623">        classbyUUID.put(TABULARS_REPORTS, TabularList.class);</a>
+<span class="sourceLineNo">624</span><a id="line.624">        classbyUUID.put(COMMANDS_REPORTS, CommandListMetaDataObject.class);</a>
+<span class="sourceLineNo">625</span><a id="line.625">        classbyUUID.put(COMMANDS_DATA_PROCESSORS, CommandListMetaDataObject.class);</a>
+<span class="sourceLineNo">626</span><a id="line.626">        classbyUUID.put(UNK1_ENUM, FormList.class);</a>
+<span class="sourceLineNo">627</span><a id="line.627">        classbyUUID.put(UNK2_ENUM, FormList.class);</a>
+<span class="sourceLineNo">628</span><a id="line.628">        classbyUUID.put(VALUES_ENUM, EnumList.class);</a>
+<span class="sourceLineNo">629</span><a id="line.629">        classbyUUID.put(ATTRIBUTES_EXCHANGE_PLANS, AttributesList.class);</a>
+<span class="sourceLineNo">630</span><a id="line.630">        classbyUUID.put(TABULARS_EXCHANGE_PLANS, TabularList.class);</a>
+<span class="sourceLineNo">631</span><a id="line.631">        classbyUUID.put(FORMS_EXCHANGE_PLANS, FormList.class);</a>
+<span class="sourceLineNo">632</span><a id="line.632">        classbyUUID.put(COMMANDS_EXCHANGE_PLANS, CommandList.class);</a>
+<span class="sourceLineNo">633</span><a id="line.633">        classbyUUID.put(FORMS_FILTER_CRITERIA, FormList.class);</a>
+<span class="sourceLineNo">634</span><a id="line.634">        classbyUUID.put(COMMANDS_FILTER_CRITERIA, CommandList.class);</a>
+<span class="sourceLineNo">635</span><a id="line.635">        classbyUUID.put(DATA_SEQUENCES, SequencesDataList.class);</a>
+<span class="sourceLineNo">636</span><a id="line.636">        classbyUUID.put(FORMS_SETTING_STORAGES, FormList.class);</a>
+<span class="sourceLineNo">637</span><a id="line.637">        classbyUUID.put(FORMS_TASKS, FormList.class);</a>
+<span class="sourceLineNo">638</span><a id="line.638">        classbyUUID.put(ATTRIBUTES_TASKS, AttributesList.class);</a>
+<span class="sourceLineNo">639</span><a id="line.639">        classbyUUID.put(ATTRIBUTES_ADDRESS_TASKS, AttributesAddressList.class);</a>
+<span class="sourceLineNo">640</span><a id="line.640">        classbyUUID.put(TABULARS_TASKS, TabularList.class);</a>
+<span class="sourceLineNo">641</span><a id="line.641">        classbyUUID.put(COMMANDS_TASKS, CommandList.class);</a>
+<span class="sourceLineNo">642</span><a id="line.642">        classbyUUID.put(OPERATION_WEB_SERVICE, WebServiceList.class);</a>
+<span class="sourceLineNo">643</span><a id="line.643">        classbyUUID.put(OPERATION_PARAMS_WEB_SERVICE, OperationParams.class);</a>
+<span class="sourceLineNo">644</span><a id="line.644">        classbyUUID.put(ATTRIBUTES_ACCOUNTING, AttributesAddressList.class);</a>
+<span class="sourceLineNo">645</span><a id="line.645">        classbyUUID.put(RESOURCE_ACCOUNTING, AccountingResourceList.class);</a>
+<span class="sourceLineNo">646</span><a id="line.646">        classbyUUID.put(COMMANDS_ACCOUNTING, CommandListMetaDataObject.class);</a>
+<span class="sourceLineNo">647</span><a id="line.647">        classbyUUID.put(DIMENSION_ACCOUNTING_REGISTERS, DimensionList.class);</a>
+<span class="sourceLineNo">648</span><a id="line.648">        classbyUUID.put(FORMS_ACCOUNTING_REGISTERS, FormList.class);</a>
+<span class="sourceLineNo">649</span><a id="line.649">        classbyUUID.put(DIMENSION_CALCULATION_REGISTERS, CalculationDimensionList.class);</a>
+<span class="sourceLineNo">650</span><a id="line.650">        classbyUUID.put(UNK1_CALCULATION_REGISTERS, FormList.class);</a>
+<span class="sourceLineNo">651</span><a id="line.651">        classbyUUID.put(RESOURCE_CALCULATION_REGISTERS, CalculationResourceList.class);</a>
+<span class="sourceLineNo">652</span><a id="line.652">        classbyUUID.put(UNK2_CALCULATION_REGISTERS, FormList.class);</a>
+<span class="sourceLineNo">653</span><a id="line.653">        classbyUUID.put(UNK3_CALCULATION_REGISTERS, FormList.class);</a>
+<span class="sourceLineNo">654</span><a id="line.654">        classbyUUID.put(ATTRIBUTES_CALCULATION_REGISTERS, CalculationAttributesList.class);</a>
+<span class="sourceLineNo">655</span><a id="line.655">        classbyUUID.put(TABULAR_CHART_ACCOUNT, TabularList.class);</a>
+<span class="sourceLineNo">656</span><a id="line.656">        classbyUUID.put(COMMANDS_CHART_ACCOUNT, CommandList.class);</a>
+<span class="sourceLineNo">657</span><a id="line.657">        classbyUUID.put(FORMS_CHART_ACCOUNT, FormList.class);</a>
+<span class="sourceLineNo">658</span><a id="line.658">        classbyUUID.put(ATTRIBUTES_CHART_ACCOUNT, AttributesList.class);</a>
+<span class="sourceLineNo">659</span><a id="line.659">        classbyUUID.put(FLAGS_CHART_ACCOUNT, AccountingFlags.class);</a>
+<span class="sourceLineNo">660</span><a id="line.660">        classbyUUID.put(EXT_DIMENTION_FLAGS_CHART_ACCOUNT, ExtDimensionAccountingFlags.class);</a>
+<span class="sourceLineNo">661</span><a id="line.661">        classbyUUID.put(TABULAR_CHART_CALCULATION, TabularList.class);</a>
+<span class="sourceLineNo">662</span><a id="line.662">        classbyUUID.put(ATTRIBUTES_CHART_CALCULATION, AttributesList.class);</a>
+<span class="sourceLineNo">663</span><a id="line.663">        classbyUUID.put(COMMANDS_CHART_CALCULATION, CommandList.class);</a>
+<span class="sourceLineNo">664</span><a id="line.664">        classbyUUID.put(FORMS_CHART_CALCULATION, FormList.class);</a>
+<span class="sourceLineNo">665</span><a id="line.665">        classbyUUID.put(TABULAR_CHART_CHARACTERISTICS, TabularList.class);</a>
+<span class="sourceLineNo">666</span><a id="line.666">        classbyUUID</a>
+<span class="sourceLineNo">667</span><a id="line.667">                .put(ATTRIBUTES_CHART_CHARACTERISTICS, ChartsOfCharacteristicTypesAttributesList.class);</a>
+<span class="sourceLineNo">668</span><a id="line.668">        classbyUUID.put(COMMANDS_CHART_CHARACTERISTICS, CommandList.class);</a>
+<span class="sourceLineNo">669</span><a id="line.669">        classbyUUID.put(FORMS_CHART_CHARACTERISTICS, FormList.class);</a>
+<span class="sourceLineNo">670</span><a id="line.670">        classbyUUID.put(COLUMNS_DOCUMENT_JOURNAL, ColumnList.class);</a>
+<span class="sourceLineNo">671</span><a id="line.671">        classbyUUID.put(COMMANDS_DOCUMENT_JOURNAL, CommandListMetaDataObject.class);</a>
+<span class="sourceLineNo">672</span><a id="line.672">        classbyUUID.put(FORMS_DOCUMENT_JOURNAL, FormList.class);</a>
+<span class="sourceLineNo">673</span><a id="line.673">        classbyUUID.put(FORMS_BUSINESS_PROCESS, FormList.class);</a>
+<span class="sourceLineNo">674</span><a id="line.674">        classbyUUID.put(COMMANDS_BUSINESS_PROCESS, CommandList.class);</a>
+<span class="sourceLineNo">675</span><a id="line.675">        classbyUUID.put(ATTRIBUTES_BUSINESS_PROCESS, AttributesList.class);</a>
+<span class="sourceLineNo">676</span><a id="line.676">        classbyUUID.put(TABULARS_BUSINESS_PROCESS, TabularList.class);</a>
+<span class="sourceLineNo">677</span><a id="line.677">        classbyUUID.put(URL_TEMPLATES_HTTP_SERVICE, UrlTemplates.class);</a>
+<span class="sourceLineNo">678</span><a id="line.678">        classbyUUID.put(METHODS_HTTP_SERVICE, HttpMethods.class);</a>
+<span class="sourceLineNo">679</span><a id="line.679">        classbyUUID.put(ENUM_FILL_CHEKING, FillChecking.class);</a>
+<span class="sourceLineNo">680</span><a id="line.680">        classbyUUID.put(LINK_BY_TYPE, LinkByType.class);</a>
+<span class="sourceLineNo">681</span><a id="line.681">        classbyUUID.put(CREATE_ON_INPUT, UnkObjectUuidInt.class);</a>
+<span class="sourceLineNo">682</span><a id="line.682">        classbyUUID.put(MULTILANGUAGE_STRING, V8Synonym.class);</a>
+<span class="sourceLineNo">683</span><a id="line.683">        classbyUUID.put(METADATA_OBJECT, MetaDataObjectLink.class);</a>
+<span class="sourceLineNo">684</span><a id="line.684">        classbyUUID.put(ENUM_USE_QUICK_CHOICE, UnkObjectUuidInt.class);</a>
+<span class="sourceLineNo">685</span><a id="line.685">        classbyUUID.put(ENUM_CHOICE_HISTORY_ON_INPUT, ChoiceHistoryOnInput.class);</a>
+<span class="sourceLineNo">686</span><a id="line.686">        classbyUUID.put(ENUM_FULL_TEXT_SEARCH, UnkObjectUuidInt.class);</a>
+<span class="sourceLineNo">687</span><a id="line.687">        classbyUUID.put(CHOICE_PARAMETER_LINKS, ChoiceParameterLinks.class);</a>
+<span class="sourceLineNo">688</span><a id="line.688">        classbyUUID.put(CHOICE_PARAMETERS, ChoiceParameters.class);</a>
+<span class="sourceLineNo">689</span><a id="line.689">        classbyUUID.put(PREDEFINED_TYPE_11, UnkObjectIntUuidUuid.class);</a>
+<span class="sourceLineNo">690</span><a id="line.690">        classbyUUID.put(FIXED_ARRAY, FixedArray.class);</a>
+<span class="sourceLineNo">691</span><a id="line.691">        classbyUUID.put(ENUM_APPLICATION_USE_PURPOSE, ApplicationUsePurpose.class);</a>
+<span class="sourceLineNo">692</span><a id="line.692">        classbyUUID</a>
+<span class="sourceLineNo">693</span><a id="line.693">                .put(REQUIRED_MOBILE_APPLICATION_PERMISSIONS, RequiredMobileApplicationPermissions.class);</a>
+<span class="sourceLineNo">694</span><a id="line.694">        classbyUUID.put(FUNCTIONAL_OPTION_VALUE, FunctionalOptionContentItem.class);</a>
+<span class="sourceLineNo">695</span><a id="line.695">        classbyUUID.put(COMPOSITE_ID, UnkObjectIntNotReqUuid.class);</a>
+<span class="sourceLineNo">696</span><a id="line.696">        classbyUUID.put(CHARACTERISTICS_DESCRIPTION, CharacteristicsDescription.class);</a>
+<span class="sourceLineNo">697</span><a id="line.697">        classbyUUID.put(STANDART_PERIOD, StandartPeriod.class);</a>
+<span class="sourceLineNo">698</span><a id="line.698">        classbyUUID.put(COLOR, Color.class);</a>
+<span class="sourceLineNo">699</span><a id="line.699">        classbyUUID.put(FONT, Font.class);</a>
+<span class="sourceLineNo">700</span><a id="line.700">        classbyUUID.put(BORDER, Border.class);</a>
+<span class="sourceLineNo">701</span><a id="line.701">        classbyUUID.put(ACCOUNT_TYPE, AccountType.class);</a>
+<span class="sourceLineNo">702</span><a id="line.702">        classbyUUID.put(TYPE_DESCRIPTION, PatternDescription.class);</a>
+<span class="sourceLineNo">703</span><a id="line.703">        classbyUUID.put(ENUM_DATA_HISTORY_USE, UnkObjectUuidInt.class);</a>
+<span class="sourceLineNo">704</span><a id="line.704"></a>
+<span class="sourceLineNo">705</span><a id="line.705">    }</a>
+<span class="sourceLineNo">706</span><a id="line.706"></a>
+<span class="sourceLineNo">707</span><a id="line.707">    @Override</a>
+<span class="sourceLineNo">708</span><a id="line.708">    public V8InnerClass read(final ByteBuffer buffer) {</a>
+<span class="sourceLineNo">709</span><a id="line.709">        buffer.mark();</a>
+<span class="sourceLineNo">710</span><a id="line.710">        V8InnerClass innerClass = new V8InnerClass();</a>
+<span class="sourceLineNo">711</span><a id="line.711">        final UUID classUUID = V8Reader.read(UUID.class, buffer);</a>
+<span class="sourceLineNo">712</span><a id="line.712">        innerClass.setClassUUID(classUUID);</a>
+<span class="sourceLineNo">713</span><a id="line.713">        if (classbyUUID.containsKey(classUUID)) {</a>
+<span class="sourceLineNo">714</span><a id="line.714">            V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">715</span><a id="line.715">            innerClass.setValue(V8Reader.read(classbyUUID.get(classUUID), buffer));</a>
+<span class="sourceLineNo">716</span><a id="line.716">        } else {</a>
+<span class="sourceLineNo">717</span><a id="line.717">            throw new RuntimeException("Undefined class uuid: " + classUUID);</a>
+<span class="sourceLineNo">718</span><a id="line.718">        }</a>
+<span class="sourceLineNo">719</span><a id="line.719">        return innerClass;</a>
+<span class="sourceLineNo">720</span><a id="line.720">    }</a>
+<span class="sourceLineNo">721</span><a id="line.721"></a>
+<span class="sourceLineNo">722</span><a id="line.722">    @Override</a>
+<span class="sourceLineNo">723</span><a id="line.723">    public void write(Object object, SerializedOutputStream buffer) {</a>
+<span class="sourceLineNo">724</span><a id="line.724">        V8Reader.write(((V8InnerClass)object).getClassUUID(), buffer);</a>
+<span class="sourceLineNo">725</span><a id="line.725">        buffer.putComa();</a>
+<span class="sourceLineNo">726</span><a id="line.726">        V8Reader.write(((V8InnerClass)object).getValue(), buffer);</a>
+<span class="sourceLineNo">727</span><a id="line.727">    }</a>
+<span class="sourceLineNo">728</span><a id="line.728">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

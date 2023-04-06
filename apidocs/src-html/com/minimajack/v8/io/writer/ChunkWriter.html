@@ -1,199 +1,200 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="ru">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package com.minimajack.v8.io.writer;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import java.io.ByteArrayOutputStream;<a name="line.3"></a>
-<span class="sourceLineNo">004</span>import java.io.DataOutput;<a name="line.4"></a>
-<span class="sourceLineNo">005</span>import java.io.IOException;<a name="line.5"></a>
-<span class="sourceLineNo">006</span><a name="line.6"></a>
-<span class="sourceLineNo">007</span>import com.google.common.io.LittleEndianDataOutputStream;<a name="line.7"></a>
-<span class="sourceLineNo">008</span>import com.minimajack.v8.format.BlockHeader;<a name="line.8"></a>
-<span class="sourceLineNo">009</span>import com.minimajack.v8.io.metrix.ChunkSizeResolver;<a name="line.9"></a>
-<span class="sourceLineNo">010</span>import com.minimajack.v8.io.metrix.SizeResolver;<a name="line.10"></a>
-<span class="sourceLineNo">011</span>import com.minimajack.v8.model.BufferedObject;<a name="line.11"></a>
-<span class="sourceLineNo">012</span>import com.minimajack.v8.model.FakeMemoryAllocator;<a name="line.12"></a>
-<span class="sourceLineNo">013</span><a name="line.13"></a>
-<span class="sourceLineNo">014</span>public abstract class ChunkWriter<a name="line.14"></a>
-<span class="sourceLineNo">015</span>{<a name="line.15"></a>
-<span class="sourceLineNo">016</span><a name="line.16"></a>
-<span class="sourceLineNo">017</span>    private final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();<a name="line.17"></a>
-<span class="sourceLineNo">018</span><a name="line.18"></a>
-<span class="sourceLineNo">019</span>    private final LittleEndianDataOutputStream dataOutputStream = new LittleEndianDataOutputStream( outputBuffer );<a name="line.19"></a>
-<span class="sourceLineNo">020</span><a name="line.20"></a>
-<span class="sourceLineNo">021</span>    private final FakeMemoryAllocator allocator = new FakeMemoryAllocator();<a name="line.21"></a>
-<span class="sourceLineNo">022</span><a name="line.22"></a>
-<span class="sourceLineNo">023</span>    private final BlockHeader cursor = new BlockHeader();<a name="line.23"></a>
-<span class="sourceLineNo">024</span><a name="line.24"></a>
-<span class="sourceLineNo">025</span>    private ByteArrayOutputStream chunkBuffer;<a name="line.25"></a>
-<span class="sourceLineNo">026</span><a name="line.26"></a>
-<span class="sourceLineNo">027</span>    private LittleEndianDataOutputStream chunkBufferOutputStream;<a name="line.27"></a>
-<span class="sourceLineNo">028</span><a name="line.28"></a>
-<span class="sourceLineNo">029</span>    private ChunkSizeResolver sizeResolver;<a name="line.29"></a>
-<span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>    private int position = 0;<a name="line.31"></a>
-<span class="sourceLineNo">032</span><a name="line.32"></a>
-<span class="sourceLineNo">033</span>    private int limit;<a name="line.33"></a>
-<span class="sourceLineNo">034</span><a name="line.34"></a>
-<span class="sourceLineNo">035</span>    public ChunkWriter()<a name="line.35"></a>
-<span class="sourceLineNo">036</span>    {<a name="line.36"></a>
-<span class="sourceLineNo">037</span>        super();<a name="line.37"></a>
-<span class="sourceLineNo">038</span>    }<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>    public void write( BufferedObject bo )<a name="line.40"></a>
-<span class="sourceLineNo">041</span>        throws IOException<a name="line.41"></a>
-<span class="sourceLineNo">042</span>    {<a name="line.42"></a>
-<span class="sourceLineNo">043</span>        bo.write( chunkBufferOutputStream );<a name="line.43"></a>
-<span class="sourceLineNo">044</span>        flushChunks();<a name="line.44"></a>
-<span class="sourceLineNo">045</span>    }<a name="line.45"></a>
-<span class="sourceLineNo">046</span><a name="line.46"></a>
-<span class="sourceLineNo">047</span>    public void write( byte[] b )<a name="line.47"></a>
-<span class="sourceLineNo">048</span>        throws IOException<a name="line.48"></a>
-<span class="sourceLineNo">049</span>    {<a name="line.49"></a>
-<span class="sourceLineNo">050</span>        chunkBuffer.write( b );<a name="line.50"></a>
-<span class="sourceLineNo">051</span>        flushChunks();<a name="line.51"></a>
-<span class="sourceLineNo">052</span>    }<a name="line.52"></a>
-<span class="sourceLineNo">053</span><a name="line.53"></a>
-<span class="sourceLineNo">054</span>    private void flushChunks()<a name="line.54"></a>
-<span class="sourceLineNo">055</span>    {<a name="line.55"></a>
-<span class="sourceLineNo">056</span>        position = chunkBuffer.size();<a name="line.56"></a>
-<span class="sourceLineNo">057</span>        if ( position &gt; limit )<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        {<a name="line.58"></a>
-<span class="sourceLineNo">059</span>            int offset = 0;<a name="line.59"></a>
-<span class="sourceLineNo">060</span>            byte[] data = chunkBuffer.toByteArray();<a name="line.60"></a>
-<span class="sourceLineNo">061</span>            while ( position &gt; limit )<a name="line.61"></a>
-<span class="sourceLineNo">062</span>            {<a name="line.62"></a>
-<span class="sourceLineNo">063</span>                int sizeToWrite = ( position / limit ) * limit;<a name="line.63"></a>
-<span class="sourceLineNo">064</span>                while ( sizeToWrite &gt; offset )<a name="line.64"></a>
-<span class="sourceLineNo">065</span>                {<a name="line.65"></a>
-<span class="sourceLineNo">066</span>                    offset += dataReady( data, offset, limit );<a name="line.66"></a>
-<span class="sourceLineNo">067</span>                }<a name="line.67"></a>
-<span class="sourceLineNo">068</span>                position -= offset;<a name="line.68"></a>
-<span class="sourceLineNo">069</span>            }<a name="line.69"></a>
-<span class="sourceLineNo">070</span>            chunkBuffer.reset();<a name="line.70"></a>
-<span class="sourceLineNo">071</span>            chunkBuffer.write( data, offset, data.length - offset );<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        }<a name="line.72"></a>
-<span class="sourceLineNo">073</span>    }<a name="line.73"></a>
-<span class="sourceLineNo">074</span><a name="line.74"></a>
-<span class="sourceLineNo">075</span>    public void allocateData( int size )<a name="line.75"></a>
-<span class="sourceLineNo">076</span>    {<a name="line.76"></a>
-<span class="sourceLineNo">077</span>        allocator.allocate( size );<a name="line.77"></a>
-<span class="sourceLineNo">078</span>    }<a name="line.78"></a>
-<span class="sourceLineNo">079</span><a name="line.79"></a>
-<span class="sourceLineNo">080</span>    public int getPosition()<a name="line.80"></a>
-<span class="sourceLineNo">081</span>    {<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        return allocator.getAllocationSize();<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
-<span class="sourceLineNo">084</span><a name="line.84"></a>
-<span class="sourceLineNo">085</span>    public void writeAllData()<a name="line.85"></a>
-<span class="sourceLineNo">086</span>    {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        this.allocateData( this.sizeResolver.getChunkSize() + BlockHeader.V8_HEADERSIZE );<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        while ( hasData() )<a name="line.88"></a>
-<span class="sourceLineNo">089</span>        {<a name="line.89"></a>
-<span class="sourceLineNo">090</span>            getDataToWrite();<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        }<a name="line.91"></a>
-<span class="sourceLineNo">092</span>        flush();<a name="line.92"></a>
-<span class="sourceLineNo">093</span>    }<a name="line.93"></a>
-<span class="sourceLineNo">094</span><a name="line.94"></a>
-<span class="sourceLineNo">095</span>    public abstract void getDataToWrite();<a name="line.95"></a>
-<span class="sourceLineNo">096</span><a name="line.96"></a>
-<span class="sourceLineNo">097</span>    public boolean hasData()<a name="line.97"></a>
-<span class="sourceLineNo">098</span>    {<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        return position &gt; limit;<a name="line.99"></a>
-<span class="sourceLineNo">100</span>    }<a name="line.100"></a>
-<span class="sourceLineNo">101</span><a name="line.101"></a>
-<span class="sourceLineNo">102</span>    public void flush()<a name="line.102"></a>
-<span class="sourceLineNo">103</span>    {<a name="line.103"></a>
-<span class="sourceLineNo">104</span>        byte[] data = new byte[limit];<a name="line.104"></a>
-<span class="sourceLineNo">105</span>        byte[] tempData = chunkBuffer.toByteArray();<a name="line.105"></a>
-<span class="sourceLineNo">106</span>        for ( int i = 0; i &lt; tempData.length; i++ )<a name="line.106"></a>
-<span class="sourceLineNo">107</span>        {<a name="line.107"></a>
-<span class="sourceLineNo">108</span>            data[i] = tempData[i];<a name="line.108"></a>
-<span class="sourceLineNo">109</span>        }<a name="line.109"></a>
-<span class="sourceLineNo">110</span>        fillChunk( data, 0, limit );<a name="line.110"></a>
-<span class="sourceLineNo">111</span>    }<a name="line.111"></a>
-<span class="sourceLineNo">112</span><a name="line.112"></a>
-<span class="sourceLineNo">113</span>    private void fillChunk( byte[] b, int off, int len )<a name="line.113"></a>
-<span class="sourceLineNo">114</span>    {<a name="line.114"></a>
-<span class="sourceLineNo">115</span>        try<a name="line.115"></a>
-<span class="sourceLineNo">116</span>        {<a name="line.116"></a>
-<span class="sourceLineNo">117</span>            cursor.write( dataOutputStream );<a name="line.117"></a>
-<span class="sourceLineNo">118</span>            dataOutputStream.write( b, off, len );<a name="line.118"></a>
-<span class="sourceLineNo">119</span>            cursor.setDocSize( 0 );<a name="line.119"></a>
-<span class="sourceLineNo">120</span>            cursor.setNextBlock( Integer.MAX_VALUE );<a name="line.120"></a>
-<span class="sourceLineNo">121</span>            onFillBlock();<a name="line.121"></a>
-<span class="sourceLineNo">122</span>        }<a name="line.122"></a>
-<span class="sourceLineNo">123</span>        catch ( IOException e )<a name="line.123"></a>
-<span class="sourceLineNo">124</span>        {<a name="line.124"></a>
-<span class="sourceLineNo">125</span>            throw new RuntimeException( "Can't write readed data" );<a name="line.125"></a>
-<span class="sourceLineNo">126</span>        }<a name="line.126"></a>
-<span class="sourceLineNo">127</span>    }<a name="line.127"></a>
-<span class="sourceLineNo">128</span><a name="line.128"></a>
-<span class="sourceLineNo">129</span>    protected void onFillBlock()<a name="line.129"></a>
-<span class="sourceLineNo">130</span>    {<a name="line.130"></a>
-<span class="sourceLineNo">131</span><a name="line.131"></a>
-<span class="sourceLineNo">132</span>    }<a name="line.132"></a>
-<span class="sourceLineNo">133</span><a name="line.133"></a>
-<span class="sourceLineNo">134</span>    private int dataReady( byte[] b, int off, int len )<a name="line.134"></a>
-<span class="sourceLineNo">135</span>    {<a name="line.135"></a>
-<span class="sourceLineNo">136</span>        if ( this.hasData() )<a name="line.136"></a>
-<span class="sourceLineNo">137</span>        {<a name="line.137"></a>
-<span class="sourceLineNo">138</span>            this.cursor.setNextBlock( getPosition() );<a name="line.138"></a>
-<span class="sourceLineNo">139</span>        }<a name="line.139"></a>
-<span class="sourceLineNo">140</span>        fillChunk( b, off, len );<a name="line.140"></a>
-<span class="sourceLineNo">141</span>        this.allocateData( sizeResolver.getChunkSize() + BlockHeader.V8_HEADERSIZE );<a name="line.141"></a>
-<span class="sourceLineNo">142</span>        return len;<a name="line.142"></a>
-<span class="sourceLineNo">143</span>    }<a name="line.143"></a>
-<span class="sourceLineNo">144</span><a name="line.144"></a>
-<span class="sourceLineNo">145</span>    public SizeResolver getSizeResolver()<a name="line.145"></a>
-<span class="sourceLineNo">146</span>    {<a name="line.146"></a>
-<span class="sourceLineNo">147</span>        return sizeResolver;<a name="line.147"></a>
-<span class="sourceLineNo">148</span>    }<a name="line.148"></a>
-<span class="sourceLineNo">149</span><a name="line.149"></a>
-<span class="sourceLineNo">150</span>    public void setFullSize( int fullSize )<a name="line.150"></a>
-<span class="sourceLineNo">151</span>    {<a name="line.151"></a>
-<span class="sourceLineNo">152</span>        this.cursor.setDocSize( fullSize );<a name="line.152"></a>
-<span class="sourceLineNo">153</span>    }<a name="line.153"></a>
-<span class="sourceLineNo">154</span><a name="line.154"></a>
-<span class="sourceLineNo">155</span>    public void setSizeResolver( ChunkSizeResolver sizeResolver )<a name="line.155"></a>
-<span class="sourceLineNo">156</span>    {<a name="line.156"></a>
-<span class="sourceLineNo">157</span>        this.sizeResolver = sizeResolver;<a name="line.157"></a>
-<span class="sourceLineNo">158</span>        this.limit = this.sizeResolver.getChunkSize();<a name="line.158"></a>
-<span class="sourceLineNo">159</span>        this.chunkBuffer = new ByteArrayOutputStream( this.limit );<a name="line.159"></a>
-<span class="sourceLineNo">160</span>        this.chunkBufferOutputStream = new LittleEndianDataOutputStream( chunkBuffer );<a name="line.160"></a>
-<span class="sourceLineNo">161</span>        this.cursor.setBlockSize( this.limit );<a name="line.161"></a>
-<span class="sourceLineNo">162</span>    }<a name="line.162"></a>
-<span class="sourceLineNo">163</span><a name="line.163"></a>
-<span class="sourceLineNo">164</span>    public byte[] getRawData()<a name="line.164"></a>
-<span class="sourceLineNo">165</span>    {<a name="line.165"></a>
-<span class="sourceLineNo">166</span>        return outputBuffer.toByteArray();<a name="line.166"></a>
-<span class="sourceLineNo">167</span>    }<a name="line.167"></a>
-<span class="sourceLineNo">168</span><a name="line.168"></a>
-<span class="sourceLineNo">169</span>    public DataOutput getDataOutputStream()<a name="line.169"></a>
-<span class="sourceLineNo">170</span>    {<a name="line.170"></a>
-<span class="sourceLineNo">171</span>        return dataOutputStream;<a name="line.171"></a>
-<span class="sourceLineNo">172</span>    }<a name="line.172"></a>
-<span class="sourceLineNo">173</span><a name="line.173"></a>
-<span class="sourceLineNo">174</span>    public int getMaximumBufferSize()<a name="line.174"></a>
-<span class="sourceLineNo">175</span>    {<a name="line.175"></a>
-<span class="sourceLineNo">176</span>        if ( outputBuffer.size() == 0 )<a name="line.176"></a>
-<span class="sourceLineNo">177</span>        {<a name="line.177"></a>
-<span class="sourceLineNo">178</span>            writeAllData();<a name="line.178"></a>
-<span class="sourceLineNo">179</span>        }<a name="line.179"></a>
-<span class="sourceLineNo">180</span>        return outputBuffer.size();<a name="line.180"></a>
-<span class="sourceLineNo">181</span>    }<a name="line.181"></a>
-<span class="sourceLineNo">182</span><a name="line.182"></a>
-<span class="sourceLineNo">183</span>    protected void writeData()<a name="line.183"></a>
-<span class="sourceLineNo">184</span>    {<a name="line.184"></a>
-<span class="sourceLineNo">185</span><a name="line.185"></a>
-<span class="sourceLineNo">186</span>    }<a name="line.186"></a>
-<span class="sourceLineNo">187</span><a name="line.187"></a>
-<span class="sourceLineNo">188</span>}<a name="line.188"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package com.minimajack.v8.io.writer;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import com.google.common.io.LittleEndianDataOutputStream;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import com.minimajack.v8.format.BlockHeader;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import com.minimajack.v8.io.metrix.ChunkSizeResolver;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import com.minimajack.v8.io.metrix.SizeResolver;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import com.minimajack.v8.model.BufferedObject;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import com.minimajack.v8.model.FakeMemoryAllocator;</a>
+<span class="sourceLineNo">009</span><a id="line.9"></a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.io.ByteArrayOutputStream;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.io.DataOutput;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.io.IOException;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">public abstract class ChunkWriter</a>
+<span class="sourceLineNo">015</span><a id="line.15">{</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">    private final ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">    private final LittleEndianDataOutputStream dataOutputStream = new LittleEndianDataOutputStream( outputBuffer );</a>
+<span class="sourceLineNo">020</span><a id="line.20"></a>
+<span class="sourceLineNo">021</span><a id="line.21">    private final FakeMemoryAllocator allocator = new FakeMemoryAllocator();</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">    private final BlockHeader cursor = new BlockHeader();</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">    private ByteArrayOutputStream chunkBuffer;</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">    private LittleEndianDataOutputStream chunkBufferOutputStream;</a>
+<span class="sourceLineNo">028</span><a id="line.28"></a>
+<span class="sourceLineNo">029</span><a id="line.29">    private ChunkSizeResolver sizeResolver;</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">    private int position = 0;</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">    private int limit;</a>
+<span class="sourceLineNo">034</span><a id="line.34"></a>
+<span class="sourceLineNo">035</span><a id="line.35">    public ChunkWriter()</a>
+<span class="sourceLineNo">036</span><a id="line.36">    {</a>
+<span class="sourceLineNo">037</span><a id="line.37">        super();</a>
+<span class="sourceLineNo">038</span><a id="line.38">    }</a>
+<span class="sourceLineNo">039</span><a id="line.39"></a>
+<span class="sourceLineNo">040</span><a id="line.40">    public void write( BufferedObject bo )</a>
+<span class="sourceLineNo">041</span><a id="line.41">        throws IOException</a>
+<span class="sourceLineNo">042</span><a id="line.42">    {</a>
+<span class="sourceLineNo">043</span><a id="line.43">        bo.write( chunkBufferOutputStream );</a>
+<span class="sourceLineNo">044</span><a id="line.44">        flushChunks();</a>
+<span class="sourceLineNo">045</span><a id="line.45">    }</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">    public void write( byte[] b )</a>
+<span class="sourceLineNo">048</span><a id="line.48">        throws IOException</a>
+<span class="sourceLineNo">049</span><a id="line.49">    {</a>
+<span class="sourceLineNo">050</span><a id="line.50">        chunkBuffer.write( b );</a>
+<span class="sourceLineNo">051</span><a id="line.51">        flushChunks();</a>
+<span class="sourceLineNo">052</span><a id="line.52">    }</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">    private void flushChunks()</a>
+<span class="sourceLineNo">055</span><a id="line.55">    {</a>
+<span class="sourceLineNo">056</span><a id="line.56">        position = chunkBuffer.size();</a>
+<span class="sourceLineNo">057</span><a id="line.57">        if ( position &gt; limit )</a>
+<span class="sourceLineNo">058</span><a id="line.58">        {</a>
+<span class="sourceLineNo">059</span><a id="line.59">            int offset = 0;</a>
+<span class="sourceLineNo">060</span><a id="line.60">            byte[] data = chunkBuffer.toByteArray();</a>
+<span class="sourceLineNo">061</span><a id="line.61">            while ( position &gt; limit )</a>
+<span class="sourceLineNo">062</span><a id="line.62">            {</a>
+<span class="sourceLineNo">063</span><a id="line.63">                int sizeToWrite = ( position / limit ) * limit;</a>
+<span class="sourceLineNo">064</span><a id="line.64">                while ( sizeToWrite &gt; offset )</a>
+<span class="sourceLineNo">065</span><a id="line.65">                {</a>
+<span class="sourceLineNo">066</span><a id="line.66">                    offset += dataReady( data, offset, limit );</a>
+<span class="sourceLineNo">067</span><a id="line.67">                }</a>
+<span class="sourceLineNo">068</span><a id="line.68">                position -= offset;</a>
+<span class="sourceLineNo">069</span><a id="line.69">            }</a>
+<span class="sourceLineNo">070</span><a id="line.70">            chunkBuffer.reset();</a>
+<span class="sourceLineNo">071</span><a id="line.71">            chunkBuffer.write( data, offset, data.length - offset );</a>
+<span class="sourceLineNo">072</span><a id="line.72">        }</a>
+<span class="sourceLineNo">073</span><a id="line.73">    }</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">    public void allocateData( int size )</a>
+<span class="sourceLineNo">076</span><a id="line.76">    {</a>
+<span class="sourceLineNo">077</span><a id="line.77">        allocator.allocate( size );</a>
+<span class="sourceLineNo">078</span><a id="line.78">    }</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">    public int getPosition()</a>
+<span class="sourceLineNo">081</span><a id="line.81">    {</a>
+<span class="sourceLineNo">082</span><a id="line.82">        return allocator.getAllocationSize();</a>
+<span class="sourceLineNo">083</span><a id="line.83">    }</a>
+<span class="sourceLineNo">084</span><a id="line.84"></a>
+<span class="sourceLineNo">085</span><a id="line.85">    public void writeAllData()</a>
+<span class="sourceLineNo">086</span><a id="line.86">    {</a>
+<span class="sourceLineNo">087</span><a id="line.87">        this.allocateData( this.sizeResolver.getChunkSize() + BlockHeader.V8_HEADERSIZE );</a>
+<span class="sourceLineNo">088</span><a id="line.88">        while ( hasData() )</a>
+<span class="sourceLineNo">089</span><a id="line.89">        {</a>
+<span class="sourceLineNo">090</span><a id="line.90">            getDataToWrite();</a>
+<span class="sourceLineNo">091</span><a id="line.91">        }</a>
+<span class="sourceLineNo">092</span><a id="line.92">        flush();</a>
+<span class="sourceLineNo">093</span><a id="line.93">    }</a>
+<span class="sourceLineNo">094</span><a id="line.94"></a>
+<span class="sourceLineNo">095</span><a id="line.95">    public abstract void getDataToWrite();</a>
+<span class="sourceLineNo">096</span><a id="line.96"></a>
+<span class="sourceLineNo">097</span><a id="line.97">    public boolean hasData()</a>
+<span class="sourceLineNo">098</span><a id="line.98">    {</a>
+<span class="sourceLineNo">099</span><a id="line.99">        return position &gt; limit;</a>
+<span class="sourceLineNo">100</span><a id="line.100">    }</a>
+<span class="sourceLineNo">101</span><a id="line.101"></a>
+<span class="sourceLineNo">102</span><a id="line.102">    public void flush()</a>
+<span class="sourceLineNo">103</span><a id="line.103">    {</a>
+<span class="sourceLineNo">104</span><a id="line.104">        byte[] data = new byte[limit];</a>
+<span class="sourceLineNo">105</span><a id="line.105">        byte[] tempData = chunkBuffer.toByteArray();</a>
+<span class="sourceLineNo">106</span><a id="line.106">        for ( int i = 0; i &lt; tempData.length; i++ )</a>
+<span class="sourceLineNo">107</span><a id="line.107">        {</a>
+<span class="sourceLineNo">108</span><a id="line.108">            data[i] = tempData[i];</a>
+<span class="sourceLineNo">109</span><a id="line.109">        }</a>
+<span class="sourceLineNo">110</span><a id="line.110">        fillChunk( data, 0, limit );</a>
+<span class="sourceLineNo">111</span><a id="line.111">    }</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">    private void fillChunk( byte[] b, int off, int len )</a>
+<span class="sourceLineNo">114</span><a id="line.114">    {</a>
+<span class="sourceLineNo">115</span><a id="line.115">        try</a>
+<span class="sourceLineNo">116</span><a id="line.116">        {</a>
+<span class="sourceLineNo">117</span><a id="line.117">            cursor.write( dataOutputStream );</a>
+<span class="sourceLineNo">118</span><a id="line.118">            dataOutputStream.write( b, off, len );</a>
+<span class="sourceLineNo">119</span><a id="line.119">            cursor.setDocSize( 0 );</a>
+<span class="sourceLineNo">120</span><a id="line.120">            cursor.setNextBlock( Integer.MAX_VALUE );</a>
+<span class="sourceLineNo">121</span><a id="line.121">            onFillBlock();</a>
+<span class="sourceLineNo">122</span><a id="line.122">        }</a>
+<span class="sourceLineNo">123</span><a id="line.123">        catch ( IOException e )</a>
+<span class="sourceLineNo">124</span><a id="line.124">        {</a>
+<span class="sourceLineNo">125</span><a id="line.125">            throw new RuntimeException( "Can't write readed data" );</a>
+<span class="sourceLineNo">126</span><a id="line.126">        }</a>
+<span class="sourceLineNo">127</span><a id="line.127">    }</a>
+<span class="sourceLineNo">128</span><a id="line.128"></a>
+<span class="sourceLineNo">129</span><a id="line.129">    protected void onFillBlock()</a>
+<span class="sourceLineNo">130</span><a id="line.130">    {</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">    }</a>
+<span class="sourceLineNo">133</span><a id="line.133"></a>
+<span class="sourceLineNo">134</span><a id="line.134">    private int dataReady( byte[] b, int off, int len )</a>
+<span class="sourceLineNo">135</span><a id="line.135">    {</a>
+<span class="sourceLineNo">136</span><a id="line.136">        if ( this.hasData() )</a>
+<span class="sourceLineNo">137</span><a id="line.137">        {</a>
+<span class="sourceLineNo">138</span><a id="line.138">            this.cursor.setNextBlock( getPosition() );</a>
+<span class="sourceLineNo">139</span><a id="line.139">        }</a>
+<span class="sourceLineNo">140</span><a id="line.140">        fillChunk( b, off, len );</a>
+<span class="sourceLineNo">141</span><a id="line.141">        this.allocateData( sizeResolver.getChunkSize() + BlockHeader.V8_HEADERSIZE );</a>
+<span class="sourceLineNo">142</span><a id="line.142">        return len;</a>
+<span class="sourceLineNo">143</span><a id="line.143">    }</a>
+<span class="sourceLineNo">144</span><a id="line.144"></a>
+<span class="sourceLineNo">145</span><a id="line.145">    public SizeResolver getSizeResolver()</a>
+<span class="sourceLineNo">146</span><a id="line.146">    {</a>
+<span class="sourceLineNo">147</span><a id="line.147">        return sizeResolver;</a>
+<span class="sourceLineNo">148</span><a id="line.148">    }</a>
+<span class="sourceLineNo">149</span><a id="line.149"></a>
+<span class="sourceLineNo">150</span><a id="line.150">    public void setFullSize( int fullSize )</a>
+<span class="sourceLineNo">151</span><a id="line.151">    {</a>
+<span class="sourceLineNo">152</span><a id="line.152">        this.cursor.setDocSize( fullSize );</a>
+<span class="sourceLineNo">153</span><a id="line.153">    }</a>
+<span class="sourceLineNo">154</span><a id="line.154"></a>
+<span class="sourceLineNo">155</span><a id="line.155">    public void setSizeResolver( ChunkSizeResolver sizeResolver )</a>
+<span class="sourceLineNo">156</span><a id="line.156">    {</a>
+<span class="sourceLineNo">157</span><a id="line.157">        this.sizeResolver = sizeResolver;</a>
+<span class="sourceLineNo">158</span><a id="line.158">        this.limit = this.sizeResolver.getChunkSize();</a>
+<span class="sourceLineNo">159</span><a id="line.159">        this.chunkBuffer = new ByteArrayOutputStream( this.limit );</a>
+<span class="sourceLineNo">160</span><a id="line.160">        this.chunkBufferOutputStream = new LittleEndianDataOutputStream( chunkBuffer );</a>
+<span class="sourceLineNo">161</span><a id="line.161">        this.cursor.setBlockSize( this.limit );</a>
+<span class="sourceLineNo">162</span><a id="line.162">    }</a>
+<span class="sourceLineNo">163</span><a id="line.163"></a>
+<span class="sourceLineNo">164</span><a id="line.164">    public byte[] getRawData()</a>
+<span class="sourceLineNo">165</span><a id="line.165">    {</a>
+<span class="sourceLineNo">166</span><a id="line.166">        return outputBuffer.toByteArray();</a>
+<span class="sourceLineNo">167</span><a id="line.167">    }</a>
+<span class="sourceLineNo">168</span><a id="line.168"></a>
+<span class="sourceLineNo">169</span><a id="line.169">    public DataOutput getDataOutputStream()</a>
+<span class="sourceLineNo">170</span><a id="line.170">    {</a>
+<span class="sourceLineNo">171</span><a id="line.171">        return dataOutputStream;</a>
+<span class="sourceLineNo">172</span><a id="line.172">    }</a>
+<span class="sourceLineNo">173</span><a id="line.173"></a>
+<span class="sourceLineNo">174</span><a id="line.174">    public int getMaximumBufferSize()</a>
+<span class="sourceLineNo">175</span><a id="line.175">    {</a>
+<span class="sourceLineNo">176</span><a id="line.176">        if ( outputBuffer.size() == 0 )</a>
+<span class="sourceLineNo">177</span><a id="line.177">        {</a>
+<span class="sourceLineNo">178</span><a id="line.178">            writeAllData();</a>
+<span class="sourceLineNo">179</span><a id="line.179">        }</a>
+<span class="sourceLineNo">180</span><a id="line.180">        return outputBuffer.size();</a>
+<span class="sourceLineNo">181</span><a id="line.181">    }</a>
+<span class="sourceLineNo">182</span><a id="line.182"></a>
+<span class="sourceLineNo">183</span><a id="line.183">    protected void writeData()</a>
+<span class="sourceLineNo">184</span><a id="line.184">    {</a>
+<span class="sourceLineNo">185</span><a id="line.185"></a>
+<span class="sourceLineNo">186</span><a id="line.186">    }</a>
+<span class="sourceLineNo">187</span><a id="line.187"></a>
+<span class="sourceLineNo">188</span><a id="line.188">}</a>
 
 
 
@@ -256,5 +257,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>
