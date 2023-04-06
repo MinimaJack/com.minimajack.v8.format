@@ -1,5 +1,8 @@
 package com.minimajack.v8.format;
 
+import com.minimajack.v8.model.Visitable;
+import com.minimajack.v8.model.Visitor;
+
 import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -7,9 +10,6 @@ import java.nio.ByteOrder;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import com.minimajack.v8.model.Visitable;
-import com.minimajack.v8.model.Visitor;
 
 public class V8FileSystem
     extends BlockHeader

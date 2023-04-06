@@ -1,13 +1,13 @@
 package com.minimajack.v8.format;
 
-import java.io.DataOutput;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-
 import com.google.common.io.ByteStreams;
 import com.minimajack.v8.io.stream.V8InputStream;
 import com.minimajack.v8.model.BufferedObject;
 import com.minimajack.v8.utils.BufferUtils;
+
+import java.io.DataOutput;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 /**
  * @author e.vanzhula

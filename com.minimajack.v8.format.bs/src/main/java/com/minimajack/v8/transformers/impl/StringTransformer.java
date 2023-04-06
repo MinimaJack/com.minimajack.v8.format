@@ -10,17 +10,21 @@ import java.nio.charset.StandardCharsets;
 public class StringTransformer
     implements AbstractTransformer<String>
 {
+    ThreadLocal<ByteArrayOutputStream> threadLocalValue = ThreadLocal.withInitial(() -> new ByteArrayOutputStream(256));
 
     @Override
     public String read(ByteBuffer buffer )
     {
         int value;
         int state = 0;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        while ( buffer.remaining() > 0 )
+        ByteArrayOutputStream baos = threadLocalValue.get();
+
+        int remain = buffer.remaining();
+        while ( remain > 0 )
         {
             value = buffer.get();
+            remain--;
             int prevState = state;
             if ( value == 0x22 )
             {
@@ -47,8 +51,9 @@ public class StringTransformer
                 baos.write( value );
             }
         }
-
-        return new String( baos.toByteArray(), StandardCharsets.UTF_8 );
+        byte[] data = baos.toByteArray();
+        baos.reset();
+        return new String( data, StandardCharsets.UTF_8 ).intern();
     }
 
     @Override

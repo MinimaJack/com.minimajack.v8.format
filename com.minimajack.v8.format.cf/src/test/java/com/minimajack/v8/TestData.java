@@ -1,11 +1,10 @@
 package com.minimajack.v8;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.minimajack.v8.format.BlockHeader;
 import com.minimajack.v8.io.metrix.ChunkSizeResolver;
 import com.minimajack.v8.io.metrix.SizeResolver;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class TestData
 {

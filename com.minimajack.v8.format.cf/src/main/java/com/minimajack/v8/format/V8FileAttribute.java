@@ -1,12 +1,12 @@
 package com.minimajack.v8.format;
 
+import com.minimajack.v8.utils.DateUtils;
+
 import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Date;
-
-import com.minimajack.v8.utils.DateUtils;
 
 public class V8FileAttribute extends BlockHeader {
 

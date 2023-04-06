@@ -1,15 +1,15 @@
 package com.minimajack.v8.io.writer;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutput;
-import java.io.IOException;
-
 import com.google.common.io.LittleEndianDataOutputStream;
 import com.minimajack.v8.format.BlockHeader;
 import com.minimajack.v8.io.metrix.ChunkSizeResolver;
 import com.minimajack.v8.io.metrix.SizeResolver;
 import com.minimajack.v8.model.BufferedObject;
 import com.minimajack.v8.model.FakeMemoryAllocator;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutput;
+import java.io.IOException;
 
 public abstract class ChunkWriter
 {

@@ -1,9 +1,9 @@
 package com.minimajack.v8.model;
 
-import java.io.IOException;
-
 import com.minimajack.v8.format.Container;
 import com.minimajack.v8.io.reader.AbstractReader;
+
+import java.io.IOException;
 
 public class Context
     extends AbstractContextHolder
