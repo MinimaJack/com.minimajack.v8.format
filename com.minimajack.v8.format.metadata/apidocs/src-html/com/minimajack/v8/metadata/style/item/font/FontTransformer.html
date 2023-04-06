@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package com.minimajack.v8.metadata.style.item.font;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import com.minimajack.v8.metadata.inner.enums.FontType;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import com.minimajack.v8.metadata.inner.enums.FontType.Values;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import com.minimajack.v8.metadata.style.item.color.IntObject;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import com.minimajack.v8.metadata.style.item.font.impl.AbsoluteFont;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import com.minimajack.v8.metadata.style.item.font.impl.StyleItemFont;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import com.minimajack.v8.metadata.style.item.font.impl.WindowsFont;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import com.minimajack.v8.transformers.AbstractTransformer;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import com.minimajack.v8.utility.SerializedOutputStream;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import com.minimajack.v8.utility.V8Reader;</a>
+<span class="sourceLineNo">012</span><a id="line.12"></a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.nio.ByteBuffer;</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">public class FontTransformer implements AbstractTransformer&lt;FontDescription&gt; {</a>
+<span class="sourceLineNo">016</span><a id="line.16"></a>
+<span class="sourceLineNo">017</span><a id="line.17">  private static final int FONT_WEIGHT = 1 &lt;&lt; 5;</a>
+<span class="sourceLineNo">018</span><a id="line.18">  private static final int FONT_UNK1 = 1 &lt;&lt; 4;</a>
+<span class="sourceLineNo">019</span><a id="line.19">  private static final int FONT_UNK2 = 1 &lt;&lt; 3;</a>
+<span class="sourceLineNo">020</span><a id="line.20">  private static final int FONT_UNK3 = 1 &lt;&lt; 2;</a>
+<span class="sourceLineNo">021</span><a id="line.21">  private static final int FONT_UNK4 = 1 &lt;&lt; 1;</a>
+<span class="sourceLineNo">022</span><a id="line.22">  private static final int FONT_UNK5 = 1;</a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">  @Override</a>
+<span class="sourceLineNo">025</span><a id="line.25">  public FontDescription read(final ByteBuffer buffer) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">    FontDescription innerFont = null;</a>
+<span class="sourceLineNo">027</span><a id="line.27">    final Values typeFont = V8Reader.read(FontType.Values.class, buffer);</a>
+<span class="sourceLineNo">028</span><a id="line.28">    switch (typeFont) {</a>
+<span class="sourceLineNo">029</span><a id="line.29">      case Absolute:</a>
+<span class="sourceLineNo">030</span><a id="line.30">        V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">031</span><a id="line.31">        innerFont = V8Reader.read(AbsoluteFont.class, buffer);</a>
+<span class="sourceLineNo">032</span><a id="line.32">      break;</a>
+<span class="sourceLineNo">033</span><a id="line.33">      case StyleItem:</a>
+<span class="sourceLineNo">034</span><a id="line.34">        final StyleItemFont readedFont = new StyleItemFont();</a>
+<span class="sourceLineNo">035</span><a id="line.35">        V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">036</span><a id="line.36">        readedFont.flag = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">037</span><a id="line.37">        V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">038</span><a id="line.38">        readedFont.types = V8Reader.read(IntObject.class, buffer);</a>
+<span class="sourceLineNo">039</span><a id="line.39">        if ((readedFont.flag &amp; FONT_WEIGHT) == FONT_WEIGHT) {</a>
+<span class="sourceLineNo">040</span><a id="line.40">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">041</span><a id="line.41">          readedFont.weight = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">042</span><a id="line.42">        }</a>
+<span class="sourceLineNo">043</span><a id="line.43">        if ((readedFont.flag &amp; FONT_UNK1) == FONT_UNK1) {</a>
+<span class="sourceLineNo">044</span><a id="line.44">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">045</span><a id="line.45">          readedFont.unk1 = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">046</span><a id="line.46">        }</a>
+<span class="sourceLineNo">047</span><a id="line.47">        if ((readedFont.flag &amp; FONT_UNK2) == FONT_UNK2) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">049</span><a id="line.49">          readedFont.unk2 = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">050</span><a id="line.50">        }</a>
+<span class="sourceLineNo">051</span><a id="line.51">        if ((readedFont.flag &amp; FONT_UNK3) == FONT_UNK3) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">053</span><a id="line.53">          readedFont.unk3 = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">054</span><a id="line.54">        }</a>
+<span class="sourceLineNo">055</span><a id="line.55">        if ((readedFont.flag &amp; FONT_UNK4) == FONT_UNK4) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">057</span><a id="line.57">          readedFont.unk4 = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">058</span><a id="line.58">        }</a>
+<span class="sourceLineNo">059</span><a id="line.59">        innerFont = readedFont;</a>
+<span class="sourceLineNo">060</span><a id="line.60">      break;</a>
+<span class="sourceLineNo">061</span><a id="line.61">      case WindowsFont:</a>
+<span class="sourceLineNo">062</span><a id="line.62">        final WindowsFont readedFont1 = new WindowsFont();</a>
+<span class="sourceLineNo">063</span><a id="line.63">        V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">064</span><a id="line.64">        readedFont1.flag = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">065</span><a id="line.65">        V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">066</span><a id="line.66">        readedFont1.types = V8Reader.read(IntObject.class, buffer);</a>
+<span class="sourceLineNo">067</span><a id="line.67">        if ((readedFont1.flag &amp; FONT_WEIGHT) == FONT_WEIGHT) {</a>
+<span class="sourceLineNo">068</span><a id="line.68">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">069</span><a id="line.69">          readedFont1.weight = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">070</span><a id="line.70">        }</a>
+<span class="sourceLineNo">071</span><a id="line.71">        if ((readedFont1.flag &amp; FONT_UNK1) == FONT_UNK1) {</a>
+<span class="sourceLineNo">072</span><a id="line.72">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">073</span><a id="line.73">          readedFont1.unk1 = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">074</span><a id="line.74">        }</a>
+<span class="sourceLineNo">075</span><a id="line.75">        if ((readedFont1.flag &amp; FONT_UNK2) == FONT_UNK2) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">077</span><a id="line.77">          readedFont1.unk2 = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">078</span><a id="line.78">        }</a>
+<span class="sourceLineNo">079</span><a id="line.79">        if ((readedFont1.flag &amp; FONT_UNK3) == FONT_UNK3) {</a>
+<span class="sourceLineNo">080</span><a id="line.80">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">081</span><a id="line.81">          readedFont1.unk3 = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">082</span><a id="line.82">        }</a>
+<span class="sourceLineNo">083</span><a id="line.83">        if ((readedFont1.flag &amp; FONT_UNK4) == FONT_UNK4) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">085</span><a id="line.85">          readedFont1.unk4 = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">086</span><a id="line.86">        }</a>
+<span class="sourceLineNo">087</span><a id="line.87">        if ((readedFont1.flag &amp; FONT_UNK5) == FONT_UNK5) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">          V8Reader.readChar(buffer, ',');</a>
+<span class="sourceLineNo">089</span><a id="line.89">          readedFont1.unk5 = V8Reader.read(Integer.class, buffer);</a>
+<span class="sourceLineNo">090</span><a id="line.90">        }</a>
+<span class="sourceLineNo">091</span><a id="line.91">        innerFont = readedFont1;</a>
+<span class="sourceLineNo">092</span><a id="line.92">      break;</a>
+<span class="sourceLineNo">093</span><a id="line.93">      default:</a>
+<span class="sourceLineNo">094</span><a id="line.94">        throw new RuntimeException("Unknown font type: " + typeFont);</a>
+<span class="sourceLineNo">095</span><a id="line.95">    }</a>
+<span class="sourceLineNo">096</span><a id="line.96">    return innerFont;</a>
+<span class="sourceLineNo">097</span><a id="line.97">  }</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">  @Override</a>
+<span class="sourceLineNo">100</span><a id="line.100">  public void write(Object object, SerializedOutputStream buffer) {</a>
+<span class="sourceLineNo">101</span><a id="line.101">    throw new UnsupportedOperationException("Not implemented");</a>
+<span class="sourceLineNo">102</span><a id="line.102">  }</a>
+<span class="sourceLineNo">103</span><a id="line.103"></a>
+<span class="sourceLineNo">104</span><a id="line.104">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

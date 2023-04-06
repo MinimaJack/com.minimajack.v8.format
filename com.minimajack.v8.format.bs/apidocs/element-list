@@ -1,0 +1,6 @@
+com.minimajack.v8.annotation
+com.minimajack.v8.exeptions
+com.minimajack.v8.transformers
+com.minimajack.v8.transformers.impl
+com.minimajack.v8.transformers.impl.field
+com.minimajack.v8.utility

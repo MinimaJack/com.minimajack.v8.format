@@ -1,0 +1,366 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package com.minimajack.v8.transformers.impl;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import com.minimajack.v8.annotation.*;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import com.minimajack.v8.transformers.AbstractClassTransformer;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import com.minimajack.v8.transformers.impl.field.FieldInfo;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import com.minimajack.v8.utility.SerializedOutputStream;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import com.minimajack.v8.utility.V8Reader;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import org.slf4j.Logger;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.slf4j.LoggerFactory;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.lang.reflect.*;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.nio.ByteBuffer;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.util.ArrayList;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.HashMap;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import java.util.List;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import java.util.Map;</a>
+<span class="sourceLineNo">017</span><a id="line.17"></a>
+<span class="sourceLineNo">018</span><a id="line.18">public class ObjectTransformer</a>
+<span class="sourceLineNo">019</span><a id="line.19">    extends AbstractClassTransformer&lt;Object&gt;</a>
+<span class="sourceLineNo">020</span><a id="line.20">{</a>
+<span class="sourceLineNo">021</span><a id="line.21">    final Logger logger = LoggerFactory.getLogger( ObjectTransformer.class );</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">    private static final Map&lt;Class&lt;?&gt;, List&lt;FieldInfo&gt;&gt; cacheFields = new HashMap&lt;&gt;();</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">    private static final Map&lt;Class&lt;?&gt;, Method&gt; afterUnmarshalMethods = new HashMap&lt;&gt;();</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">    private static final List&lt;Class&lt;?&gt;&gt; versionalClasses = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">028</span><a id="line.28"></a>
+<span class="sourceLineNo">029</span><a id="line.29">    @Override</a>
+<span class="sourceLineNo">030</span><a id="line.30">    public Object read( Class&lt;?&gt; clazz, ByteBuffer buffer )</a>
+<span class="sourceLineNo">031</span><a id="line.31">    {</a>
+<span class="sourceLineNo">032</span><a id="line.32">        boolean isV8Class = clazz.getAnnotation( V8Class.class ) != null;</a>
+<span class="sourceLineNo">033</span><a id="line.33">        Object object;</a>
+<span class="sourceLineNo">034</span><a id="line.34">        if ( isV8Class )</a>
+<span class="sourceLineNo">035</span><a id="line.35">        {</a>
+<span class="sourceLineNo">036</span><a id="line.36">            return readV8Class( clazz, buffer);</a>
+<span class="sourceLineNo">037</span><a id="line.37">        }</a>
+<span class="sourceLineNo">038</span><a id="line.38">        else</a>
+<span class="sourceLineNo">039</span><a id="line.39">        {</a>
+<span class="sourceLineNo">040</span><a id="line.40">            object = readClass( clazz, buffer);</a>
+<span class="sourceLineNo">041</span><a id="line.41">        }</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">        return object;</a>
+<span class="sourceLineNo">044</span><a id="line.44">    }</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">    @Override</a>
+<span class="sourceLineNo">047</span><a id="line.47">    public void write(Object object, SerializedOutputStream buffer) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">        Class clazz = object.getClass();</a>
+<span class="sourceLineNo">049</span><a id="line.49">        boolean isV8Class = clazz.getAnnotation( V8Class.class ) != null;</a>
+<span class="sourceLineNo">050</span><a id="line.50">        if ( isV8Class )</a>
+<span class="sourceLineNo">051</span><a id="line.51">        {</a>
+<span class="sourceLineNo">052</span><a id="line.52">            writeV8Class( object, clazz, buffer );</a>
+<span class="sourceLineNo">053</span><a id="line.53">        }</a>
+<span class="sourceLineNo">054</span><a id="line.54">        else</a>
+<span class="sourceLineNo">055</span><a id="line.55">        {</a>
+<span class="sourceLineNo">056</span><a id="line.56">            writeClass( object, clazz, buffer);</a>
+<span class="sourceLineNo">057</span><a id="line.57">        }</a>
+<span class="sourceLineNo">058</span><a id="line.58">    }</a>
+<span class="sourceLineNo">059</span><a id="line.59"></a>
+<span class="sourceLineNo">060</span><a id="line.60">    private void writeClass(Object object, Class clazz, SerializedOutputStream buffer) {</a>
+<span class="sourceLineNo">061</span><a id="line.61">        {</a>
+<span class="sourceLineNo">062</span><a id="line.62">            List&lt;FieldInfo&gt; fields = cacheFields.get( clazz );</a>
+<span class="sourceLineNo">063</span><a id="line.63">            if ( fields == null )</a>
+<span class="sourceLineNo">064</span><a id="line.64">            {</a>
+<span class="sourceLineNo">065</span><a id="line.65">                fields = processClass( clazz );</a>
+<span class="sourceLineNo">066</span><a id="line.66">            }</a>
+<span class="sourceLineNo">067</span><a id="line.67">            boolean first = true;</a>
+<span class="sourceLineNo">068</span><a id="line.68">            boolean hasVersion = versionalClasses.contains( clazz );</a>
+<span class="sourceLineNo">069</span><a id="line.69">            Integer version = 0;</a>
+<span class="sourceLineNo">070</span><a id="line.70">            try</a>
+<span class="sourceLineNo">071</span><a id="line.71">            {</a>
+<span class="sourceLineNo">072</span><a id="line.72">                for ( FieldInfo field : fields )</a>
+<span class="sourceLineNo">073</span><a id="line.73">                {</a>
+<span class="sourceLineNo">074</span><a id="line.74">                    if ( hasVersion )</a>
+<span class="sourceLineNo">075</span><a id="line.75">                    {</a>
+<span class="sourceLineNo">076</span><a id="line.76">                        V8Since since = field.since;</a>
+<span class="sourceLineNo">077</span><a id="line.77">                        if ( since != null )</a>
+<span class="sourceLineNo">078</span><a id="line.78">                        {</a>
+<span class="sourceLineNo">079</span><a id="line.79">                            if ( version &lt; since.version() || version &gt;= since.removed() )</a>
+<span class="sourceLineNo">080</span><a id="line.80">                            {</a>
+<span class="sourceLineNo">081</span><a id="line.81">                                continue;</a>
+<span class="sourceLineNo">082</span><a id="line.82">                            }</a>
+<span class="sourceLineNo">083</span><a id="line.83">                        }</a>
+<span class="sourceLineNo">084</span><a id="line.84">                    }</a>
+<span class="sourceLineNo">085</span><a id="line.85">                    if ( !field.required  )</a>
+<span class="sourceLineNo">086</span><a id="line.86">                    {</a>
+<span class="sourceLineNo">087</span><a id="line.87">                        if(field.field.get(object) == null)</a>
+<span class="sourceLineNo">088</span><a id="line.88">                        break;</a>
+<span class="sourceLineNo">089</span><a id="line.89">                    }</a>
+<span class="sourceLineNo">090</span><a id="line.90">                    if ( !first )</a>
+<span class="sourceLineNo">091</span><a id="line.91">                    {</a>
+<span class="sourceLineNo">092</span><a id="line.92">                        buffer.putComa();</a>
+<span class="sourceLineNo">093</span><a id="line.93">                    }</a>
+<span class="sourceLineNo">094</span><a id="line.94">                    Class&lt;?&gt; fieldType = field.fieldType;</a>
+<span class="sourceLineNo">095</span><a id="line.95">                    logger.debug( "Write field {} {}", field.name, fieldType );</a>
+<span class="sourceLineNo">096</span><a id="line.96">                    Type paramType = field.paramType;</a>
+<span class="sourceLineNo">097</span><a id="line.97">                    V8Reader.write( field.field.get(object), paramType, buffer );</a>
+<span class="sourceLineNo">098</span><a id="line.98">                    if ( field.isVersion )</a>
+<span class="sourceLineNo">099</span><a id="line.99">                    {</a>
+<span class="sourceLineNo">100</span><a id="line.100">                        hasVersion = true;</a>
+<span class="sourceLineNo">101</span><a id="line.101">                        version = (Integer) field.field.get(object);</a>
+<span class="sourceLineNo">102</span><a id="line.102">                    }</a>
+<span class="sourceLineNo">103</span><a id="line.103"></a>
+<span class="sourceLineNo">104</span><a id="line.104">                    first = false;</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">                }</a>
+<span class="sourceLineNo">107</span><a id="line.107">            }</a>
+<span class="sourceLineNo">108</span><a id="line.108">            catch ( IllegalArgumentException | IllegalAccessException e )</a>
+<span class="sourceLineNo">109</span><a id="line.109">            {</a>
+<span class="sourceLineNo">110</span><a id="line.110">                throw new RuntimeException( e );</a>
+<span class="sourceLineNo">111</span><a id="line.111">            }</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">        }</a>
+<span class="sourceLineNo">114</span><a id="line.114">    }</a>
+<span class="sourceLineNo">115</span><a id="line.115"></a>
+<span class="sourceLineNo">116</span><a id="line.116">    public void writeV8Class( Object object, Class&lt;?&gt; clazz, SerializedOutputStream buffer)</a>
+<span class="sourceLineNo">117</span><a id="line.117">    {</a>
+<span class="sourceLineNo">118</span><a id="line.118">        buffer.putOpenBracket();</a>
+<span class="sourceLineNo">119</span><a id="line.119"></a>
+<span class="sourceLineNo">120</span><a id="line.120">        writeClass( object, clazz, buffer );</a>
+<span class="sourceLineNo">121</span><a id="line.121"></a>
+<span class="sourceLineNo">122</span><a id="line.122">        buffer.putCloseBracket();</a>
+<span class="sourceLineNo">123</span><a id="line.123"></a>
+<span class="sourceLineNo">124</span><a id="line.124">    }</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">    public Object readV8Class( Class&lt;?&gt; clazz, ByteBuffer buffer)</a>
+<span class="sourceLineNo">127</span><a id="line.127">    {</a>
+<span class="sourceLineNo">128</span><a id="line.128">        readBracket( buffer );</a>
+<span class="sourceLineNo">129</span><a id="line.129"></a>
+<span class="sourceLineNo">130</span><a id="line.130">        Object object = readClass( clazz, buffer );</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">        readCloseBracket( buffer );</a>
+<span class="sourceLineNo">133</span><a id="line.133"></a>
+<span class="sourceLineNo">134</span><a id="line.134">        runAfterUnmarshal( clazz, object );</a>
+<span class="sourceLineNo">135</span><a id="line.135"></a>
+<span class="sourceLineNo">136</span><a id="line.136">        return object;</a>
+<span class="sourceLineNo">137</span><a id="line.137">    }</a>
+<span class="sourceLineNo">138</span><a id="line.138"></a>
+<span class="sourceLineNo">139</span><a id="line.139">    public List&lt;FieldInfo&gt; processClass( Class&lt;?&gt; clazz )</a>
+<span class="sourceLineNo">140</span><a id="line.140">    {</a>
+<span class="sourceLineNo">141</span><a id="line.141">        Field[] fields = clazz.getDeclaredFields();</a>
+<span class="sourceLineNo">142</span><a id="line.142"></a>
+<span class="sourceLineNo">143</span><a id="line.143">        V8Version v8clver = clazz.getAnnotation( V8Version.class );</a>
+<span class="sourceLineNo">144</span><a id="line.144">        if ( v8clver != null )</a>
+<span class="sourceLineNo">145</span><a id="line.145">        {</a>
+<span class="sourceLineNo">146</span><a id="line.146">            if ( !fields[0].getName().equals( "version" ) )</a>
+<span class="sourceLineNo">147</span><a id="line.147">            {</a>
+<span class="sourceLineNo">148</span><a id="line.148">                throw new RuntimeException( "bad version: " + clazz.getName() );</a>
+<span class="sourceLineNo">149</span><a id="line.149">            }</a>
+<span class="sourceLineNo">150</span><a id="line.150">        }</a>
+<span class="sourceLineNo">151</span><a id="line.151">        List&lt;FieldInfo&gt; lfi = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">152</span><a id="line.152">        for ( Field field : fields )</a>
+<span class="sourceLineNo">153</span><a id="line.153">        {</a>
+<span class="sourceLineNo">154</span><a id="line.154">            if ( field.getAnnotation( V8Transient.class ) != null )</a>
+<span class="sourceLineNo">155</span><a id="line.155">            {</a>
+<span class="sourceLineNo">156</span><a id="line.156">                continue;</a>
+<span class="sourceLineNo">157</span><a id="line.157">            }</a>
+<span class="sourceLineNo">158</span><a id="line.158">            if ( ( field.getModifiers() &amp; java.lang.reflect.Modifier.FINAL ) == java.lang.reflect.Modifier.FINAL )</a>
+<span class="sourceLineNo">159</span><a id="line.159">            {</a>
+<span class="sourceLineNo">160</span><a id="line.160">                continue;</a>
+<span class="sourceLineNo">161</span><a id="line.161">            }</a>
+<span class="sourceLineNo">162</span><a id="line.162">            if ( ( field.getModifiers() &amp; Modifier.PRIVATE ) == java.lang.reflect.Modifier.PRIVATE )</a>
+<span class="sourceLineNo">163</span><a id="line.163">            {</a>
+<span class="sourceLineNo">164</span><a id="line.164">                field.setAccessible(true);</a>
+<span class="sourceLineNo">165</span><a id="line.165">            }</a>
+<span class="sourceLineNo">166</span><a id="line.166"></a>
+<span class="sourceLineNo">167</span><a id="line.167">            FieldInfo fi = new FieldInfo();</a>
+<span class="sourceLineNo">168</span><a id="line.168">            fi.field = field;</a>
+<span class="sourceLineNo">169</span><a id="line.169">            fi.fieldType = field.getType();</a>
+<span class="sourceLineNo">170</span><a id="line.170">            fi.paramType = field.getGenericType();</a>
+<span class="sourceLineNo">171</span><a id="line.171">            fi.since = field.getAnnotation( V8Since.class );</a>
+<span class="sourceLineNo">172</span><a id="line.172">            fi.name = field.getName();</a>
+<span class="sourceLineNo">173</span><a id="line.173">            Required req = field.getAnnotation( Required.class );</a>
+<span class="sourceLineNo">174</span><a id="line.174">            fi.required = req == null || req.required();</a>
+<span class="sourceLineNo">175</span><a id="line.175">            if ( field.getAnnotation( V8Version.class ) != null )</a>
+<span class="sourceLineNo">176</span><a id="line.176">            {</a>
+<span class="sourceLineNo">177</span><a id="line.177">                fi.isVersion = true;</a>
+<span class="sourceLineNo">178</span><a id="line.178">                versionalClasses.add( clazz );</a>
+<span class="sourceLineNo">179</span><a id="line.179">            }</a>
+<span class="sourceLineNo">180</span><a id="line.180">            lfi.add( fi );</a>
+<span class="sourceLineNo">181</span><a id="line.181">        }</a>
+<span class="sourceLineNo">182</span><a id="line.182">        cacheFields.put( clazz, lfi );</a>
+<span class="sourceLineNo">183</span><a id="line.183"></a>
+<span class="sourceLineNo">184</span><a id="line.184">        for ( Method method : clazz.getMethods() )</a>
+<span class="sourceLineNo">185</span><a id="line.185">        {</a>
+<span class="sourceLineNo">186</span><a id="line.186">            if ( method.getName().equalsIgnoreCase( "afterUnmarshal" ) )</a>
+<span class="sourceLineNo">187</span><a id="line.187">            {</a>
+<span class="sourceLineNo">188</span><a id="line.188">                afterUnmarshalMethods.put( clazz, method );</a>
+<span class="sourceLineNo">189</span><a id="line.189">                break;</a>
+<span class="sourceLineNo">190</span><a id="line.190">            }</a>
+<span class="sourceLineNo">191</span><a id="line.191">        }</a>
+<span class="sourceLineNo">192</span><a id="line.192">        return lfi;</a>
+<span class="sourceLineNo">193</span><a id="line.193">    }</a>
+<span class="sourceLineNo">194</span><a id="line.194"></a>
+<span class="sourceLineNo">195</span><a id="line.195">    public Object readClass( Class&lt;?&gt; clazz, ByteBuffer buffer )</a>
+<span class="sourceLineNo">196</span><a id="line.196">    {</a>
+<span class="sourceLineNo">197</span><a id="line.197">        Object object;</a>
+<span class="sourceLineNo">198</span><a id="line.198">        try</a>
+<span class="sourceLineNo">199</span><a id="line.199">        {</a>
+<span class="sourceLineNo">200</span><a id="line.200">            object = clazz.getConstructor().newInstance();</a>
+<span class="sourceLineNo">201</span><a id="line.201">        }</a>
+<span class="sourceLineNo">202</span><a id="line.202">        catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e )</a>
+<span class="sourceLineNo">203</span><a id="line.203">        {</a>
+<span class="sourceLineNo">204</span><a id="line.204">            throw new RuntimeException( "Cant instantinate class" + clazz );</a>
+<span class="sourceLineNo">205</span><a id="line.205">        }</a>
+<span class="sourceLineNo">206</span><a id="line.206"></a>
+<span class="sourceLineNo">207</span><a id="line.207">        List&lt;FieldInfo&gt; fields = cacheFields.get( clazz );</a>
+<span class="sourceLineNo">208</span><a id="line.208">        if ( fields == null )</a>
+<span class="sourceLineNo">209</span><a id="line.209">        {</a>
+<span class="sourceLineNo">210</span><a id="line.210">            fields = processClass( clazz );</a>
+<span class="sourceLineNo">211</span><a id="line.211">        }</a>
+<span class="sourceLineNo">212</span><a id="line.212">        boolean first = true;</a>
+<span class="sourceLineNo">213</span><a id="line.213">        boolean hasVersion = versionalClasses.contains( clazz );</a>
+<span class="sourceLineNo">214</span><a id="line.214">        Integer version = 0;</a>
+<span class="sourceLineNo">215</span><a id="line.215">        try</a>
+<span class="sourceLineNo">216</span><a id="line.216">        {</a>
+<span class="sourceLineNo">217</span><a id="line.217">            for ( FieldInfo field : fields )</a>
+<span class="sourceLineNo">218</span><a id="line.218">            {</a>
+<span class="sourceLineNo">219</span><a id="line.219">                if ( hasVersion )</a>
+<span class="sourceLineNo">220</span><a id="line.220">                {</a>
+<span class="sourceLineNo">221</span><a id="line.221">                    V8Since since = field.since;</a>
+<span class="sourceLineNo">222</span><a id="line.222">                    if ( since != null )</a>
+<span class="sourceLineNo">223</span><a id="line.223">                    {</a>
+<span class="sourceLineNo">224</span><a id="line.224">                        if ( version &lt; since.version() || version &gt;= since.removed() )</a>
+<span class="sourceLineNo">225</span><a id="line.225">                        {</a>
+<span class="sourceLineNo">226</span><a id="line.226">                            continue;</a>
+<span class="sourceLineNo">227</span><a id="line.227">                        }</a>
+<span class="sourceLineNo">228</span><a id="line.228">                    }</a>
+<span class="sourceLineNo">229</span><a id="line.229">                }</a>
+<span class="sourceLineNo">230</span><a id="line.230">                byte nextSymbol = buffer.get(buffer.position());</a>
+<span class="sourceLineNo">231</span><a id="line.231">                if ( field.required || nextSymbol != 0x7D</a>
+<span class="sourceLineNo">232</span><a id="line.232">                    &amp;&amp; nextSymbol != 0x0D )</a>
+<span class="sourceLineNo">233</span><a id="line.233">                {</a>
+<span class="sourceLineNo">234</span><a id="line.234">                    if ( !first )</a>
+<span class="sourceLineNo">235</span><a id="line.235">                    {</a>
+<span class="sourceLineNo">236</span><a id="line.236">                        V8Reader.readChar( buffer, ',' );</a>
+<span class="sourceLineNo">237</span><a id="line.237">                    }</a>
+<span class="sourceLineNo">238</span><a id="line.238">                }</a>
+<span class="sourceLineNo">239</span><a id="line.239">                else</a>
+<span class="sourceLineNo">240</span><a id="line.240">                {</a>
+<span class="sourceLineNo">241</span><a id="line.241">                    break;</a>
+<span class="sourceLineNo">242</span><a id="line.242">                }</a>
+<span class="sourceLineNo">243</span><a id="line.243">                Class&lt;?&gt; fieldType = field.fieldType;</a>
+<span class="sourceLineNo">244</span><a id="line.244">                logger.debug( "Read field {} {}", field.name, fieldType );</a>
+<span class="sourceLineNo">245</span><a id="line.245">                Type paramType = field.paramType;</a>
+<span class="sourceLineNo">246</span><a id="line.246">                Object fieldValue = V8Reader.read( fieldType, paramType, buffer );</a>
+<span class="sourceLineNo">247</span><a id="line.247">                if ( hasVersion &amp;&amp; field.isVersion )</a>
+<span class="sourceLineNo">248</span><a id="line.248">                {</a>
+<span class="sourceLineNo">249</span><a id="line.249">                    version = (Integer) fieldValue;</a>
+<span class="sourceLineNo">250</span><a id="line.250">                }</a>
+<span class="sourceLineNo">251</span><a id="line.251">                logger.debug( "VALUE: {} ", fieldValue );</a>
+<span class="sourceLineNo">252</span><a id="line.252">                logger.debug( "EndRead: {} ", field.name );</a>
+<span class="sourceLineNo">253</span><a id="line.253"></a>
+<span class="sourceLineNo">254</span><a id="line.254">                field.field.set( object, fieldValue );</a>
+<span class="sourceLineNo">255</span><a id="line.255">                first = false;</a>
+<span class="sourceLineNo">256</span><a id="line.256"></a>
+<span class="sourceLineNo">257</span><a id="line.257">            }</a>
+<span class="sourceLineNo">258</span><a id="line.258">        }</a>
+<span class="sourceLineNo">259</span><a id="line.259">        catch ( IllegalArgumentException | IllegalAccessException e )</a>
+<span class="sourceLineNo">260</span><a id="line.260">        {</a>
+<span class="sourceLineNo">261</span><a id="line.261">            throw new RuntimeException( e );</a>
+<span class="sourceLineNo">262</span><a id="line.262">        }</a>
+<span class="sourceLineNo">263</span><a id="line.263"></a>
+<span class="sourceLineNo">264</span><a id="line.264">        return object;</a>
+<span class="sourceLineNo">265</span><a id="line.265">    }</a>
+<span class="sourceLineNo">266</span><a id="line.266"></a>
+<span class="sourceLineNo">267</span><a id="line.267">    private void runAfterUnmarshal( Class&lt;?&gt; clazz, Object object )</a>
+<span class="sourceLineNo">268</span><a id="line.268">    {</a>
+<span class="sourceLineNo">269</span><a id="line.269">        try</a>
+<span class="sourceLineNo">270</span><a id="line.270">        {</a>
+<span class="sourceLineNo">271</span><a id="line.271">            Method method = afterUnmarshalMethods.get( clazz );</a>
+<span class="sourceLineNo">272</span><a id="line.272">            if ( method != null )</a>
+<span class="sourceLineNo">273</span><a id="line.273">            {</a>
+<span class="sourceLineNo">274</span><a id="line.274">                method.invoke( object );</a>
+<span class="sourceLineNo">275</span><a id="line.275">            }</a>
+<span class="sourceLineNo">276</span><a id="line.276">        }</a>
+<span class="sourceLineNo">277</span><a id="line.277">        catch ( SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e1 )</a>
+<span class="sourceLineNo">278</span><a id="line.278">        {</a>
+<span class="sourceLineNo">279</span><a id="line.279">            throw new RuntimeException( "Can't run afterUnmarshal method" );</a>
+<span class="sourceLineNo">280</span><a id="line.280">        }</a>
+<span class="sourceLineNo">281</span><a id="line.281">    }</a>
+<span class="sourceLineNo">282</span><a id="line.282"></a>
+<span class="sourceLineNo">283</span><a id="line.283">    public static void readBracket( ByteBuffer buffer )</a>
+<span class="sourceLineNo">284</span><a id="line.284">    {</a>
+<span class="sourceLineNo">285</span><a id="line.285">        V8Reader.readChar( buffer, '{' );</a>
+<span class="sourceLineNo">286</span><a id="line.286">    }</a>
+<span class="sourceLineNo">287</span><a id="line.287"></a>
+<span class="sourceLineNo">288</span><a id="line.288">    public static void readCloseBracket( ByteBuffer buffer )</a>
+<span class="sourceLineNo">289</span><a id="line.289">    {</a>
+<span class="sourceLineNo">290</span><a id="line.290">        V8Reader.readChar( buffer, '}' );</a>
+<span class="sourceLineNo">291</span><a id="line.291">    }</a>
+<span class="sourceLineNo">292</span><a id="line.292">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

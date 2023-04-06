@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package com.minimajack.v8.metadata.external.qualifier;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import com.minimajack.v8.metadata.external.qualifier.impl.*;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import com.minimajack.v8.transformers.AbstractTransformer;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import com.minimajack.v8.transformers.impl.ObjectTransformer;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import com.minimajack.v8.utility.SerializedOutputStream;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import com.minimajack.v8.utility.V8Reader;</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.nio.ByteBuffer;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">public class QualityTransformer implements AbstractTransformer&lt;Qualifiers&gt; {</a>
+<span class="sourceLineNo">012</span><a id="line.12"></a>
+<span class="sourceLineNo">013</span><a id="line.13">  @Override</a>
+<span class="sourceLineNo">014</span><a id="line.14">  public Qualifiers read(final ByteBuffer buffer) {</a>
+<span class="sourceLineNo">015</span><a id="line.15">    buffer.mark();</a>
+<span class="sourceLineNo">016</span><a id="line.16">    Qualifiers readedQuality;</a>
+<span class="sourceLineNo">017</span><a id="line.17">    ObjectTransformer.readBracket(buffer);</a>
+<span class="sourceLineNo">018</span><a id="line.18">    final String enums = V8Reader.read(String.class, buffer);</a>
+<span class="sourceLineNo">019</span><a id="line.19">    buffer.reset();</a>
+<span class="sourceLineNo">020</span><a id="line.20">    switch (enums) {</a>
+<span class="sourceLineNo">021</span><a id="line.21">      case "N": {</a>
+<span class="sourceLineNo">022</span><a id="line.22">        readedQuality = V8Reader.read(NumberQualifiers.class, buffer);</a>
+<span class="sourceLineNo">023</span><a id="line.23">        break;</a>
+<span class="sourceLineNo">024</span><a id="line.24">      }</a>
+<span class="sourceLineNo">025</span><a id="line.25">      case "S": {</a>
+<span class="sourceLineNo">026</span><a id="line.26">        readedQuality = V8Reader.read(StringQualifiers.class, buffer);</a>
+<span class="sourceLineNo">027</span><a id="line.27">        break;</a>
+<span class="sourceLineNo">028</span><a id="line.28">      }</a>
+<span class="sourceLineNo">029</span><a id="line.29">      case "#": {</a>
+<span class="sourceLineNo">030</span><a id="line.30">        readedQuality = V8Reader.read(DbLinkQuality.class, buffer);</a>
+<span class="sourceLineNo">031</span><a id="line.31">        break;</a>
+<span class="sourceLineNo">032</span><a id="line.32">      }</a>
+<span class="sourceLineNo">033</span><a id="line.33">      case "D": {</a>
+<span class="sourceLineNo">034</span><a id="line.34">        readedQuality = V8Reader.read(DateQualifiers.class, buffer);</a>
+<span class="sourceLineNo">035</span><a id="line.35">        break;</a>
+<span class="sourceLineNo">036</span><a id="line.36">      }</a>
+<span class="sourceLineNo">037</span><a id="line.37">      case "B": {</a>
+<span class="sourceLineNo">038</span><a id="line.38">        readedQuality = V8Reader.read(BooleanQuality.class, buffer);</a>
+<span class="sourceLineNo">039</span><a id="line.39">        break;</a>
+<span class="sourceLineNo">040</span><a id="line.40">      }</a>
+<span class="sourceLineNo">041</span><a id="line.41">      case "U": {</a>
+<span class="sourceLineNo">042</span><a id="line.42">        readedQuality = V8Reader.read(UndefinedQuality.class, buffer);</a>
+<span class="sourceLineNo">043</span><a id="line.43">        break;</a>
+<span class="sourceLineNo">044</span><a id="line.44">      }</a>
+<span class="sourceLineNo">045</span><a id="line.45">      case "T": {</a>
+<span class="sourceLineNo">046</span><a id="line.46">        throw new RuntimeException("Unsupported type: " + enums);</a>
+<span class="sourceLineNo">047</span><a id="line.47">      }</a>
+<span class="sourceLineNo">048</span><a id="line.48">      default:</a>
+<span class="sourceLineNo">049</span><a id="line.49">        throw new IllegalStateException("Unexpected value: " + enums);</a>
+<span class="sourceLineNo">050</span><a id="line.50">    }</a>
+<span class="sourceLineNo">051</span><a id="line.51">    return readedQuality;</a>
+<span class="sourceLineNo">052</span><a id="line.52">  }</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">  @Override</a>
+<span class="sourceLineNo">055</span><a id="line.55">  public void write(Object object, SerializedOutputStream buffer) {</a>
+<span class="sourceLineNo">056</span><a id="line.56">    throw new UnsupportedOperationException("Not implemented");</a>
+<span class="sourceLineNo">057</span><a id="line.57">  }</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

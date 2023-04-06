@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.minimajack.v8.annotation"},{"l":"com.minimajack.v8.exeptions"},{"l":"com.minimajack.v8.transformers"},{"l":"com.minimajack.v8.transformers.impl"},{"l":"com.minimajack.v8.transformers.impl.field"},{"l":"com.minimajack.v8.utility"}]
