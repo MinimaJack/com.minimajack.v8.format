@@ -90,6 +90,7 @@ public class V8Reader {
         TRANSFORMERS.put(AnyData.class, new AnyDataTransformer());
 
         PARAMETERIZED_TRANSFORMERS.put(List.class, new ListTransformer());
+        PARAMETERIZED_TRANSFORMERS.put(ArrayList.class, new ListTransformer());
         PARAMETERIZED_TRANSFORMERS.put(LinkedList.class, new ListTransformer());
 
         PARAMETERIZED_TRANSFORMERS.put(Map.class, new MapTransformer());
