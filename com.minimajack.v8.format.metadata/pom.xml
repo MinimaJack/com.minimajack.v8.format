@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>com.minimajack.v8</groupId>
 		<artifactId>com.minimajack.v8.format</artifactId>
-		<version>0.0.23</version>
+		<version>0.0.24</version>
 	</parent>
 	<artifactId>com.minimajack.v8.format.metadata</artifactId>
 	<name>metadata</name>

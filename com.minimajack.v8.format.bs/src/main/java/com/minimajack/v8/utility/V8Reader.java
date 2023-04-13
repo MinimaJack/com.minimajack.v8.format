@@ -122,4 +122,20 @@ public class V8Reader {
         }
     }
 
+    public static char nextChar(ByteBuffer buffer) {
+        buffer.mark();
+        char result = 0;
+        while (buffer.hasRemaining()) {
+            int value = buffer.get() & 0xFF;
+
+            if (value != SPACE && value != CR && value != LF) {
+                logger.debug("Next char {}", (char) value);
+                result = ((char) value);
+                break;
+            }
+        }
+        buffer.reset();
+        return result;
+    }
+
 }

@@ -227,9 +227,9 @@ public class ObjectTransformer
                         }
                     }
                 }
-                byte nextSymbol = buffer.get(buffer.position());
-                if ( field.required || nextSymbol != 0x7D
-                    && nextSymbol != 0x0D )
+                char nextSymbol = V8Reader.nextChar( buffer );
+                if ( field.required || nextSymbol != (char)0x7D
+                    && nextSymbol != (char)0x0D )
                 {
                     if ( !first )
                     {
