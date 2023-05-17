@@ -6,6 +6,7 @@ import com.minimajack.v8.metadata.external.common.ChoiceParameterLinks;
 import com.minimajack.v8.metadata.external.common.ChoiceParameters;
 import com.minimajack.v8.metadata.external.common.MetaDataObjectLink;
 import com.minimajack.v8.metadata.external.common.V8Synonym;
+import com.minimajack.v8.metadata.external.data.composition.schema.DataCompositionSchema;
 import com.minimajack.v8.metadata.external.unknown.LinkByType;
 import com.minimajack.v8.metadata.external.unknown.UnkObjectIntNotReqUuid;
 import com.minimajack.v8.metadata.external.unknown.UnkObjectIntUuidUuid;
@@ -533,6 +534,9 @@ public class InnerClassTransformer implements AbstractTransformer<V8InnerClass> 
     private static final UUID ENUM_DATA_HISTORY_USE = UUID
             .fromString("d46ea122-3201-4e5e-bed4-e669c6e463c8");
 
+    private static final UUID DATA_COMPOSITION_SCHEMA = UUID
+            .fromString("dc29f857-fc4f-4cd1-a7ca-e8e71f3955b3");
+
     private static final Map<UUID, Class<? extends V8InnerClass>> classbyUUID =
             new HashMap<>();
 
@@ -701,6 +705,7 @@ public class InnerClassTransformer implements AbstractTransformer<V8InnerClass> 
         classbyUUID.put(ACCOUNT_TYPE, AccountType.class);
         classbyUUID.put(TYPE_DESCRIPTION, PatternDescription.class);
         classbyUUID.put(ENUM_DATA_HISTORY_USE, UnkObjectUuidInt.class);
+        classbyUUID.put(DATA_COMPOSITION_SCHEMA, DataCompositionSchema.class);
 
     }
 
