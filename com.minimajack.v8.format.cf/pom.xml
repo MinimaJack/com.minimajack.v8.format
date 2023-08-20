@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>com.minimajack.v8</groupId>
 		<artifactId>com.minimajack.v8.format</artifactId>
-		<version>0.0.26-SNAPSHOT</version>
+		<version>0.0.26</version>
 	</parent>
 
 	<dependencies>
