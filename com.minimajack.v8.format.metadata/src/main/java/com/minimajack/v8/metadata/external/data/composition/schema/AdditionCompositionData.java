@@ -7,6 +7,5 @@ import com.minimajack.v8.annotation.V8Version;
 public class AdditionCompositionData {
     @V8Version
     public Integer version;
-    public FileData settings;
-    public FileData someAnother;
+    public FileData[] settings;
 }
